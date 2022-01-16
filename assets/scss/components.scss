@@ -1,0 +1,64 @@
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+
+  &-between {
+    // display: flex;
+    justify-content: space-between;
+    // align-items: center;
+    // gap: 1rem;
+  }
+
+  &-start {
+    // display: flex;
+    justify-content: flex-start;
+    // align-items: center;
+    // gap: 1rem;
+  }
+
+  &-col {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
+
+.backdrop {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: $slate-800;
+  opacity: 0.5;
+
+  // fixed w-[100vw] h-[100vh] top-0 left-0 bg-gray-900 z-10 opacity-50
+}
+
+.btn {
+  background: transparent;
+  border: 1px solid $slate-400;
+  color: $slate-900;
+  width: 100%;
+  text-transform: uppercase;
+  padding: 0.75rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: 0.3s ease-in-out;
+
+  &-primary {
+    &:hover {
+      background-color: $slate-800;
+      color: white;
+    }
+  }
+
+  svg {
+    width: 2rem;
+    height: 2rem;
+  }
+}

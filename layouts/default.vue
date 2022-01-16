@@ -16,14 +16,14 @@
   <div class="app">
     <header>
       <FreeShipping />
-      <div class="header">
-        <div class="header__top">
-          <Branding />
-          <div class="profile flex items-center gap-4">
-            <!-- <ProfileNav /> -->
-            <!-- <ProductsNavCart /> -->
-          </div>
-        </div>
+      <div class="header flex flex-between">
+        <!-- <div class="header__top"> -->
+        <Branding />
+        <!-- <div class="header__right"> -->
+        <ProfileNav />
+        <!-- <ProductsNavCart /> -->
+        <!-- </div> -->
+        <!-- </div> -->
       </div>
       <nav class="bg-slate-800 text-white">
         <!-- <nav class=""> -->
@@ -41,14 +41,35 @@
 </template>
 
 <style lang="scss" scoped>
-.header {
-  background-color: #000;
+.app {
+  header {
+    .header {
+      // border: 1px solid white;
+      // display: flex;
+      // justify-content: space-between;
+      // align-items: center;
+      background-color: #000;
+      color: white;
+      padding: 1rem 2rem;
 
-  &__top {
-    width: 1024px;
-    color: white;
-    padding: 1.5rem;
+      // &__profile{
+      //   flex:1
+      // }
+
+      // &__right {
+      //   display: flex;
+      //   justify-content: center;
+      //   align-items: center;
+      //   flex: 1;
+      //   gap: 1rem;
+      // }
+
+      // &__top {
+      //   width: 1024px;
+      //   padding: 1.5rem;
+      // }
+      // w-[1024px] mx-auto text-white flex justify-between items-center py-6
+    }
   }
-  // w-[1024px] mx-auto text-white flex justify-between items-center py-6
 }
 </style>

@@ -11,7 +11,7 @@
   color: white;
   text-align: center;
   padding: 1rem;
-  letter-spacing: 0.05em;
+  // letter-spacing: 0.05em;
   font-size:1.4rem;
 }
 </style>
