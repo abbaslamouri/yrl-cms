@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi build",
+    "start": "node .output/server/index.mjs"
+  },
+  "devDependencies": {
+    "nuxt3": "latest"
+  },
+  "dependencies": {
+    "@nuxtjs/axios": "^5.13.6",
+    "@pinia/nuxt": "^0.1.8",
+    "bcryptjs": "^2.4.3",
+    "colors": "^1.4.0",
+    "cookie-parser": "^1.4.6",
+    "express": "^4.17.2",
+    "html-to-text": "^8.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.1.6",
+    "multer": "^1.4.4",
+    "nodemailer": "^6.7.2",
+    "pinia": "^2.0.9",
+    "pug": "^3.0.2",
+    "sass": "^1.48.0",
+    "sass-loader": "^12.4.0",
+    "sharp": "^0.29.3",
+    "slugify": "^1.6.5"
+  }
+}
