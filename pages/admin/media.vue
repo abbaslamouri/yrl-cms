@@ -1,13 +1,13 @@
 <script setup>
 useMeta({
   title: 'Home | YRL',
-})
+});
 </script>
 
 <script>
 export default {
   layout: 'admin',
-}
+};
 </script>
 
 <template>
@@ -17,17 +17,26 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-// .home {
-//   .product-list {
-//     padding: 2rem;
-//   }
-//   .actions {
-//     display: flex;
-//     align-items: center;
-//     gap: 2rem;
-//   }
-//   // padding: 2rem;
-// }
+@import '@/assets/scss/variables';
+
+.media {
+  min-height:100vh;
+  background-color: $slate-100;
+
+  // border: 1px solid $slate-400;
+  // padding:1rem
+  // }
+  // .home {
+  //   .product-list {
+  //     padding: 2rem;
+  //   }
+  //   .actions {
+  //     display: flex;
+  //     align-items: center;
+  //     gap: 2rem;
+  //   }
+  //   // padding: 2rem;
+}
 </style>
 
 <!-- <script setup>

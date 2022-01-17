@@ -19,12 +19,12 @@ const error = computed(() => appError.snackbar);
   <div>
     <!-- {{auth.user}} -->
     <NuxtPage />
-    <!-- <SnackBar
+    <SnackBar
       :show="error.show"
       :message="error.message"
       :snackbarType="error.type"
       :duration="error.duration"
       @hideSnackbar="error.show = false"
-    /> -->
+    />
   </div>
 </template>

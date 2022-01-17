@@ -16,13 +16,13 @@ export const useError = defineStore('error', {
       snackbar: {
         show: false,
         message: '',
-        type: 'error',
+        type: 'Error',
         duration: 10,
       },
     };
   },
   actions: {
-    setSnackbar(show = false, message = '', type = 'error', duration = 30) {
+    setSnackbar(show = false, message = '', type = 'Error', duration = 30) {
       this.snackbar.show = show;
       this.snackbar.message = message;
       this.snackbar.type = type;

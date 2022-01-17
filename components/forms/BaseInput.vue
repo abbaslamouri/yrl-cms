@@ -11,7 +11,7 @@ defineProps({
 });
 defineEmits(['update:modelValue']);
 
-const attrs = useAttrs();
+// const attrs = useAttrs();
 const errorMsg = ref('');
 const uuid = useUniqueId().getId();
 const inputRef = ref('');
@@ -26,7 +26,6 @@ export default {
 <template>
   <div class="baseInput">
     <input
-      class="shadow-md"
       ref="inputRef"
       :placeholder="label"
       :value="modelValue"

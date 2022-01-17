@@ -1,29 +1,30 @@
-.flex {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 1rem;
+// .flex {
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   // gap: 1rem;
 
-  &-between {
-    // display: flex;
-    justify-content: space-between;
-    // align-items: center;
-    // gap: 1rem;
-  }
+//   &-col {
+//     flex-direction: column;
+//     align-items: flex-start;
+//     justify-content: flex-start;
+//   }
 
-  &-start {
-    // display: flex;
-    justify-content: flex-start;
-    // align-items: center;
-    // gap: 1rem;
-  }
+//   &-between {
+//     // display: flex;
+//     justify-content: space-between;
+//     // align-items: center;
+//     // gap: 1rem;
+//   }
 
-  &-col {
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
-}
+//   &-start {
+//     // display: flex;
+//     justify-content: flex-start;
+//     align-items: flex-start;
+//     // align-items: center;
+//     // gap: 1rem;
+//   }
+// }
 
 .backdrop {
   position: fixed;
@@ -43,17 +44,18 @@
   background: transparent;
   border: 1px solid $slate-400;
   color: $slate-900;
-  width: 100%;
-  text-transform: uppercase;
-  padding: 0.75rem 1rem;
+  // width: 100%;
+  // text-transform: uppercase;
+  padding: 0.5rem 1rem;
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
 
   &-primary {
+    background-color: $slate-800;
+    color: white;
     &:hover {
-      background-color: $slate-800;
-      color: white;
+      background-color: $slate-600;
     }
   }
 
@@ -61,4 +63,16 @@
     width: 2rem;
     height: 2rem;
   }
+}
+
+.shadow-md {
+  box-shadow: 0 4px 3px rgb(0 0 0 / 0.07), 0 2px 2px rgb(0 0 0 / 0.06);
+}
+
+.elevation-5 {
+  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 5px 8px rgba(0, 0, 0, 0.141), 0 1px 14px rgba(0, 0, 0, 0.122);
+}
+
+.elevation-2 {
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.141), 0 1px 3px rgba(0, 0, 0, 0.122);
 }

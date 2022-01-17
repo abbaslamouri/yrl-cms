@@ -29,7 +29,7 @@ const handleSignout = async () => {
 
 <template>
   <div class="profile-dropdown">
-    <div class="header flex" v-bind:class="{ selected: showAuthDropdown }">
+    <div class="header" v-bind:class="{ selected: showAuthDropdown }">
       <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
       </svg>
@@ -66,6 +66,9 @@ const handleSignout = async () => {
   font-size: 1.25rem;
 
   .header {
+    display:flex;
+    align-items: center;
+    gap:1rem;
     position: relative;
     z-index: 99;
     font-size: 1.2rem;

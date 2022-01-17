@@ -10,7 +10,7 @@ const navLinks = ref([
       { name: 'admin-products', title: 'Products', icon: 'IconsCartFill' },
       { name: 'admin-products-categories', title: 'Categories', icon: 'IconsClipboard' },
       { name: 'admin-products-attributes', title: 'Attributes', icon: 'IconsIdentification' },
-      { name: 'admin-products-coupons', title: 'IconsCoupons', icon: 'IconsCartFill' },
+      { name: 'admin-products-coupons', title: 'Coupons', icon: 'IconsCartFill' },
     ],
     open: false,
   },
@@ -30,7 +30,6 @@ const navLinks = ref([
 // const mobile = ref(false)
 // const sideNav = ref(true)
 // const showAdminNav = ref(false)
-const menuWidth = ref('auto');
 // // const windowWidth = ref(null)
 
 // const checkWindowWidth = () => {
@@ -50,7 +49,6 @@ const menuWidth = ref('auto');
 
 // const toggleSideNav = () => {
 // 	showAdminNav.value = !showAdminNav.value
-// 	// menuWidth.value = '10rem'
 // }
 
 // const logout = async () => {
@@ -66,42 +64,30 @@ const menuWidth = ref('auto');
 
 <template>
   <!-- <header> -->
-  <transition name="adminMenuSlide">
-    <ul class="admin-nav">
-      <li
-        v-for="item in navLinks"
-        :key="item.name"
-        class="border-b border-b-gray-100 hover:bg-slate-100 hover:text-gray-900 hover:border-slate-800 transition duration-200"
-      >
-        <NuxtLink
-          class="link flex gap-2 px-6 py-2"
-          :to="{ name: item.subMenu ? `${item.name}` : 'admin' }"
-          @click="item.open = !item.open"
-        >
-          <component :is="item.icon" class="w-[16px] h-[16px]"></component>
-          <p>{{ item.title }}</p>
-        </NuxtLink>
-        <div v-if="item.subMenu && item.open === true">
-          <ul class="admin-sub-menu bg-slate-800 text-slate-200">
-            <li
-              v-for="subItem in item.subMenu"
-              :key="subItem.name"
-              class="text-xs border-y pl-4 hover:bg-slate-100 hover:text-gray-900 hover:border-slate-800 transition duration-200"
-            >
-              <NuxtLink class="link flex gap-2 px-6 py-2" :to="{ name: subItem.name }">
-                <component :is="subItem.icon" class="w-[16px] h-[16px]"></component>
-                <p>{{ subItem.title }}</p>
-              </NuxtLink>
-            </li>
-          </ul>
-        </div>
-        <!-- <a v-else href="#" class="link flex gap-2 px-6 py-2">
+  <!-- <transition name="admin-menu-slide"> -->
+  <ul class="admin-menu">
+    <li v-for="item in navLinks" :key="item.name" class="">
+      <NuxtLink :to="{ name: item.subMenu ? `${item.name}` : 'admin' }" @click="item.open = !item.open">
+        <component :is="item.icon"></component>
+        <p>{{ item.title }}</p>
+      </NuxtLink>
+      <div v-if="item.subMenu && item.open === true">
+        <ul class="admin-sub-menu">
+          <li v-for="subItem in item.subMenu" :key="subItem.name">
+            <NuxtLink :to="{ name: subItem.name }">
+              <component :is="subItem.icon"></component>
+              <p>{{ subItem.title }}</p>
+            </NuxtLink>
+          </li>
+        </ul>
+      </div>
+      <!-- <a v-else href="#" class="link flex gap-2 px-6 py-2">
           <component :is="item.icon" class="w-[16px] h-[16px]"></component>
           <p>{{ item.title }}</p>
         </a> -->
-      </li>
-    </ul>
-  </transition>
+    </li>
+  </ul>
+  <!-- </transition> -->
 
   <!-- <NuxtLink class="link" :to="{ name: 'admin' }"> <IconsHomeFill /><span>Dashboard</span> </NuxtLink>
       <NuxtLink class="link" :to="{ name: 'admin-media' }"><IconsFolderFill /><span>Media</span></NuxtLink>
@@ -134,17 +120,48 @@ const menuWidth = ref('auto');
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
 .admin-menu {
+  font-size: 1.3rem;
+  width: 100%;
+  li {
+    border-top: 1px solid $slate-400;
+    transition: all 0.2s ease;
+    // border-b border-b-gray-100 hover:bg-slate-100 hover:text-gray-900 hover:border-slate-800 transition duration-200
+    a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
+      width: 100%;
+      text-transform: uppercase;
+
+      &:hover {
+        background-color: $slate-200;
+        color: $slate-800;
+      }
+
+      svg {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+
+      // link flex gap-2 px-6 py-2
+    }
+  }
   .admin-sub-menu {
+    font-size: 1.1rem;
+    padding-left: 1rem;
+    // bg-slate-800 text-slate-200
     li {
       &:last-child {
-        border: none;
+        border-bottom: 1px solid $slate-400;
       }
     }
   }
   //   border: 1px red solid;
   //   padding: 2rem 0;
-  //   // width: v-bind(menuWidth);
   //   color: #fff;
 
   //   // width: 70%;

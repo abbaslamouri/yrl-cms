@@ -2,7 +2,21 @@ import { defineNuxtConfig } from 'nuxt3';
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
+  // modules: ['@nuxtjs/axios'],
+
   buildModules: ['@pinia/nuxt'],
+
+  // modules: ['@nuxtjs/axios'],
+
+  // axios: {
+  //   baseURL: 'http://localhost:3000/api',
+  //   proxyHeaders: false,
+  // },
+
+  // axios: {
+  //   baseURL: 'http://localhost:3000/api',
+  //   proxyHeaders: false,
+  // },
 
   css: [
     '@/assets/scss/main.scss',

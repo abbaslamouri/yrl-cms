@@ -4,7 +4,6 @@ import { useAuth } from '~/pinia/useAuth';
 // const cart = useCart()
 const auth = useAuth();
 
-
 const showAuthForm = ref(false);
 
 const user = reactive({
@@ -39,7 +38,7 @@ const handleSignup = async () => {
 
 <template>
   <div class="login-dropdown">
-    <div class="header flex" v-bind:class="{ selected: showAuthForm }" @click="showAuthForm = !showAuthForm">
+    <div class="header" v-bind:class="{ selected: showAuthForm }" @click="showAuthForm = !showAuthForm">
       <svg xmlns="http://www.w3.org/2000/svg" class="" viewBox="0 0 20 20" fill="currentColor">
         <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
       </svg>
@@ -86,6 +85,9 @@ const handleSignup = async () => {
   position: relative;
 
   .header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
     position: relative;
     z-index: 99;
     font-size: 1.2rem;
