@@ -172,94 +172,62 @@ export default {
 </script>
 
 <template>
-  <div class="product-detail py-4 px-4 space-y-4 bg-slate-100 text-slate-500 text-sm">
+  <div class="product-details">
     <!-- <pre class="text-sm">{{ prodState.selectedItem }}</pre> -->
     <!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
-    <!-- <div>
-      <NuxtLink class="flex gap-1 items-center" :to="{ name: 'admin-products' }">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-        </svg>
-        <span class="">Products</span>
-      </NuxtLink>
-      <h2 class="text-2xl text-slate-800">Edit Product</h2>
-      <div class="flex gap-4">
-        <div class="w-1/5 shadow-lg bg-white rounded py-4 px-2">
-          <nav>
-            <ul>
-              <li
-                class="hover:bg-slate-100 px-2 py-1 rounded transition duration-200"
-                v-for="navItem in nav"
-                :key="navItem"
-              >
-                <a :href="`#${navItem.key}`">{{ navItem.title }}</a>
-              </li>
-            </ul>
-          </nav>
-        </div>
-        <div class="flex-1 border shadow-lg bg-white rounded py-4 px-4">
-          <div>
-            <header class="mb-4">Details</header>
-            <div class="space-y-4">
-              <FormsBaseInput label="Name" />
-              <div class="flex gap-4 items-center">
-                <FormsBaseInput label="SKU" />
-                <div class="border border-gray-300 py-2 px-4 rounded-md">
-                  <SwitchGroup>
-                    <div class="flex items-center">
-                      <SwitchLabel class="mr-4">Manage Inventory</SwitchLabel>
-                      <Switch
-                        v-model="prodState.selectedItem.manageInventory"
-                        :class="prodState.selectedItem.manageInventory ? 'bg-slate-900' : 'bg-slate-700'"
-                        class="relative inline-flex items-center h-6 rounded-full w-11"
-                      >
-                        <transition
-                          enter-active-class="transition duration-1000 ease-in-out"
-                          leave-active-class="transition duration-1000 ease-in-out"
-                        >
-                          <span
-                            :class="prodState.selectedItem.manageInventory ? 'translate-x-6' : 'translate-x-1'"
-                            class="inline-block w-4 h-4 transform bg-white rounded-full"
-                          />
-                        </transition>
-                      </Switch>
-                    </div>
-                  </SwitchGroup>
-                </div>
-              </div>
-              <FormsBaseInput label="Description" />
-            </div>
+    <NuxtLink class="link" :to="{ name: 'admin-products' }">
+      <IconsArrowWest />
+      <span>Products</span>
+    </NuxtLink>
+    <h3 class="header">Edit Product</h3>
+    <div class="columns">
+      <div class="left shadow-md">
+        <ul>
+          <li v-for="navItem in nav" :key="navItem">
+            <a :href="`#${navItem.key}`">{{ navItem.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="center shadow-md">
+        <header>Details</header>
+        <div class="info">
+          <FormsBaseInput label="Name" />
+          <div class="sku-inventory">
+            <FormsBaseInput label="SKU" />
+            <FormsBaseCheckbox v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
+            <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
           </div>
+          <FormsBaseInput label="Description" />
         </div>
-        <div class="w-1/4 border shadow-lg bg-white rounded py-4 px-4">
-          <div class="space-y-4">
-            <button class="btn btn-primary w-full">Save Changes</button>
-            <div class="">
-              <SwitchGroup>
-                <div class="flex items-center">
-                  <SwitchLabel class="mr-4">Active</SwitchLabel>
-                  <Switch
-                    v-model="prodState.selectedItem.manageInventory"
-                    :class="prodState.selectedItem.manageInventory ? 'bg-slate-900' : 'bg-slate-700'"
-                    class="relative inline-flex items-center h-6 rounded-full w-11"
+      </div>
+      <div class="right shadow-md w-1/4 border shadow-lg bg-white rounded py-4 px-4">
+        <div class="space-y-4">
+          <button class="btn btn-primary w-full">Save Changes</button>
+          <div class="">
+            <!-- <SwitchGroup>
+              <div class="flex items-center">
+                <SwitchLabel class="mr-4">Active</SwitchLabel>
+                <Switch
+                  v-model="prodState.selectedItem.manageInventory"
+                  :class="prodState.selectedItem.manageInventory ? 'bg-slate-900' : 'bg-slate-700'"
+                  class="relative inline-flex items-center h-6 rounded-full w-11"
+                >
+                  <transition
+                    enter-active-class="transition duration-1000 ease-in-out"
+                    leave-active-class="transition duration-1000 ease-in-out"
                   >
-                    <transition
-                      enter-active-class="transition duration-1000 ease-in-out"
-                      leave-active-class="transition duration-1000 ease-in-out"
-                    >
-                      <span
-                        :class="prodState.selectedItem.manageInventory ? 'translate-x-6' : 'translate-x-1'"
-                        class="inline-block w-4 h-4 transform bg-white rounded-full"
-                      />
-                    </transition>
-                  </Switch>
-                </div>
-              </SwitchGroup>
-            </div>
+                    <span
+                      :class="prodState.selectedItem.manageInventory ? 'translate-x-6' : 'translate-x-1'"
+                      class="inline-block w-4 h-4 transform bg-white rounded-full"
+                    />
+                  </transition>
+                </Switch>
+              </div>
+            </SwitchGroup> -->
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- <div class="product-data flex mt-6">
       <ProductsAdminSidebar :productDataTabs="productDataTabs" @tabSelected="handleSelectTab" />
@@ -319,309 +287,379 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-// .product-details {
-//   display: flex;
-//   flex-direction: column;
-//   gap: 2rem;
-//   padding: 2rem;
-//   background-color: rgba(225, 245, 254, 0.3);
+@import '@/assets/scss/variables';
 
-//   &__header {
-//     font-size: 120%;
-//   }
+.product-details {
+  background-color: $slate-100;
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  // py-4 px-4 space-y-4 bg-slate-100 text-slate-500 text-sm
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
 
-//   &__columns {
-//     display: grid;
-//     grid-template-columns: 20rem 1fr 20rem;
-//     gap: 2rem;
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
 
-//     &-left {
-//       // border: 1px solid red;
-//       grid-column: 1 / 2;
-//       background-color: #fff;
+  .columns {
+    display: grid;
+    grid-template-columns: 12rem 1fr 20rem;
+    gap: 2rem;
+    align-items: flex-start;
 
-//       ul {
-//         li {
-//           border-bottom: 1px solid #ddd;
-//           padding: 1rem;
-//           cursor: pointer;
-//           color: #42a5f5;
-//         }
-//       }
-//     }
+    .left {
+      background-color: white;
+      border: 1px solid $slate-100;
+      border-radius: 3px;
+      padding: 2rem 0.5rem;
+      // w-1/5 shadow-lg bg-white rounded py-4 px-2
 
-//     &-middle {
-//       border: 1px solid red;
-//       grid-column: 2 / 3;
+      ul {
+        li {
+          padding: 0.5rem 1rem;
+          transition: all 0.3s ease;
+          border-radius: 2px;
+          &:hover {
+            background-color: $slate-200;
+          }
 
-//       .attributes {
-//         .attribute {
-//           .content {
-//             .row {
-//               display: flex;
-//               gap: 2rem;
-//               .values {
-//                 flex: 1;
-//                 border: 1px solid red;
-//                 .options {
-//                   display: flex;
-//                   gap: 1rem;
+          // hover:bg-slate-100 px-2 py-1 rounded transition duration-200
+        }
+      }
+    }
 
-//                   .option {
-//                     display: flex;
-//                     gap: 1rem;
-//                     background-color: #ddd;
-//                     padding: 0.5rem;
+    .center {
+      background-color: white;
+      border-radius: 5px;
+      padding: 2rem 2rem;
 
-//                     .remove {
-//                       color: #fff;
-//                       background-color: #ccc;
-//                       cursor: pointer;
-//                     }
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
+      header {
+        margin-bottom: 2rem;
+      }
 
-//       .variants {
-//         // .actions {
-//         // }
+      .info {
+        display: flex;
+        flex-direction: column;
+        gap:1rem;
+        .sku-inventory {
+          display:flex;
+          align-items: center;
+          justify-content: space-between;
+          gap:2rem;
+        }
+      }
+      // flex-1 border shadow-lg bg-white rounded py-4 px-4
+    }
+  }
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 2rem;
+  //   padding: 2rem;
+  //   background-color: rgba(225, 245, 254, 0.3);
 
-//         .content {
-//           .variant {
-//             border: 1px solid teal;
-//             background-color: #fff;
+  //   &__header {
+  //     font-size: 120%;
+  //   }
 
-//             .header {
-//               display: flex;
-//               gap: 2rem;
-//               padding: 1rem;
-//             }
-//             .content {
-//               .row {
-//                 display: flex;
-//                 justify-content: space-between;
-//                 align-items: center;
-//                 gap: 4rem;
-//                 padding: 2rem;
+  //   &__columns {
+  //     display: grid;
+  //     grid-template-columns: 20rem 1fr 20rem;
+  //     gap: 2rem;
 
-//                 .image {
-//                   width: 7rem;
-//                   height: 7rem;
-//                   overflow: hidden;
-//                   border: 1px solid red;
+  //     &-left {
+  //       // border: 1px solid red;
+  //       grid-column: 1 / 2;
+  //       background-color: #fff;
 
-//                   img {
-//                     width: 100%;
-//                     height: 100%;
-//                     object-fit: contain;
-//                   }
-//                 }
+  //       ul {
+  //         li {
+  //           border-bottom: 1px solid #ddd;
+  //           padding: 1rem;
+  //           cursor: pointer;
+  //           color: #42a5f5;
+  //         }
+  //       }
+  //     }
 
-//                 .flex1 {
-//                   flex: 1;
+  //     &-middle {
+  //       border: 1px solid red;
+  //       grid-column: 2 / 3;
 
-//                   &.multiple {
-//                     display: flex;
-//                   }
-//                 }
-//               }
-//             }
-//           }
-//         }
-//       }
-//     }
+  //       .attributes {
+  //         .attribute {
+  //           .content {
+  //             .row {
+  //               display: flex;
+  //               gap: 2rem;
+  //               .values {
+  //                 flex: 1;
+  //                 border: 1px solid red;
+  //                 .options {
+  //                   display: flex;
+  //                   gap: 1rem;
 
-//     &-right {
-//       border: 1px solid red;
+  //                   .option {
+  //                     display: flex;
+  //                     gap: 1rem;
+  //                     background-color: #ddd;
+  //                     padding: 0.5rem;
 
-//       grid-column: 3 / 4;
-//     }
-//   }
+  //                     .remove {
+  //                       color: #fff;
+  //                       background-color: #ccc;
+  //                       cursor: pointer;
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
 
-//   form {
-//     .info {
-//       display: grid;
-//       grid-template-columns: 1fr 1fr;
-//       gap: 2rem;
-//       .media {
-//         grid-column: 1 / 2;
-//         display: flex;
-//         flex-direction: column;
-//         gap: 2rem;
+  //       .variants {
+  //         // .actions {
+  //         // }
 
-//         .featured-image {
-//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  //         .content {
+  //           .variant {
+  //             border: 1px solid teal;
+  //             background-color: #fff;
 
-//           img {
-//             width: 100%;
-//             object-fit: cover;
-//           }
-//         }
+  //             .header {
+  //               display: flex;
+  //               gap: 2rem;
+  //               padding: 1rem;
+  //             }
+  //             .content {
+  //               .row {
+  //                 display: flex;
+  //                 justify-content: space-between;
+  //                 align-items: center;
+  //                 gap: 4rem;
+  //                 padding: 2rem;
 
-//         .gallery {
-//           .images {
-//             // border: 1px solid red;
-//             display: flex;
-//             gap: 2rem;
-//             // justify-content: center;
-//             align-items: center;
-//             .thumb {
-//               border: 1px solid #ddd;
-//               padding: 0.2rem;
-//               position: relative;
-//               width: 10rem;
-//               height: 10rem;
+  //                 .image {
+  //                   width: 7rem;
+  //                   height: 7rem;
+  //                   overflow: hidden;
+  //                   border: 1px solid red;
 
-//               img {
-//                 height: 100%;
-//                 width: 100%;
-//                 object-fit: cover;
-//               }
+  //                   img {
+  //                     width: 100%;
+  //                     height: 100%;
+  //                     object-fit: contain;
+  //                   }
+  //                 }
 
-//               .badge {
-//                 display: flex;
-//                 justify-content: center;
-//                 align-items: center;
-//                 position: absolute;
-//                 top: 0;
-//                 right: 0;
-//                 transform: translate(1rem, -1rem);
-//                 border-radius: 50%;
-//                 background-color: red;
-//                 color: #fff;
-//                 width: 2rem;
-//                 height: 2rem;
-//                 cursor: pointer;
-//               }
-//             }
-//           }
-//         }
-//       }
+  //                 .flex1 {
+  //                   flex: 1;
 
-//       .details {
-//         grid-column: 2 / 3;
-//         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-//         // padding: 1rem;
+  //                   &.multiple {
+  //                     display: flex;
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
 
-//         .title {
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           font-size: 2rem;
-//           background-color: #b3e5fc;
-//           padding: 1rem;
-//         }
+  //     &-right {
+  //       border: 1px solid red;
 
-//         .average-rating {
-//           display: flex;
-//           justify-content: center;
-//           align-items: center;
-//           padding: 1rem;
-//         }
+  //       grid-column: 3 / 4;
+  //     }
+  //   }
 
-//         // ul {
-//         //   li {
-//         //     // display: flex;
-//         //     // justify-content: space-between;
-//         //     // border-bottom: 1px solid #ddd;
-//         //     // padding: 1rem;
+  //   form {
+  //     .info {
+  //       display: grid;
+  //       grid-template-columns: 1fr 1fr;
+  //       gap: 2rem;
+  //       .media {
+  //         grid-column: 1 / 2;
+  //         display: flex;
+  //         flex-direction: column;
+  //         gap: 2rem;
 
-//         //     // &.price {
-//         //     //   border-top: 1px solid #ddd;
-//         //     // }
-//         //   }
-//         // }
+  //         .featured-image {
+  //           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
-//         .actions {
-//           display: flex;
-//           justify-content: space-between;
-//           align-items: center;
-//           padding: 1rem;
+  //           img {
+  //             width: 100%;
+  //             object-fit: cover;
+  //           }
+  //         }
 
-//           .btn {
-//             display: flex;
-//             flex-direction: column;
-//             justify-content: space-between;
-//             align-items: center;
-//             font-size: 1rem;
-//             background-color: transparent;
-//           }
-//         }
-//       }
-//     }
+  //         .gallery {
+  //           .images {
+  //             // border: 1px solid red;
+  //             display: flex;
+  //             gap: 2rem;
+  //             // justify-content: center;
+  //             align-items: center;
+  //             .thumb {
+  //               border: 1px solid #ddd;
+  //               padding: 0.2rem;
+  //               position: relative;
+  //               width: 10rem;
+  //               height: 10rem;
 
-//     form {
-//       // .gallery {
-//       //   .images {
-//       //     // border: 1px solid red;
-//       //     display: flex;
-//       //     gap: 1rem;
-//       //     // justify-content: center;
-//       //     align-items: center;
-//       //     .image {
-//       //       // border: 1px solid red;
-//       //       position: relative;
-//       //       width: 10rem;
-//       //       height: 10rem;
+  //               img {
+  //                 height: 100%;
+  //                 width: 100%;
+  //                 object-fit: cover;
+  //               }
 
-//       //       img {
-//       //         height: 100%;
-//       //         width: 100%;
-//       //         object-fit: cover;
-//       //       }
+  //               .badge {
+  //                 display: flex;
+  //                 justify-content: center;
+  //                 align-items: center;
+  //                 position: absolute;
+  //                 top: 0;
+  //                 right: 0;
+  //                 transform: translate(1rem, -1rem);
+  //                 border-radius: 50%;
+  //                 background-color: red;
+  //                 color: #fff;
+  //                 width: 2rem;
+  //                 height: 2rem;
+  //                 cursor: pointer;
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
 
-//       //       .badge {
-//       //         display: flex;
-//       //         justify-content: center;
-//       //         align-items: center;
-//       //         position: absolute;
-//       //         top: 0;
-//       //         right: 0;
-//       //         transform: translate(1rem, -1rem);
-//       //         border-radius: 50%;
-//       //         background-color: red;
-//       //         color: #fff;
-//       //         width: 2rem;
-//       //         height: 2rem;
-//       //         cursor: pointer;
-//       //       }
-//       //     }
-//       //   }
-//       // }
+  //       .details {
+  //         grid-column: 2 / 3;
+  //         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  //         // padding: 1rem;
 
-//       .featured-image {
-//         .image {
-//           border: 1px solid red;
+  //         .title {
+  //           display: flex;
+  //           justify-content: center;
+  //           align-items: center;
+  //           font-size: 2rem;
+  //           background-color: #b3e5fc;
+  //           padding: 1rem;
+  //         }
 
-//           width: 20rem;
-//           height: 20rem;
-//           img {
-//             height: 100%;
-//             width: 100%;
-//             object-fit: cover;
-//           }
-//         }
-//       }
-//     }
-//   }
+  //         .average-rating {
+  //           display: flex;
+  //           justify-content: center;
+  //           align-items: center;
+  //           padding: 1rem;
+  //         }
 
-//   .media-selector {
-//     position: fixed;
-//     top: 0;
-//     left: 0;
-//     background-color: rgba(0, 0, 0, 0.8);
-//     width: 100vw;
-//     height: 100vh;
-//     padding: 1rem;
-//   }
+  //         // ul {
+  //         //   li {
+  //         //     // display: flex;
+  //         //     // justify-content: space-between;
+  //         //     // border-bottom: 1px solid #ddd;
+  //         //     // padding: 1rem;
 
-//   // .slide-enter-active,
-//   // .slide-leave-active {
-//   //   transition: all 0.5s ease-in-out;
-//   // }
-// }
+  //         //     // &.price {
+  //         //     //   border-top: 1px solid #ddd;
+  //         //     // }
+  //         //   }
+  //         // }
+
+  //         .actions {
+  //           display: flex;
+  //           justify-content: space-between;
+  //           align-items: center;
+  //           padding: 1rem;
+
+  //           .btn {
+  //             display: flex;
+  //             flex-direction: column;
+  //             justify-content: space-between;
+  //             align-items: center;
+  //             font-size: 1rem;
+  //             background-color: transparent;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     form {
+  //       // .gallery {
+  //       //   .images {
+  //       //     // border: 1px solid red;
+  //       //     display: flex;
+  //       //     gap: 1rem;
+  //       //     // justify-content: center;
+  //       //     align-items: center;
+  //       //     .image {
+  //       //       // border: 1px solid red;
+  //       //       position: relative;
+  //       //       width: 10rem;
+  //       //       height: 10rem;
+
+  //       //       img {
+  //       //         height: 100%;
+  //       //         width: 100%;
+  //       //         object-fit: cover;
+  //       //       }
+
+  //       //       .badge {
+  //       //         display: flex;
+  //       //         justify-content: center;
+  //       //         align-items: center;
+  //       //         position: absolute;
+  //       //         top: 0;
+  //       //         right: 0;
+  //       //         transform: translate(1rem, -1rem);
+  //       //         border-radius: 50%;
+  //       //         background-color: red;
+  //       //         color: #fff;
+  //       //         width: 2rem;
+  //       //         height: 2rem;
+  //       //         cursor: pointer;
+  //       //       }
+  //       //     }
+  //       //   }
+  //       // }
+
+  //       .featured-image {
+  //         .image {
+  //           border: 1px solid red;
+
+  //           width: 20rem;
+  //           height: 20rem;
+  //           img {
+  //             height: 100%;
+  //             width: 100%;
+  //             object-fit: cover;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   .media-selector {
+  //     position: fixed;
+  //     top: 0;
+  //     left: 0;
+  //     background-color: rgba(0, 0, 0, 0.8);
+  //     width: 100vw;
+  //     height: 100vh;
+  //     padding: 1rem;
+  //   }
+
+  //   // .slide-enter-active,
+  //   // .slide-leave-active {
+  //   //   transition: all 0.5s ease-in-out;
+  //   // }
+}
 </style>

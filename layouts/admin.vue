@@ -171,15 +171,17 @@ const toggleAdminSidebar = () => {
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(-100%);
+  opacity: 0;
 }
 
 .slide-enter-to,
 .slide-leave-from {
   transform: translateX(0);
+  opacity: 1;
 }
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 1s ease;
+  transition: all 0.2s ease;
 }
 </style>

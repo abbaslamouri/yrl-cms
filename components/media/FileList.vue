@@ -9,6 +9,7 @@
 // const uploadState = ref('');
 
 import { useError } from '~/pinia/useError';
+defineEmits(['itemUploadedError']);
 
 const appError = useError();
 
@@ -26,6 +27,7 @@ const showRemoveCheckMark = ref(false);
 const fileRefs = ref([]);
 
 const uploadItems = computed(() => props.itemsToUpload);
+// const error = computed(() => errorMsg.value);
 // const files = computed(() => mediaState.items);
 
 const addSelected = (file) => {
@@ -88,6 +90,11 @@ const hideRemoveButton = (index) => {
   fileRefs.value[index].classList.add('hidden', 'flex');
 };
 
+const handleMediaUploadError = (event) => {
+  console.log('EVENT', event);
+  // appError.setSnackbar(true, event, 'Error', 0);
+};
+
 // onUpdated(() => {
 //   console.log(mediaState.items);
 // });
@@ -98,34 +105,40 @@ const hideRemoveButton = (index) => {
     <pre class="text-xs">
     <!-- {{ mediaState.items }}===={{ mediaState.totalItemCount }} -->
     </pre>
-    <div v-for="(file, index) in mediaState.items" class="item shadow-md">
-      <MediaFileCard
-        :item="file"
-        :key="file._id"
-        :class="{ selected: mediaState.selectedItems.find((m) => m._id == file._id) }"
-        @click.exact="addSelected(file)"
-      />
+    <transition nam="slide">
+      <div class="error" v-show="errorMsg" v-html="errorMsg"></div>
+    </transition>
+    <div class="main">
+      <div v-for="(file, index) in mediaState.items" class="item shadow-md">
+        <MediaFileCard
+          :item="file"
+          :key="file._id"
+          :class="{ selected: mediaState.selectedItems.find((m) => m._id == file._id) }"
+          @click.exact="addSelected(file)"
+          @itemUploadedError="errorMsg += $event"
+        />
 
-      <div
-        class="actions"
-        @mouseenter="showRemoveButton(index)"
-        @mouseleave="hideRemoveButton(index)"
-        v-show="mediaState.selectedItems.find((m) => m._id == file._id)"
-      >
-        <IconsSuccess class="action" v-show="mediaState.selectedItems.find((m) => m._id == file._id)" />
         <div
-          class="action hidden"
-          :ref="
-            (el) => {
-              fileRefs[index] = el;
-            }
-          "
-          @click.exact="
-            removeSelected(file);
-            fileRefs[index].classList.add('hidden');
-          "
+          class="actions"
+          @mouseenter="showRemoveButton(index)"
+          @mouseleave="hideRemoveButton(index)"
+          v-show="mediaState.selectedItems.find((m) => m._id == file._id)"
         >
-          <span>-</span>
+          <IconsSuccess class="action" v-show="mediaState.selectedItems.find((m) => m._id == file._id)" />
+          <div
+            class="action hidden"
+            :ref="
+              (el) => {
+                fileRefs[index] = el;
+              }
+            "
+            @click.exact="
+              removeSelected(file);
+              fileRefs[index].classList.add('hidden');
+            "
+          >
+            <span>-</span>
+          </div>
         </div>
       </div>
     </div>
@@ -135,74 +148,101 @@ const hideRemoveButton = (index) => {
 @import '@/assets/scss/variables';
 
 .media-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 3rem;
-  padding: 2rem 0;
+  .error {
+    background-color: $red-50;
+    padding: 2rem;
+    border-left: 5px solid $red-400;
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+    border-radius: 3px;
+  }
 
-  .item {
-    position: relative;
-    // border: 1px solid $slate-200;
-    // padding: .1rem;
+  .main {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
 
-    .selected {
-      outline: 4px solid $sky-600;
-    }
-
-    .actions {
+    .item {
       position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: absolute;
-      border: 1px solid $sky-400;
-      top: 0;
-      right: 0;
-      transform: translate(25%, -25%);
-      width: 25px;
-      height: 25px;
+      // border: 1px solid $slate-200;
+      // padding: .1rem;
 
-      svg {
-        width: 100%;
-        height: 100%;
-        fill: $sky-50;
+      .selected {
+        outline: 4px solid $sky-600;
       }
 
-      .action {
-        position: absolute;
+      .actions {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
-        cursor: pointer;
-        background-color: $sky-600;
-        width: 100%;
-        height: 100%;
-        color: $sky-50;
+        position: absolute;
+        border: 1px solid $sky-400;
+        top: 0;
+        right: 0;
+        transform: translate(25%, -25%);
+        width: 25px;
+        height: 25px;
 
-        border: 2px solid $sky-50;
-        outline: 2px solid $sky-600;
-
-        span {
-          // border: 1px solid red;
-          display: block;
-          font-size: 3rem;
+        svg {
+          width: 100%;
+          height: 100%;
+          fill: $sky-50;
         }
 
-        // border:1px solid red;
+        .action {
+          position: absolute;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          background-color: $sky-600;
+          width: 100%;
+          height: 100%;
+          color: $sky-50;
+
+          border: 2px solid $sky-50;
+          outline: 2px solid $sky-600;
+
+          span {
+            // border: 1px solid red;
+            display: block;
+            font-size: 3rem;
+          }
+
+          // border:1px solid red;
+        }
       }
-    }
 
-    .hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-    // absolute top-0 right-0 border border-blue-600 bg-blue-600 p-[3px] w-6 h-6 translate-x-1/4 -translate-y-1/4 outline-blue-600 outline-offset-1 outline-1 justify-center items-center hidden text-white text-2xl
+      .hidden {
+        opacity: 0;
+        visibility: hidden;
+      }
+      // absolute top-0 right-0 border border-blue-600 bg-blue-600 p-[3px] w-6 h-6 translate-x-1/4 -translate-y-1/4 outline-blue-600 outline-offset-1 outline-1 justify-center items-center hidden text-white text-2xl
 
-    // &.selected {
-    // border: 4px solid #0277bd;
-    // color: #fff;
-    // }
+      // &.selected {
+      // border: 4px solid #0277bd;
+      // color: #fff;
+      // }
+    }
   }
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateX(-100%);
+  opacity: 0;
+}
+
+.slide-enter-to,
+.slide-leave-from {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+  transition: all 1s ease;
 }
 </style>

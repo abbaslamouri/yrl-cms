@@ -28,7 +28,7 @@ const schema = new mongoose.Schema(
     },
     active: {
       type: Boolean,
-      default: True,
+      default: true,
     },
     featuredImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
     gallery: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Media' }],

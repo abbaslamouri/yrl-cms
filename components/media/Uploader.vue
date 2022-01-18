@@ -151,6 +151,7 @@ const setPage = (currentPage) => {
     }
 
     .content {
+      padding: 1rem;
     }
   }
 

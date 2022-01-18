@@ -9,6 +9,7 @@ const props = defineProps({
     required: true,
   },
 });
+const emit = defineEmits(['itemUploadedError']);
 
 const folderState = inject('folderState');
 const mediaState = inject('mediaState');
@@ -44,11 +45,12 @@ const upload = async () => {
     if (index !== -1) mediaState.items.splice(index, 1, response.data);
   } catch (err) {
     console.log('MyERROR', err);
-    const error = err.response.data.message || err.response.data.statusMessage;
+    // const error = err.response.data.message || err.response.data.statusMessage;
     // appError.setSnackbar(true, error, 'Error', 0);
-    // const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
-    // console.log(index);
-    // if (index !== -1) mediaState.items.splice(index, 1);
+    const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
+    console.log(index);
+    if (index !== -1) mediaState.items.splice(index, 1);
+    emit('itemUploadedError', `<p>${err.response.data.message || err.response.data.statusMessage}</p>`);
   }
 };
 

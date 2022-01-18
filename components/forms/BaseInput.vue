@@ -51,7 +51,7 @@ export default {
   color: $slate-600;
   font-size: 1.4rem;
   // margin-bottom: 2rem;
-  min-width: 100%;
+  // min-width: 100%;
 
   input {
     border: 1px solid $slate-300;

@@ -55,7 +55,7 @@ const deleteDoc = (Model) =>
     res.status(204).json(null);
   });
 
-const deleteMany = (Model) =>
+const deleteManyDocs = (Model) =>
   asyncHandler(async (req, res, next) => {
     console.log('herexxxxxxx');
     const doc = await Model.deleteMany(req.body);
@@ -153,7 +153,7 @@ const createSlug = asyncHandler(async (req, res, next) => {
 export {
   getAllDocs,
   deleteDoc,
-  deleteMany,
+  deleteManyDocs,
   deleteMedia,
   updateDoc,
   createDoc,
