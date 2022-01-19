@@ -8,21 +8,21 @@ defineProps({
     type: String,
     default: '',
   },
-})
-defineEmits(['update:modelValue'])
-const attrs = useAttrs()
+});
+defineEmits(['update:modelValue']);
+const attrs = useAttrs();
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-}
+};
 </script>
 
 <template>
   <div class="base-checkbox flex items-center gap-4">
     <input
-    class=""
+      class=""
       type="checkbox"
       :checked="modelValue"
       v-bind="$attrs"

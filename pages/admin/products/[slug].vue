@@ -1,5 +1,6 @@
 <script setup>
 import { useError } from '~/pinia/useError';
+import BaseCheckbox from '~~/components/forms/BaseCheckbox.vue';
 // import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const appError = useError();
@@ -173,7 +174,7 @@ export default {
 
 <template>
   <div class="product-details">
-    <!-- <pre class="text-sm">{{ prodState.selectedItem }}</pre> -->
+    <pre class="text-sm">{{ prodState.selectedItem }}</pre>
     <!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
     <NuxtLink class="link" :to="{ name: 'admin-products' }">
       <IconsArrowWest />
@@ -193,38 +194,47 @@ export default {
         <div class="info">
           <FormsBaseInput label="Name" />
           <div class="sku-inventory">
-            <FormsBaseInput label="SKU" />
-            <FormsBaseCheckbox v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
-            <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
+            <div class="sku">
+              <FormsBaseInput label="SKU" />
+            </div>
+            <div class="inventory">
+              <div class="available">
+                <h4 class="title">Available Stock:</h4>
+                <span>{{ prodState.selectedItem.stockQty || 0 }}</span>
+              </div>
+              <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
+            </div>
           </div>
           <FormsBaseInput label="Description" />
         </div>
       </div>
-      <div class="right shadow-md w-1/4 border shadow-lg bg-white rounded py-4 px-4">
-        <div class="space-y-4">
-          <button class="btn btn-primary w-full">Save Changes</button>
-          <div class="">
-            <!-- <SwitchGroup>
-              <div class="flex items-center">
-                <SwitchLabel class="mr-4">Active</SwitchLabel>
-                <Switch
-                  v-model="prodState.selectedItem.manageInventory"
-                  :class="prodState.selectedItem.manageInventory ? 'bg-slate-900' : 'bg-slate-700'"
-                  class="relative inline-flex items-center h-6 rounded-full w-11"
-                >
-                  <transition
-                    enter-active-class="transition duration-1000 ease-in-out"
-                    leave-active-class="transition duration-1000 ease-in-out"
-                  >
-                    <span
-                      :class="prodState.selectedItem.manageInventory ? 'translate-x-6' : 'translate-x-1'"
-                      class="inline-block w-4 h-4 transform bg-white rounded-full"
-                    />
-                  </transition>
-                </Switch>
-              </div>
-            </SwitchGroup> -->
+      <div class="right">
+        <div class="save-changes shadow-md">
+          <button class="btn btn-primary">Save Changes</button>
+          <FormsBaseToggle v-model="prodState.selectedItem.active" label="Active" />
+        </div>
+        <div class="categories shadow-md">
+          <header>Categories</header>
+          <div class="category-list">
+            <div class="select-multi">
+              <button class="select">
+                <input type="text" value="ewewrewrewrewr" readonly />
+                <label for=""> Select Categories </label>
+                <IconsChevronDown />
+              </button>
+              <ul class="option-box">
+                <li v-for="category in catState.items" :key="category._id">
+                  <label class="base-checkbox-multiple">
+                    <input type="checkbox" v-model="prodState.selectedItem.categories" :value="category._id" />
+                    <span>{{ category.name }}</span>
+                  </label>
+                </li>
+              </ul>
+            </div>
           </div>
+          <NuxtLink class="link" :to="{ name: 'admin-products-categories' }">
+            <span>Edit Categories</span>
+          </NuxtLink>
         </div>
       </div>
     </div>
@@ -289,6 +299,80 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 
+.option-box {
+  border: 1px solid orange;
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  // input {
+  //   background-color: $slate-800;
+  //   width: 2rem;
+  //   height: 2rem;
+  // }
+
+  .base-checkbox-multiple {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+
+    input {
+      opacity: 0;
+      width: 0;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      border: 1px solid $slate-300;
+      transition: 0.3s;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.select-multi {
+  border: 1px solid red;
+
+  .select {
+    display: grid;
+    grid-template-rows: 2fr;
+    grid-template-columns: 1fr 2rem;
+    gap: 1rem;
+    height: 4rem;
+    align-items: center;
+    padding: 0 1rem;
+    border: 1px solid teal;
+    width: 100%;
+    background-color: transparent;
+
+    label {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+    }
+
+    input {
+      grid-row: 1 / 2;
+      grid-column: 1 / 2;
+      width: 100%;
+      height: 100%;
+    }
+
+    svg {
+      grid-row: 1 / 2;
+      grid-column: 2 / 3;
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+}
+
 .product-details {
   background-color: $slate-100;
   min-height: 100vh;
@@ -310,7 +394,7 @@ export default {
 
   .columns {
     display: grid;
-    grid-template-columns: 12rem 1fr 20rem;
+    grid-template-columns: 12rem 1fr 25rem;
     gap: 2rem;
     align-items: flex-start;
 
@@ -340,23 +424,97 @@ export default {
       border-radius: 5px;
       padding: 2rem 2rem;
 
-      header {
-        margin-bottom: 2rem;
-      }
-
       .info {
         display: flex;
         flex-direction: column;
-        gap:1rem;
+        gap: 1rem;
         .sku-inventory {
-          display:flex;
+          display: flex;
           align-items: center;
           justify-content: space-between;
-          gap:2rem;
+          gap: 2rem;
+
+          .sku {
+            flex: 1;
+          }
+
+          .inventory {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+
+            .available {
+              display: flex;
+              align-items: center;
+              gap: 1rem;
+
+              .title {
+                font-weight: 600;
+              }
+            }
+          }
         }
       }
       // flex-1 border shadow-lg bg-white rounded py-4 px-4
     }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      .save-changes {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .btn {
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        }
+      }
+
+      .categories {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .category-list {
+          width: 100%;
+        }
+      }
+
+      // w-1/4 border shadow-lg bg-white rounded py-4 px-4
+    }
+  }
+
+  .link {
+    font-weight: 500;
+    color: $slate-400;
+
+    &:hover {
+      color: $slate-800;
+    }
+  }
+
+  header {
+    // .title {
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid $slate-200;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    font-weight: 500;
+    font-size: 1.4rem;
+    // }
   }
   //   display: flex;
   //   flex-direction: column;

@@ -1,48 +1,55 @@
 <script setup>
-const { state, actions } = useFactory('categories')
+const { state, actions } = useFactory('categories');
 
 // populate categories
-state.query.populate = 'parent'
-await actions.fetchAll()
+state.query.populate = 'parent';
+await actions.fetchAll();
 
 const handleDelete = (item) => {
-  if (!confirm('Are you sure?')) return
-  state.selectedItem = item
-  actions.deleteItem()
-}
+  if (!confirm('Are you sure?')) return;
+  state.selectedItem = item;
+  actions.deleteItem();
+};
 
 const handleSearch = async () => {
-  await actions.fetchAll()
-}
+  await actions.fetchAll();
+};
 </script>
 
 <script>
 export default {
   layout: 'admin',
-}
+};
 </script>
 
 <template>
   <div class="categories">
-    {{ state.items }}
-    <!-- Add new category button -->
-    <NuxtLink class="link" :to="{ name: 'admin-products-categories-slug', params: { slug: ' ' } }">
-      <button class="btn">Add New</button>
-    </NuxtLink>
-
-    <!-- Search input field -->
-    <Search v-model="state.query.keyword" @handleSubmit="handleSearch" />
-
-    <!-- Category list -->
-    <div class="list" v-for="item in state.items" :key="item.slug">
-      <div class="name">Name: {{ item.name }}</div>
-      <div v-if="item.parent" class="parent">Parent: {{ item.parent.name }}</div>
-      <div class="actions">
-        <NuxtLink class="link" :to="{ name: 'admin-products-categories-slug', params: { slug: item.slug } }">
-          <button class="btn edit"><IconsEditFill /></button>
-        </NuxtLink>
-        <button class="btn delete" @click="handleDelete(item)"><IconsDeleteFill /></button>
+    <div v-if="state.items.length" class="list">
+      <NuxtLink class="link" :to="{ name: 'admin-products-categories-slug', params: { slug: ' ' } }">
+        <button class="btn">Add New</button>
+      </NuxtLink>
+      <Search v-model="state.query.keyword" @handleSubmit="handleSearch" />
+      <div class="list" v-for="item in state.items" :key="item.slug">
+        <div class="name">Name: {{ item.name }}</div>
+        <div v-if="item.parent" class="parent">Parent: {{ item.parent.name }}</div>
+        <div class="actions">
+          <NuxtLink class="link" :to="{ name: 'admin-products-categories-slug', params: { slug: item.slug } }">
+            <button class="btn edit"><IconsEditFill /></button>
+          </NuxtLink>
+          <button class="btn delete" @click="handleDelete(item)"><IconsDeleteFill /></button>
+        </div>
       </div>
+    </div>
+
+    <div v-else class="no-products">
+      <h3 class="">Add categories and sub-categories</h3>
+      <div class="">Create product categories and sub-categories with images and descriptions.</div>
+      <NuxtLink class="link" :to="{ name: 'admin-products-categories-slug', params: { slug: ' ' } }">
+        <button class="btn btn-primary">
+          <IconsPlus />
+          <span>Add</span>
+        </button>
+      </NuxtLink>
     </div>
   </div>
 </template>
