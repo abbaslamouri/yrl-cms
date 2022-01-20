@@ -148,6 +148,8 @@ const handleMediaUploadError = (event) => {
 @import '@/assets/scss/variables';
 
 .media-list {
+  padding: 0 0 3rem 0;
+
   .error {
     background-color: $red-50;
     padding: 2rem;

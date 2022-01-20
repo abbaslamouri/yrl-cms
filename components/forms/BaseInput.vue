@@ -38,7 +38,10 @@ export default {
       :aria-required="typeof $attrs.required != undefined ? true : null"
     />
     <label :for="`base-input-${uuid}`" v-if="label">
-      {{ label }}
+      <span>
+        {{ label }}
+      </span>
+      <span v-if="inputRef.required">(required)</span>
     </label>
   </div>
 </template>

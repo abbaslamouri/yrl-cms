@@ -90,12 +90,16 @@ const setPage = (currentPage) => {
       </div>
     </div>
     <div class="media-select-actions">
-      <button class="btn" @click="$emit('mediaSelected', mediaState.selectedItems)" v-if="route.name !== 'admin-media'">
+      <button
+        class="btn btn-primary"
+        @click="$emit('mediaSelected', mediaState.selectedItems)"
+        v-if="route.name !== 'admin-media'"
+      >
         Selct
       </button>
       <button
         v-if="route.name !== 'admin-media'"
-        class="btn cancel"
+        class="btn btn-secondary cancel"
         @click="$emit('mediaSelectCancel', mediaState.selectedItems)"
       >
         Cancel
@@ -152,6 +156,18 @@ const setPage = (currentPage) => {
 
     .content {
       padding: 1rem;
+    }
+  }
+
+  .media-select-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    padding: 0 4rem;
+
+    .btn {
+      font-size: 1.4rem;
+      padding: 1rem 2rem;
     }
   }
 
