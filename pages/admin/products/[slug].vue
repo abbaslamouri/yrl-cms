@@ -210,16 +210,25 @@ const save = async () => {
 // )
 
 const handleDragstart = (event, index) => {
-  // console.log(event);
+  console.log('DD', event.target);
   pickIndex.value = index;
   console.log(pickIndex.value);
-  // draggableElements.value[index].classList.add('dragging');
+  // draggableElements.value[index].classList.remove('hovered');
+  event.target.closest('.thumb').classList.remove('hovered');
+
+
+
   // event.dataTransfer.dropEffect = 'move'
   // event.dataTransfer.effectAllowed = 'move'
   // event.dataTransfer.setData('imageId', image._id)
 };
 
 const handleDragend = (event, index) => {
+  for (const prop in draggableElements.value) {
+    console.log(draggableElements.value[prop].closest('.thumb'));
+    draggableElements.value[prop].closest('.thumb').classList.remove('hovered');
+  }
+  // event.target.closest('.thumb').classList.remove('hovered');
   // console.log(event);
   // console.log(index);
   // draggableElements.value[index].classList.remove('dragging');
@@ -228,8 +237,30 @@ const handleDragend = (event, index) => {
   // event.dataTransfer.setData('imageId', image._id)
 };
 
-const handleDragover = (event) => {
+const handleDragover = (event, index) => {
+  // console.log('EE', event.target);
   event.target.closest('.thumb').classList.add('over');
+  // console.log(pickIndex.value, index);
+
+  // event.target.closest('.thumb').classList.add('dragged');
+
+  // const pickedElement = prodState.selectedItem.gallery[pickIndex.value];
+  // const droppedElement = prodState.selectedItem.gallery[index];
+  // // console.log(pickedElement, droppedElement);
+
+  // prodState.selectedItem.gallery[pickIndex.value] = droppedElement;
+  // prodState.selectedItem.gallery[index] = pickedElement;
+
+  // const pickedElement = prodState.selectedItem.gallery[pickIndex.value];
+  // const droppedElement = prodState.selectedItem.gallery[index];
+  // // console.log(pickedElement, droppedElement);
+  // prodState.selectedItem.gallery[index] = [...prodState.selectedItem.gallery][pickIndex.value];
+
+  // prodState.selectedItem.gallery[pickIndex.value] = [...prodState.selectedItem.gallery][index];
+
+  // prodState.selectedItem.gallery[pickIndex.value] = droppedElement;
+  // prodState.selectedItem.gallery[index] = pickedElement;
+  // draggableElements.value[pickIndex.value].closest('.thumb').classList.remove('hovered');
 
   // const imageId = event.dataTransfer.getData('imageId')
   // const image = prodState.selectedItem.gallery.find((i) => i._id == imageId)
@@ -255,28 +286,41 @@ const handleDragleave = (event) => {
   // console.log(imageId, image);
 };
 const handleDrop = (event, index) => {
-  console.log(event.target);
-  dropIndex.value = index;
-  console.log(pickIndex.value, dropIndex.value);
-  console.log(draggableElements.value);
+  // console.log('KKKK', event.target.closest('.thumb'));
+  // dropIndex.value = index;
+  // console.log(pickIndex.value, dropIndex.value);
+
   const pickedElement = prodState.selectedItem.gallery[pickIndex.value];
-  const droppedElement = prodState.selectedItem.gallery[dropIndex.value];
-  console.log(pickedElement, droppedElement);
+  const droppedElement = prodState.selectedItem.gallery[index];
+  // console.log(pickedElement, droppedElement);
 
   prodState.selectedItem.gallery[pickIndex.value] = droppedElement;
-  prodState.selectedItem.gallery[dropIndex.value] = pickedElement;
+  prodState.selectedItem.gallery[index] = pickedElement;
+
+  // const xx = draggableElements.value[pickIndex.value].closest('.thumb');
+  // console.log('DDDD', xx);
+  // console.log('DDDDXXX', xx.classList);
 
   event.target.closest('.thumb').classList.remove('over');
+  // prodState.selectedItem.gallery[dropIndex.value] = [...prodState.selectedItem.gallery][index];
+
+  // prodState.selectedItem.gallery[pickIndex.value] = prodState.selectedItem.gallery[index];
+  // prodState.selectedItem.gallery[index] = prodState.selectedItem.gallery[pickIndex.value];
+  // event.target.closest('.thumb').classList.remove('hovered');
+  // draggableElements.value[pickIndex.value].closest('.thumb').classList.remove('hovered');
+  // draggableElements.value[index].classList.
+  // event.target.closest('.thumb').classList.remove('hovered');
+  // console.log(document.querySelector('.hovered'));
 
   // draggableElements.value[pickIndex.value] = droppedElement;
   // console.log(draggableElements.value);
 
-  // draggableElements.value[dropIndex.value] = pickedElement;
+  // draggableElements.value[index] = pickedElement;
 
   // draggableElements.value.splice(pickIndex.value, 1);
-  // draggableElements.value.splice(dropIndex.value, 0, pickedElement);
+  // draggableElements.value.splice(index, 0, pickedElement);
 
-  // draggableElements.value.splice(dropIndex.value, 1);
+  // draggableElements.value.splice(index, 1);
   // draggableElements.value.splice(pickIndex.value, 0, droppedElement);
 
   // const imageId = event.dataTransfer.getData('imageId');
@@ -337,14 +381,16 @@ export default {
           <div class="image-gallery">
             <div class="thumbs container">
               <div
-                class="thumb relative"
+                class="thumb shadow-md relative"
                 v-for="(image, index) in prodState.selectedItem.gallery"
                 :key="image._id"
-                @dragover="handleDragover($event)"
+                @dragover="handleDragover($event, index)"
                 @drop="handleDrop($event, index)"
-                @dragenter="handleDragenter($event)"
-                @dragleave="handleDragleave($event)"
+                @dragenter="handleDragenter($event, index)"
+                @dragleave="handleDragleave($event, index)"
                 @dragover.prevent
+                @mouseenter="$event.target.classList.add('hovered')"
+                @mouseleave="$event.target.classList.remove('hovered')"
               >
                 <div
                   class="draggable"
@@ -354,10 +400,12 @@ export default {
                   @dragstart="handleDragstart($event, index)"
                   @dragend="handleDragend($event, index)"
                 >
-                  <img :src="image.path" :alt="`${image.name} Photo`" />
+                  <img :src="image.path" :alt="`${image.name} Photo`" draggable="false" />
                   <span class="delete" @click.prevent="removeGalleryImage(image._id)"><IconsDeleteFill /></span>
-                  <span class="move" @click.prevent="removeGalleryImage(image._id)"><IconsMove /></span>
+                  <span class="move"><IconsMove /></span>
                 </div>
+                <span class="index">{{ index + 1 }}</span>
+                <div class="tooltip">{{ image.name }}</div>
               </div>
             </div>
             <button
@@ -458,6 +506,11 @@ export default {
 
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
+
+.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
 
 // .select-multi {
 // 	border: 1px solid red;
@@ -597,11 +650,11 @@ export default {
         padding: 2rem 2rem;
 
         .image-gallery {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          gap: 3rem;
+          // display: flex;
+          // flex-direction: column;
+          // justify-content: center;
+          // align-items: center;
+          // gap: 3rem;
 
           .thumbs {
             // display: flex;
@@ -613,69 +666,112 @@ export default {
             grid-template-columns: repeat(4, 1fr);
             gap: 2rem;
             padding: 2rem;
-            border: 1px solid red;
+            // border: 1px solid teal;
             min-height: 20px;
 
             .thumb {
-              cursor: pointer;
+              position: relative;
               border: 1px solid red;
+              padding: 1rem;
+
+              cursor: pointer;
+              // border: 1px solid$slate-200;
+              border-radius: 5px;
               width: 12rem;
               height: 12rem;
 
-              &:first-child {
-                opacity: 0.3;
-                grid-column: 1 / 3;
-                grid-row: 1 / 3;
-                width: 100%;
-                height: 100%;
+              .index {
+                position: absolute;
+                top: 2%;
+                left: 2%;
+                transform: translate(-50%, -50%);
+                background-color: $slate-600;
+                width: 1.5rem;
+                height: 1.5rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: $slate-50;
+                border-radius: 50%;
+                font-size: x-small;
               }
 
-              // &:first-child {
-              //   width: 24rem;
-              //   height: 24rem;
-              // }
-              .draggable {
-                position: relative;
-                // width: 12rem;
-                // height: 12rem;
-                border: 1px solid red;
+              .tooltip {
+                position: absolute;
+                top: -1.5rem;
+                left: 50%;
+                transform: translate(-50%, -100%);
+                background-color: $slate-600;
+                display: grid;
+                grid-template-columns: minmax(max-content, 40rem);
 
-                // &.first {
-                //   width: 24rem;
-                //   height: 24rem;
-                // }
-                // overflow: hidden;
+                // max-width: 400px;
+                // width: 40rem;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 5px;
+                font-weight: 500;
+                // width: 100%;
+                // height: 100%;
+                visibility: hidden;
 
-                // display: flex;
-                // flex-direction: column;
-                // align-items: center;
-
-                &.over {
-                  opacity: 0.3;
-                  border: 5px solid green;
+                &::after {
+                  content: '';
+                  position: absolute;
+                  top: 100%;
+                  left: 50%;
+                  margin-left: -5px;
+                  border-width: 5px;
+                  border-style: solid;
+                  border-color: $slate-600 transparent transparent transparent;
                 }
+              }
 
-                &.dragging {
-                  opacity: 0.1;
-                }
-
-                // background-color: red;
-
-                // inline-block border border-blue-600 w-40 h-40 cursor-pointer
+              &.hovered {
+                background-color: $slate-400;
 
                 img {
-                  position:absolute;
-                  inset:0;
+                  opacity: 0.5;
+                }
+
+                .tooltip {
+                  visibility: visible;
+                }
+
+                // &:hover {
+                .draggable {
+                  .delete,
+                  .move {
+                    opacity: 1;
+                  }
+                }
+                // }
+              }
+
+              &.over {
+                opacity: 0.3;
+                border: 2px dashed $slate-600;
+              }
+
+              .draggable {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                // border: 1px solid green;
+                img {
                   width: 100%;
-                  // height: 100%;
-                  object-fit: fill;
+                  height: 100%;
                 }
 
                 .delete {
                   position: absolute;
-                  top: 0;
-                  right: 0;
-                  // absolute top-0 right-0 w-10 h-10 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full flex justify-center items-start text-white
+                  top: 1rem;
+                  right: 1rem;
+                  opacity: 0;
+
+                  svg {
+                    fill: $slate-50;
+                  }
                 }
 
                 .move {
@@ -683,6 +779,24 @@ export default {
                   top: 50%;
                   left: 50%;
                   transform: translate(-50%, -50%);
+                  opacity: 0;
+
+                  svg {
+                    fill: $slate-50;
+                  }
+                }
+              }
+
+              &:first-child {
+                grid-column: 1 / 3;
+                grid-row: 1 / 3;
+
+                width: 100%;
+                height: 100%;
+
+                &.dragged {
+                  width: 12rem;
+                  height: 12rem;
                 }
               }
             }

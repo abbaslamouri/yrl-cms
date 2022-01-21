@@ -25,6 +25,7 @@ export default {
 
 <template>
   <div class="baseInput">
+    <div class="currency">$</div>
     <input
       ref="inputRef"
       :placeholder="label"
@@ -56,9 +57,16 @@ export default {
   // margin-bottom: 2rem;
   // min-width: 100%;
 
+  .currency{
+    position:absolute;
+    top:1.5rem;
+    left:.75rem;
+
+  }
+
   input {
     border: 1px solid $slate-300;
-    padding: 1.5rem 0.75rem 1rem 0.75rem;
+    padding: 1.5rem 0.75rem 1rem 1.5rem;
     min-width: 100%;
 
     // z-index: 9;
