@@ -1,358 +1,405 @@
 <script setup>
-	import { useError } from '~/pinia/useError'
-	// import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
+import { useError } from '~/pinia/useError';
+// import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
-	const appError = useError()
-	const router = useRouter()
-	const route = useRoute()
+const appError = useError();
+const router = useRouter();
+const route = useRoute();
 
-	// const enabled = ref(false);
+// const enabled = ref(false);
 
-	// Import products, categories, attributes, atterbute terms and variants state and actions
-	const { state: prodState, actions: prodActions } = useFactory('products')
-	const { state: catState, actions: catActions } = useFactory('categories')
-	const { state: attState, actions: attActions } = useFactory('attributes')
-	const { state: attTermsState, actions: attTermsActions } = useFactory('attributeterms')
-	const { state: variantState, actions: variantActions } = useFactory('variants')
+// Import products, categories, attributes, atterbute terms and variants state and actions
+const { state: prodState, actions: prodActions } = useFactory('products');
+const { state: catState, actions: catActions } = useFactory('categories');
+const { state: attState, actions: attActions } = useFactory('attributes');
+const { state: attTermsState, actions: attTermsActions } = useFactory('attributeterms');
+const { state: variantState, actions: variantActions } = useFactory('variants');
 
-	const showMediaSelector = ref(false) // media selector toggler
-	const mediaReference = ref({}) // sets which media to update once a selection is made
-	const draggableElements = ref([])
-	const galleryContainer = ref(null)
+const showMediaSelector = ref(false); // media selector toggler
+const mediaReference = ref({}); // sets which media to update once a selection is made
+const draggableElements = ref([]);
+const galleryContainer = ref(null);
 
-	const dragging = ref(false)
-	const productDataTabs = ref([
-		{ key: 'general', title: 'General', open: true },
-		{ key: 'attributes', title: 'Attribute', open: false },
-		{ key: 'variants', title: 'Variants', open: false },
-	])
+const pickIndex = ref(null);
+const dropIndex = ref(null);
 
-	const nav = ref([
-		{ key: 'details', title: 'Details', open: true },
-		{ key: 'price', title: 'Price', open: false },
-		{ key: 'variants', title: 'Variants', open: false },
-	])
+const dragging = ref(false);
+const productDataTabs = ref([
+  { key: 'general', title: 'General', open: true },
+  { key: 'attributes', title: 'Attribute', open: false },
+  { key: 'variants', title: 'Variants', open: false },
+]);
 
-	provide('prodState', prodState)
-	provide('catState', catState)
-	provide('attState', attState)
-	provide('attTermsState', attTermsState)
-	provide('showMediaSelector', showMediaSelector.value)
+const nav = ref([
+  { key: 'details', title: 'Details', open: true },
+  { key: 'price', title: 'Price', open: false },
+  { key: 'variants', title: 'Variants', open: false },
+]);
 
-	// onMounted(() => {
-	// 	console.log(galleryContainer.value)
-	// 	console.log(draggableElements.value)
+provide('prodState', prodState);
+provide('catState', catState);
+provide('attState', attState);
+provide('attTermsState', attTermsState);
+provide('showMediaSelector', showMediaSelector.value);
 
-	// 	const draggables = document.querySelector('.draggable')
+// onMounted(() => {
+// 	console.log(galleryContainer.value)
+// 	console.log(draggableElements.value)
 
-	// 	draggables.forEach((el) => {
-	// 		el.addEventlistener('dragstart', () => {
-	// 			console.log('DRAG')
-	// 		})
-	// 	})
+// 	const draggables = document.querySelector('.draggable')
 
-	// 	// draggableElements.value.forEach((el) => {
-	// 	// 	el.addEventlistener('dragstart', () => {
-	// 	// 		console.log('DRAG')
-	// 	// 	})
-	// 	// })
-	// })
+// 	draggables.forEach((el) => {
+// 		el.addEventlistener('dragstart', () => {
+// 			console.log('DRAG')
+// 		})
+// 	})
 
-	// Set product filters
-	prodState.query.slug = route.params.slug
-	prodState.query.populate =
-		'featuredImage gallery categories attributes attributes.item attributes.terms attributes.defaultTerm'
+// 	// draggableElements.value.forEach((el) => {
+// 	// 	el.addEventlistener('dragstart', () => {
+// 	// 		console.log('DRAG')
+// 	// 	})
+// 	// })
+// })
 
-	// fetch product, categories, attributes and attribute terms
-	await Promise.all([prodActions.fetchAll(), catActions.fetchAll(), attActions.fetchAll(), attTermsActions.fetchAll()])
+// Set product filters
+prodState.query.slug = route.params.slug;
+prodState.query.populate =
+  'featuredImage gallery categories attributes attributes.item attributes.terms attributes.defaultTerm';
 
-	// Set selected product (create or edit)
-	prodState.selectedItem = prodState.items.length
-		? prodState.items[0]
-		: {
-				// name: 'Hello',
-				type: 'simple',
-				attributes: [],
-				categories: [],
-				gallery: [],
-				taxStatus: 'none',
-				taxClass: 'standard',
-				allowBcakOrder: 'notify',
-		  }
+// fetch product, categories, attributes and attribute terms
+await Promise.all([prodActions.fetchAll(), catActions.fetchAll(), attActions.fetchAll(), attTermsActions.fetchAll()]);
 
-	// Fetch product variants if any
-	variantState.query.populate = 'attrTerms featuredImage'
-	variantState.query.product = prodState.selectedItem._id
-	if (variantState.query.product) await variantActions.fetchAll()
+// Set selected product (create or edit)
+prodState.selectedItem = prodState.items.length
+  ? prodState.items[0]
+  : {
+      // name: 'Hello',
+      type: 'simple',
+      attributes: [],
+      categories: [],
+      gallery: [],
+      taxStatus: 'none',
+      taxClass: 'standard',
+      allowBcakOrder: 'notify',
+    };
 
-	prodState.selectedItem.variants = variantState.items || []
-	// prodState.selectedItem.attributes = variantState.items || []
+// Fetch product variants if any
+variantState.query.populate = 'attrTerms featuredImage';
+variantState.query.product = prodState.selectedItem._id;
+if (variantState.query.product) await variantActions.fetchAll();
 
-	if (prodState.selectedItem._id) {
-	}
+prodState.selectedItem.variants = variantState.items || [];
+// prodState.selectedItem.attributes = variantState.items || []
 
-	const handleCancel = async () => {
-		router.push({ name: 'admin-products' })
-	}
+if (prodState.selectedItem._id) {
+}
 
-	const handleMediaSelectorClick = (payload) => {
-		showMediaSelector.value = true
-		console.log(payload)
-		mediaReference.value = payload
-	}
+const handleCancel = async () => {
+  router.push({ name: 'admin-products' });
+};
 
-	const processSelectedMedia = (media) => {
-		console.log('media', media)
-		console.log('reference', mediaReference.value)
-		showMediaSelector.value = false
-		media = media.filter((el) => el.mimetype.includes('image'))
-		if (mediaReference.value.image === 'variant')
-			prodState.selectedItem.variants[mediaReference.value.index].featuredImage = media[0]
+const handleMediaSelectorClick = (payload) => {
+  showMediaSelector.value = true;
+  console.log(payload);
+  mediaReference.value = payload;
+};
 
-		if (mediaReference.value.image === 'featuredImage') prodState.selectedItem.featuredImage = media[0]
+const processSelectedMedia = (media) => {
+  console.log('media', media);
+  console.log('reference', mediaReference.value);
+  showMediaSelector.value = false;
+  media = media.filter((el) => el.mimetype.includes('image'));
+  if (mediaReference.value.image === 'variant')
+    prodState.selectedItem.variants[mediaReference.value.index].featuredImage = media[0];
 
-		if (mediaReference.value.image === 'gallery')
-			for (const prop in media) {
-				// console.log('kkkkkk', prop, media[prop])
-				const index = prodState.selectedItem.gallery.findIndex((el) => el._id === media[prop]._id)
-				// console.log('index', index)
-				if (index === -1) prodState.selectedItem.gallery.push(media[prop])
-			}
-	}
+  if (mediaReference.value.image === 'featuredImage') prodState.selectedItem.featuredImage = media[0];
 
-	const handleSelectTab = (tabKey) => {
-		// console.log(tabKey)
-		for (const prop in productDataTabs.value) {
-			// console.log(prop, productDataTabs.value[prop])
-			if (productDataTabs.value[prop].key == tabKey) productDataTabs.value[prop].open = true
-			else productDataTabs.value[prop].open = false
-		}
-	}
+  if (mediaReference.value.image === 'gallery')
+    for (const prop in media) {
+      // console.log('kkkkkk', prop, media[prop])
+      const index = prodState.selectedItem.gallery.findIndex((el) => el._id === media[prop]._id);
+      // console.log('index', index)
+      if (index === -1) prodState.selectedItem.gallery.push(media[prop]);
+    }
+};
 
-	const save = async () => {
-		if (
-			prodState.selectedItem.type === 'variable' &&
-			(!prodState.selectedItem.variants || !prodState.selectedItem.variants.length)
-		) {
-			appError.setSnackbar(
-				true,
-				`Variable products must have at least one variant.  Please add variants or change product type to "simple"`,
-				'error',
-				5
-			)
-			return
-		}
+const handleSelectTab = (tabKey) => {
+  // console.log(tabKey)
+  for (const prop in productDataTabs.value) {
+    // console.log(prop, productDataTabs.value[prop])
+    if (productDataTabs.value[prop].key == tabKey) productDataTabs.value[prop].open = true;
+    else productDataTabs.value[prop].open = false;
+  }
+};
 
-		if (!prodState.selectedItem.customSlug) prodState.selectedItem.customSlug = prodState.selectedItem.slug
-		prodState.selectedItem.categories = prodState.selectedItem.categories.map((el) => el._id)
-		prodState.selectedItem.gallery = prodState.selectedItem.gallery.map((el) => el._id)
-		prodState.selectedItem.attributes = prodState.selectedItem.attributes.map((el) => {
-			return {
-				defaultTerm: el.defaultTerm._id,
-				item: el.item._id,
-				terms: el.terms && el.terms.length ? el.terms.map((t) => t._id) : [],
-			}
-		})
+const save = async () => {
+  if (
+    prodState.selectedItem.type === 'variable' &&
+    (!prodState.selectedItem.variants || !prodState.selectedItem.variants.length)
+  ) {
+    appError.setSnackbar(
+      true,
+      `Variable products must have at least one variant.  Please add variants or change product type to "simple"`,
+      'error',
+      5
+    );
+    return;
+  }
 
-		let i = 0
-		while (i < prodState.selectedItem.variants.length) {
-			prodState.selectedItem.variants[i].attrTerms = prodState.selectedItem.variants[i].attrTerms.map((el) => el._id)
-			if (prodState.selectedItem.variants[i].featuredImage)
-				prodState.selectedItem.variants[i].featuredImage = prodState.selectedItem.variants[i].featuredImage._id
-			i++
-		}
+  if (!prodState.selectedItem.customSlug) prodState.selectedItem.customSlug = prodState.selectedItem.slug;
+  prodState.selectedItem.categories = prodState.selectedItem.categories.map((el) => el._id);
+  prodState.selectedItem.gallery = prodState.selectedItem.gallery.map((el) => el._id);
+  prodState.selectedItem.attributes = prodState.selectedItem.attributes.map((el) => {
+    return {
+      defaultTerm: el.defaultTerm._id,
+      item: el.item._id,
+      terms: el.terms && el.terms.length ? el.terms.map((t) => t._id) : [],
+    };
+  });
 
-		console.log('PRD', prodState.selectedItem)
-		const product = await prodActions.saveItem()
-		if (!prodState.errorMsg) {
-			// delete existing variants
-			await variantActions.deleteMany({ product: product._id })
-			if (!variantState.errorMsg) {
-				// save new variants
-				variantState.selectedItems = prodState.selectedItem.variants
-			}
-			// variantState.selectedItem = prodState.selectedItem.variants
-			// console.log('VAR', variantState.selectedItem)
-			i = 0
-			// console.log(variantState.selectedItem.length)
-			while (i < variantState.selectedItems.length) {
-				// console.log('PI', product._id)
-				variantState.selectedItems[i].product = product._id
-				// console.log('I', variantState.selectedItem[i])
+  let i = 0;
+  while (i < prodState.selectedItem.variants.length) {
+    prodState.selectedItem.variants[i].attrTerms = prodState.selectedItem.variants[i].attrTerms.map((el) => el._id);
+    if (prodState.selectedItem.variants[i].featuredImage)
+      prodState.selectedItem.variants[i].featuredImage = prodState.selectedItem.variants[i].featuredImage._id;
+    i++;
+  }
 
-				i++
-			}
-			console.log(await variantActions.saveMany())
-			if (!variantState.errorMsg) router.push({ name: 'admin-products' })
-		}
-	}
+  console.log('PRD', prodState.selectedItem);
+  const product = await prodActions.saveItem();
+  if (!prodState.errorMsg) {
+    // delete existing variants
+    await variantActions.deleteMany({ product: product._id });
+    if (!variantState.errorMsg) {
+      // save new variants
+      variantState.selectedItems = prodState.selectedItem.variants;
+    }
+    // variantState.selectedItem = prodState.selectedItem.variants
+    // console.log('VAR', variantState.selectedItem)
+    i = 0;
+    // console.log(variantState.selectedItem.length)
+    while (i < variantState.selectedItems.length) {
+      // console.log('PI', product._id)
+      variantState.selectedItems[i].product = product._id;
+      // console.log('I', variantState.selectedItem[i])
 
-	// watch(
-	// 	() => draggableElements.value,
-	// 	(currentValue, oldValue) => {
-	// 		console.log('CYR', currentValue)
-	// 		console.log('OLD', oldValue)
+      i++;
+    }
+    console.log(await variantActions.saveMany());
+    if (!variantState.errorMsg) router.push({ name: 'admin-products' });
+  }
+};
 
-	// 		const draggables = document.querySelector('.draggable')
-	// 		console.log('LLLL', draggableElements.value)
+// watch(
+// 	() => draggableElements.value,
+// 	(currentValue, oldValue) => {
+// 		console.log('CYR', currentValue)
+// 		console.log('OLD', oldValue)
 
-	// 		// draggableElements.value.forEach((el) => {
-	// 		// 	console.log('EL', el)
-	// 		// 	el.addEventlistener('dragstart', () => {
-	// 		// 		console.log('DRAG')
-	// 		// 	})
-	// 		// })
-	// 	},
-	// 	{ deep: true, immediate: true }
-	// )
+// 		const draggables = document.querySelector('.draggable')
+// 		console.log('LLLL', draggableElements.value)
 
-	const handleDragstart = (event, index) => {
-		console.log(event)
-		console.log(index)
-		draggableElements.value[index].classList.add('dragging')
-		// event.dataTransfer.dropEffect = 'move'
-		// event.dataTransfer.effectAllowed = 'move'
-		// event.dataTransfer.setData('imageId', image._id)
-	}
+// 		// draggableElements.value.forEach((el) => {
+// 		// 	console.log('EL', el)
+// 		// 	el.addEventlistener('dragstart', () => {
+// 		// 		console.log('DRAG')
+// 		// 	})
+// 		// })
+// 	},
+// 	{ deep: true, immediate: true }
+// )
 
-	const handleDragend = (event, index) => {
-		console.log(event)
-		console.log(index)
-		draggableElements.value[index].classList.remove('dragging')
-		// event.dataTransfer.dropEffect = 'move'
-		// event.dataTransfer.effectAllowed = 'move'
-		// event.dataTransfer.setData('imageId', image._id)
-	}
+const handleDragstart = (event, index) => {
+  // console.log(event);
+  pickIndex.value = index;
+  console.log(pickIndex.value);
+  // draggableElements.value[index].classList.add('dragging');
+  // event.dataTransfer.dropEffect = 'move'
+  // event.dataTransfer.effectAllowed = 'move'
+  // event.dataTransfer.setData('imageId', image._id)
+};
 
-	const handleDragover = (event) => {
-		// const imageId = event.dataTransfer.getData('imageId')
-		// const image = prodState.selectedItem.gallery.find((i) => i._id == imageId)
-		// const container = document.querySelector('.container')
-		const afterelement = draggableElements.value.filter((el) => !el.classList.contains('dragging'))
-		console.log(event)
-		console.log('AA', draggableElements.value, afterelement)
+const handleDragend = (event, index) => {
+  // console.log(event);
+  // console.log(index);
+  // draggableElements.value[index].classList.remove('dragging');
+  // event.dataTransfer.dropEffect = 'move'
+  // event.dataTransfer.effectAllowed = 'move'
+  // event.dataTransfer.setData('imageId', image._id)
+};
 
-		// const afterElement = getDRagAfterElement()
-	}
+const handleDragover = (event) => {
+  event.target.closest('.thumb').classList.add('over');
 
-	const handleDrop = (event) => {
-		const imageId = event.dataTransfer.getData('imageId')
-		const image = prodState.selectedItem.gallery.find((i) => i._id == imageId)
-		console.log(imageId, image)
-	}
+  // const imageId = event.dataTransfer.getData('imageId')
+  // const image = prodState.selectedItem.gallery.find((i) => i._id == imageId)
+  // const container = document.querySelector('.container')
+  // const afterelement = draggableElements.value.filter((el) => !el.classList.contains('dragging'));
+  // console.log(event);
+  // console.log('AA', draggableElements.value, afterelement);
+  // const afterElement = getDRagAfterElement()
+};
+
+const handleDragenter = (event) => {
+  // event.target.closest('.thumb').classList.add('over');
+  // console.log(event.target);
+  // const imageId = event.dataTransfer.getData('imageId');
+  // const image = prodState.selectedItem.gallery.find((i) => i._id == imageId);
+  // console.log(imageId, image);
+};
+
+const handleDragleave = (event) => {
+  event.target.closest('.thumb').classList.remove('over');
+  // const imageId = event.dataTransfer.getData('imageId');
+  // const image = prodState.selectedItem.gallery.find((i) => i._id == imageId);
+  // console.log(imageId, image);
+};
+const handleDrop = (event, index) => {
+  console.log(event.target);
+  dropIndex.value = index;
+  console.log(pickIndex.value, dropIndex.value);
+  console.log(draggableElements.value);
+  const pickedElement = prodState.selectedItem.gallery[pickIndex.value];
+  const droppedElement = prodState.selectedItem.gallery[dropIndex.value];
+  console.log(pickedElement, droppedElement);
+
+  prodState.selectedItem.gallery[pickIndex.value] = droppedElement;
+  prodState.selectedItem.gallery[dropIndex.value] = pickedElement;
+
+  event.target.closest('.thumb').classList.remove('over');
+
+  // draggableElements.value[pickIndex.value] = droppedElement;
+  // console.log(draggableElements.value);
+
+  // draggableElements.value[dropIndex.value] = pickedElement;
+
+  // draggableElements.value.splice(pickIndex.value, 1);
+  // draggableElements.value.splice(dropIndex.value, 0, pickedElement);
+
+  // draggableElements.value.splice(dropIndex.value, 1);
+  // draggableElements.value.splice(pickIndex.value, 0, droppedElement);
+
+  // const imageId = event.dataTransfer.getData('imageId');
+  // const image = prodState.selectedItem.gallery.find((i) => i._id == imageId);
+  // console.log(imageId, image);
+};
 </script>
 
 <script>
-	export default {
-		layout: 'admin',
-	}
+export default {
+  layout: 'admin',
+};
 </script>
 
 <template>
-	<div class="product-details">
-		<!-- <pre class="text-sm">{{ prodState.selectedItem }}</pre> -->
-		<!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
-		<NuxtLink class="link" :to="{ name: 'admin-products' }">
-			<IconsArrowWest />
-			<span>Products</span>
-		</NuxtLink>
-		<h3 class="header">Edit Product</h3>
-		<div class="columns">
-			<div class="left shadow-md">
-				<ul>
-					<li v-for="navItem in nav" :key="navItem">
-						<a :href="`#${navItem.key}`">{{ navItem.title }}</a>
-					</li>
-				</ul>
-			</div>
-			<div class="center">
-				<div class="details shadow-md">
-					<header>Details</header>
-					<div class="info">
-						<FormsBaseInput label="Name" required v-model="prodState.selectedItem.name" />
-						<div class="sku-inventory">
-							<div class="sku">
-								<FormsBaseInput label="SKU" v-model="prodState.selectedItem.sku" />
-							</div>
-							<div class="inventory">
-								<div class="available">
-									<h4 class="title">Available Stock:</h4>
-									<span>{{ prodState.selectedItem.stockQty || 0 }}</span>
-								</div>
-								<FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
-							</div>
-						</div>
-						<FormsBaseInput label="Description" v-model="prodState.selectedItem.description" />
-					</div>
-				</div>
-				<div class="price shadow-md">
-					<header>Price</header>
-					<FormsBaseInput label="Price" required v-model="prodState.selectedItem.price" />
-				</div>
-				<div class="images shadow-md">
-					<header>Images</header>
-					<div class="image-gallery">
-						<div
-							class="thumbs container"
-							@dragover="handleDragover($event)"
-							@drop="handleDrop($event)"
-							@dragenter.prevent
-							@dragover.prevent
-						>
-							<div
-								class="thumb relative"
-								:ref="(el) => (draggableElements[index] = el)"
-								draggable="true"
-								v-for="(image, index) in prodState.selectedItem.gallery"
-								:key="image._id"
-								@dragstart="handleDragstart($event, index)"
-								@dragend="handleDragend($event, index)"
-							>
-								<img class="" :src="image.path" :alt="`${image.name} Photo`" />
-								<span class="delete" @click.prevent="removeGalleryImage(image._id)"><IconsDeleteFill /></span>
-								<span class="move" @click.prevent="removeGalleryImage(image._id)"><IconsMove /></span>
-							</div>
-						</div>
-						<button
-							class="btn btn-primary"
-							@click.prevent="handleMediaSelectorClick({ image: 'gallery', index: null })"
-						>
-							<IconsImage />
-							<span> Select Images </span>
-						</button>
-					</div>
-					<div class="media-selector" v-if="showMediaSelector">
-						<MediaUploader @mediaSelected="processSelectedMedia" @mediaSelectCancel="showMediaSelector = false" />
-					</div>
-				</div>
-			</div>
+  <div class="product-details">
+    <!-- <pre class="text-sm">{{ prodState.selectedItem }}</pre> -->
+    <!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
+    <NuxtLink class="link" :to="{ name: 'admin-products' }">
+      <IconsArrowWest />
+      <span>Products</span>
+    </NuxtLink>
+    <h3 class="header">Edit Product</h3>
+    <div class="columns">
+      <div class="left shadow-md">
+        <ul>
+          <li v-for="navItem in nav" :key="navItem">
+            <a :href="`#${navItem.key}`">{{ navItem.title }}</a>
+          </li>
+        </ul>
+      </div>
+      <div class="center">
+        <div class="details shadow-md">
+          <header>Details</header>
+          <div class="info">
+            <FormsBaseInput label="Name" required v-model="prodState.selectedItem.name" />
+            <div class="sku-inventory">
+              <div class="sku">
+                <FormsBaseInput label="SKU" v-model="prodState.selectedItem.sku" />
+              </div>
+              <div class="inventory">
+                <div class="available">
+                  <h4 class="title">Available Stock:</h4>
+                  <span>{{ prodState.selectedItem.stockQty || 0 }}</span>
+                </div>
+                <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
+              </div>
+            </div>
+            <FormsBaseInput label="Description" v-model="prodState.selectedItem.description" />
+          </div>
+        </div>
+        <div class="price shadow-md">
+          <header>Price</header>
+          <FormsBaseInput label="Price" required v-model="prodState.selectedItem.price" />
+        </div>
+        <div class="images shadow-md">
+          <header>Images</header>
+          <div class="image-gallery">
+            <div class="thumbs container">
+              <div
+                class="thumb relative"
+                v-for="(image, index) in prodState.selectedItem.gallery"
+                :key="image._id"
+                @dragover="handleDragover($event)"
+                @drop="handleDrop($event, index)"
+                @dragenter="handleDragenter($event)"
+                @dragleave="handleDragleave($event)"
+                @dragover.prevent
+              >
+                <div
+                  class="draggable"
+                  :class="{ first: index == 0 }"
+                  :ref="(el) => (draggableElements[index] = el)"
+                  draggable="true"
+                  @dragstart="handleDragstart($event, index)"
+                  @dragend="handleDragend($event, index)"
+                >
+                  <img :src="image.path" :alt="`${image.name} Photo`" />
+                  <span class="delete" @click.prevent="removeGalleryImage(image._id)"><IconsDeleteFill /></span>
+                  <span class="move" @click.prevent="removeGalleryImage(image._id)"><IconsMove /></span>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-primary"
+              @click.prevent="handleMediaSelectorClick({ image: 'gallery', index: null })"
+            >
+              <IconsImage />
+              <span> Select Images </span>
+            </button>
+          </div>
+          <div class="media-selector" v-if="showMediaSelector">
+            <MediaUploader @mediaSelected="processSelectedMedia" @mediaSelectCancel="showMediaSelector = false" />
+          </div>
+        </div>
+      </div>
 
-			<div class="right">
-				<div class="save-changes shadow-md">
-					<button class="btn btn-primary">Save Changes</button>
-					<FormsBaseToggle v-model="prodState.selectedItem.active" label="Active" />
-				</div>
-				<div class="categories shadow-md">
-					<header>Categories</header>
-					<div class="category-list">
-						<FormsBaseSelectMultiple
-							v-model="prodState.selectedItem.categories"
-							label="Select Categories"
-							:options="
-								catState.items.map((c) => {
-									return { key: c._id, name: c.name }
-								})
-							"
-						/>
-					</div>
-					<NuxtLink class="link" :to="{ name: 'admin-products-categories' }">
-						<span>Edit Categories</span>
-					</NuxtLink>
-				</div>
-			</div>
-		</div>
+      <div class="right">
+        <div class="save-changes shadow-md">
+          <button class="btn btn-primary">Save Changes</button>
+          <FormsBaseToggle v-model="prodState.selectedItem.active" label="Active" />
+        </div>
+        <div class="categories shadow-md">
+          <header>Categories</header>
+          <div class="category-list">
+            <FormsBaseSelectMultiple
+              v-model="prodState.selectedItem.categories"
+              label="Select Categories"
+              :options="
+                catState.items.map((c) => {
+                  return { key: c._id, name: c.name };
+                })
+              "
+            />
+          </div>
+          <NuxtLink class="link" :to="{ name: 'admin-products-categories' }">
+            <span>Edit Categories</span>
+          </NuxtLink>
+        </div>
+      </div>
+    </div>
 
-		<!-- <div class="product-data flex mt-6">
+    <!-- <div class="product-data flex mt-6">
       <ProductsAdminSidebar :productDataTabs="productDataTabs" @tabSelected="handleSelectTab" />
       <div class="main border border-green-400">
         <div class="general" v-show="productDataTabs.filter((el) => el.key === 'general')[0].open == true">
@@ -406,588 +453,625 @@
         <MediaUploader @mediaSelected="processSelectedMedia" @mediaSelectCancel="showMediaSelector = false" />
       </div>
     </div> -->
-	</div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
-	@import '@/assets/scss/variables';
-
-	// .select-multi {
-	// 	border: 1px solid red;
-
-	// 	.select {
-	// 		display: grid;
-	// 		grid-template-rows: 2fr;
-	// 		grid-template-columns: 1fr 2rem;
-	// 		gap: 1rem;
-	// 		height: 4rem;
-	// 		align-items: center;
-	// 		padding: 0 1rem;
-	// 		border: 1px solid teal;
-	// 		width: 100%;
-	// 		background-color: transparent;
-
-	// 		label {
-	// 			grid-row: 1 / 2;
-	// 			grid-column: 1 / 2;
-	// 		}
-
-	// 		input {
-	// 			grid-row: 1 / 2;
-	// 			grid-column: 1 / 2;
-	// 			width: 100%;
-	// 			height: 100%;
-	// 		}
-
-	// 		svg {
-	// 			grid-row: 1 / 2;
-	// 			grid-column: 2 / 3;
-	// 			width: 2rem;
-	// 			height: 2rem;
-	// 		}
-	// 	}
-	// }
-
-	.product-details {
-		background-color: $slate-100;
-		min-height: 100vh;
-		padding: 2rem;
-		display: flex;
-		flex-direction: column;
-		gap: 2rem;
-		// py-4 px-4 space-y-4 bg-slate-100 text-slate-500 text-sm
-		.link {
-			display: flex;
-			align-items: center;
-			gap: 0.3rem;
-
-			svg {
-				width: 1.8rem;
-				height: 1.8rem;
-			}
-		}
-
-		.columns {
-			display: grid;
-			grid-template-columns: 12rem 1fr 25rem;
-			gap: 2rem;
-			align-items: flex-start;
-
-			.left {
-				background-color: white;
-				border: 1px solid $slate-100;
-				border-radius: 3px;
-				padding: 2rem 0.5rem;
-				// w-1/5 shadow-lg bg-white rounded py-4 px-2
-
-				ul {
-					li {
-						padding: 0.5rem 1rem;
-						transition: all 0.3s ease;
-						border-radius: 2px;
-						&:hover {
-							background-color: $slate-200;
-						}
-
-						// hover:bg-slate-100 px-2 py-1 rounded transition duration-200
-					}
-				}
-			}
-
-			.center {
-				display: flex;
-				flex-direction: column;
-				gap: 3rem;
-
-				.details {
-					background-color: white;
-					border-radius: 5px;
-					padding: 2rem 2rem;
-
-					.info {
-						display: flex;
-						flex-direction: column;
-						gap: 1rem;
-						.sku-inventory {
-							display: flex;
-							align-items: center;
-							justify-content: space-between;
-							gap: 2rem;
-
-							.sku {
-								flex: 1;
-							}
-
-							.inventory {
-								display: flex;
-								flex-direction: column;
-								gap: 0.5rem;
-								font-size: 1.3rem;
-
-								.available {
-									display: flex;
-									align-items: center;
-									gap: 1rem;
-
-									.title {
-										font-weight: 600;
-									}
-								}
-							}
-						}
-					}
-				}
-
-				.price {
-					background-color: white;
-					border-radius: 5px;
-					padding: 2rem 2rem;
-				}
-
-				.images {
-					background-color: white;
-					border-radius: 5px;
-					padding: 2rem 2rem;
-
-					.image-gallery {
-						display: flex;
-						flex-direction: column;
-						justify-content: center;
-						align-items: center;
-						gap: 3rem;
-
-						.thumbs {
-							display: flex;
-							align-items: center;
-							gap: 2rem;
-							padding: 2rem;
-							border: 1px solid red;
-							min-height: 20px;
-
-							.thumb {
-								position: relative;
-								display: flex;
-								flex-direction: column;
-								align-items: center;
-								cursor: pointer;
-								width: 12rem;
-								height: 12rem;
-								border: 1px solid red;
-
-								&.dragging {
-									opacity: 0.1;
-								}
-
-								// background-color: red;
-
-								// inline-block border border-blue-600 w-40 h-40 cursor-pointer
-
-								img {
-									width: 100%;
-									height: 100%;
-									object-fit: fill;
-								}
-
-								.delete {
-									position: absolute;
-									top: 0;
-									right: 0;
-									// absolute top-0 right-0 w-10 h-10 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full flex justify-center items-start text-white
-								}
-
-								.move {
-									position: absolute;
-									top: 50%;
-									left: 50%;
-									transform: translate(-50%, -50%);
-								}
-							}
-						}
-
-						.btn {
-							display: flex;
-							align-items: center;
-							gap: 1rem;
-							padding: 1rem 2rem;
-							background-color: $slate-200;
-							color: $slate-800;
-
-							svg {
-								fill: $slate-800;
-							}
-						}
-					}
-					.media-selector {
-						position: fixed;
-						inset: 0;
-						background-color: $slate-200;
-						z-index: 9999;
-						// fixed top-0 left-0 w-full bg-slate-600
-					}
-				}
-
-				header {
-					// .title {
-					margin-bottom: 2rem;
-					text-transform: uppercase;
-					border-bottom: 1px solid $slate-200;
-					padding-bottom: 0.5rem;
-					display: inline-block;
-					font-weight: 500;
-					font-size: 1.4rem;
-					// }
-				}
-				// flex-1 border shadow-lg bg-white rounded py-4 px-4
-			}
-
-			.right {
-				display: flex;
-				flex-direction: column;
-				gap: 2rem;
-
-				.save-changes {
-					display: flex;
-					flex-direction: column;
-					gap: 2rem;
-					background-color: white;
-					border-radius: 5px;
-					padding: 2rem 2rem;
-
-					.btn {
-						padding-top: 1rem;
-						padding-bottom: 1rem;
-					}
-				}
-
-				.categories {
-					display: flex;
-					flex-direction: column;
-					align-items: flex-start;
-					gap: 2rem;
-					background-color: white;
-					border-radius: 5px;
-					padding: 2rem 2rem;
-
-					.category-list {
-						width: 100%;
-					}
-				}
-
-				// w-1/4 border shadow-lg bg-white rounded py-4 px-4
-			}
-		}
-
-		.link {
-			font-weight: 500;
-			color: $slate-400;
-
-			&:hover {
-				color: $slate-800;
-			}
-		}
-
-		//   display: flex;
-		//   flex-direction: column;
-		//   gap: 2rem;
-		//   padding: 2rem;
-		//   background-color: rgba(225, 245, 254, 0.3);
-
-		//   &__header {
-		//     font-size: 120%;
-		//   }
-
-		//   &__columns {
-		//     display: grid;
-		//     grid-template-columns: 20rem 1fr 20rem;
-		//     gap: 2rem;
-
-		//     &-left {
-		//       // border: 1px solid red;
-		//       grid-column: 1 / 2;
-		//       background-color: #fff;
-
-		//       ul {
-		//         li {
-		//           border-bottom: 1px solid #ddd;
-		//           padding: 1rem;
-		//           cursor: pointer;
-		//           color: #42a5f5;
-		//         }
-		//       }
-		//     }
-
-		//     &-middle {
-		//       border: 1px solid red;
-		//       grid-column: 2 / 3;
-
-		//       .attributes {
-		//         .attribute {
-		//           .content {
-		//             .row {
-		//               display: flex;
-		//               gap: 2rem;
-		//               .values {
-		//                 flex: 1;
-		//                 border: 1px solid red;
-		//                 .options {
-		//                   display: flex;
-		//                   gap: 1rem;
-
-		//                   .option {
-		//                     display: flex;
-		//                     gap: 1rem;
-		//                     background-color: #ddd;
-		//                     padding: 0.5rem;
-
-		//                     .remove {
-		//                       color: #fff;
-		//                       background-color: #ccc;
-		//                       cursor: pointer;
-		//                     }
-		//                   }
-		//                 }
-		//               }
-		//             }
-		//           }
-		//         }
-		//       }
-
-		//       .variants {
-		//         // .actions {
-		//         // }
-
-		//         .content {
-		//           .variant {
-		//             border: 1px solid teal;
-		//             background-color: #fff;
-
-		//             .header {
-		//               display: flex;
-		//               gap: 2rem;
-		//               padding: 1rem;
-		//             }
-		//             .content {
-		//               .row {
-		//                 display: flex;
-		//                 justify-content: space-between;
-		//                 align-items: center;
-		//                 gap: 4rem;
-		//                 padding: 2rem;
-
-		//                 .image {
-		//                   width: 7rem;
-		//                   height: 7rem;
-		//                   overflow: hidden;
-		//                   border: 1px solid red;
-
-		//                   img {
-		//                     width: 100%;
-		//                     height: 100%;
-		//                     object-fit: contain;
-		//                   }
-		//                 }
-
-		//                 .flex1 {
-		//                   flex: 1;
-
-		//                   &.multiple {
-		//                     display: flex;
-		//                   }
-		//                 }
-		//               }
-		//             }
-		//           }
-		//         }
-		//       }
-		//     }
-
-		//     &-right {
-		//       border: 1px solid red;
-
-		//       grid-column: 3 / 4;
-		//     }
-		//   }
-
-		//   form {
-		//     .info {
-		//       display: grid;
-		//       grid-template-columns: 1fr 1fr;
-		//       gap: 2rem;
-		//       .media {
-		//         grid-column: 1 / 2;
-		//         display: flex;
-		//         flex-direction: column;
-		//         gap: 2rem;
-
-		//         .featured-image {
-		//           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-
-		//           img {
-		//             width: 100%;
-		//             object-fit: cover;
-		//           }
-		//         }
-
-		//         .gallery {
-		//           .images {
-		//             // border: 1px solid red;
-		//             display: flex;
-		//             gap: 2rem;
-		//             // justify-content: center;
-		//             align-items: center;
-		//             .thumb {
-		//               border: 1px solid #ddd;
-		//               padding: 0.2rem;
-		//               position: relative;
-		//               width: 10rem;
-		//               height: 10rem;
-
-		//               img {
-		//                 height: 100%;
-		//                 width: 100%;
-		//                 object-fit: cover;
-		//               }
-
-		//               .badge {
-		//                 display: flex;
-		//                 justify-content: center;
-		//                 align-items: center;
-		//                 position: absolute;
-		//                 top: 0;
-		//                 right: 0;
-		//                 transform: translate(1rem, -1rem);
-		//                 border-radius: 50%;
-		//                 background-color: red;
-		//                 color: #fff;
-		//                 width: 2rem;
-		//                 height: 2rem;
-		//                 cursor: pointer;
-		//               }
-		//             }
-		//           }
-		//         }
-		//       }
-
-		//       .details {
-		//         grid-column: 2 / 3;
-		//         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-		//         // padding: 1rem;
-
-		//         .title {
-		//           display: flex;
-		//           justify-content: center;
-		//           align-items: center;
-		//           font-size: 2rem;
-		//           background-color: #b3e5fc;
-		//           padding: 1rem;
-		//         }
-
-		//         .average-rating {
-		//           display: flex;
-		//           justify-content: center;
-		//           align-items: center;
-		//           padding: 1rem;
-		//         }
-
-		//         // ul {
-		//         //   li {
-		//         //     // display: flex;
-		//         //     // justify-content: space-between;
-		//         //     // border-bottom: 1px solid #ddd;
-		//         //     // padding: 1rem;
-
-		//         //     // &.price {
-		//         //     //   border-top: 1px solid #ddd;
-		//         //     // }
-		//         //   }
-		//         // }
-
-		//         .actions {
-		//           display: flex;
-		//           justify-content: space-between;
-		//           align-items: center;
-		//           padding: 1rem;
-
-		//           .btn {
-		//             display: flex;
-		//             flex-direction: column;
-		//             justify-content: space-between;
-		//             align-items: center;
-		//             font-size: 1rem;
-		//             background-color: transparent;
-		//           }
-		//         }
-		//       }
-		//     }
-
-		//     form {
-		//       // .gallery {
-		//       //   .images {
-		//       //     // border: 1px solid red;
-		//       //     display: flex;
-		//       //     gap: 1rem;
-		//       //     // justify-content: center;
-		//       //     align-items: center;
-		//       //     .image {
-		//       //       // border: 1px solid red;
-		//       //       position: relative;
-		//       //       width: 10rem;
-		//       //       height: 10rem;
-
-		//       //       img {
-		//       //         height: 100%;
-		//       //         width: 100%;
-		//       //         object-fit: cover;
-		//       //       }
-
-		//       //       .badge {
-		//       //         display: flex;
-		//       //         justify-content: center;
-		//       //         align-items: center;
-		//       //         position: absolute;
-		//       //         top: 0;
-		//       //         right: 0;
-		//       //         transform: translate(1rem, -1rem);
-		//       //         border-radius: 50%;
-		//       //         background-color: red;
-		//       //         color: #fff;
-		//       //         width: 2rem;
-		//       //         height: 2rem;
-		//       //         cursor: pointer;
-		//       //       }
-		//       //     }
-		//       //   }
-		//       // }
-
-		//       .featured-image {
-		//         .image {
-		//           border: 1px solid red;
-
-		//           width: 20rem;
-		//           height: 20rem;
-		//           img {
-		//             height: 100%;
-		//             width: 100%;
-		//             object-fit: cover;
-		//           }
-		//         }
-		//       }
-		//     }
-		//   }
-
-		//   .media-selector {
-		//     position: fixed;
-		//     top: 0;
-		//     left: 0;
-		//     background-color: rgba(0, 0, 0, 0.8);
-		//     width: 100vw;
-		//     height: 100vh;
-		//     padding: 1rem;
-		//   }
-
-		//   // .slide-enter-active,
-		//   // .slide-leave-active {
-		//   //   transition: all 0.5s ease-in-out;
-		//   // }
-	}
+@import '@/assets/scss/variables';
+
+// .select-multi {
+// 	border: 1px solid red;
+
+// 	.select {
+// 		display: grid;
+// 		grid-template-rows: 2fr;
+// 		grid-template-columns: 1fr 2rem;
+// 		gap: 1rem;
+// 		height: 4rem;
+// 		align-items: center;
+// 		padding: 0 1rem;
+// 		border: 1px solid teal;
+// 		width: 100%;
+// 		background-color: transparent;
+
+// 		label {
+// 			grid-row: 1 / 2;
+// 			grid-column: 1 / 2;
+// 		}
+
+// 		input {
+// 			grid-row: 1 / 2;
+// 			grid-column: 1 / 2;
+// 			width: 100%;
+// 			height: 100%;
+// 		}
+
+// 		svg {
+// 			grid-row: 1 / 2;
+// 			grid-column: 2 / 3;
+// 			width: 2rem;
+// 			height: 2rem;
+// 		}
+// 	}
+// }
+
+.product-details {
+  background-color: $slate-100;
+  min-height: 100vh;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  // py-4 px-4 space-y-4 bg-slate-100 text-slate-500 text-sm
+  .link {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+
+    svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+
+  .columns {
+    display: grid;
+    grid-template-columns: 12rem 1fr 25rem;
+    gap: 2rem;
+    align-items: flex-start;
+
+    .left {
+      background-color: white;
+      border: 1px solid $slate-100;
+      border-radius: 3px;
+      padding: 2rem 0.5rem;
+      // w-1/5 shadow-lg bg-white rounded py-4 px-2
+
+      ul {
+        li {
+          padding: 0.5rem 1rem;
+          transition: all 0.3s ease;
+          border-radius: 2px;
+          &:hover {
+            background-color: $slate-200;
+          }
+
+          // hover:bg-slate-100 px-2 py-1 rounded transition duration-200
+        }
+      }
+    }
+
+    .center {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+
+      .details {
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .info {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          .sku-inventory {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+
+            .sku {
+              flex: 1;
+            }
+
+            .inventory {
+              display: flex;
+              flex-direction: column;
+              gap: 0.5rem;
+              font-size: 1.3rem;
+
+              .available {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                .title {
+                  font-weight: 600;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .price {
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+      }
+
+      .images {
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .image-gallery {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 3rem;
+
+          .thumbs {
+            // display: flex;
+            // flex-wrap: wrap;
+            // justify-content: space-around;
+            // align-items: center;
+
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            padding: 2rem;
+            border: 1px solid red;
+            min-height: 20px;
+
+            .thumb {
+              cursor: pointer;
+              border: 1px solid red;
+              width: 12rem;
+              height: 12rem;
+
+              &:first-child {
+                opacity: 0.3;
+                grid-column: 1 / 3;
+                grid-row: 1 / 3;
+                width: 100%;
+                height: 100%;
+              }
+
+              // &:first-child {
+              //   width: 24rem;
+              //   height: 24rem;
+              // }
+              .draggable {
+                position: relative;
+                // width: 12rem;
+                // height: 12rem;
+                border: 1px solid red;
+
+                // &.first {
+                //   width: 24rem;
+                //   height: 24rem;
+                // }
+                // overflow: hidden;
+
+                // display: flex;
+                // flex-direction: column;
+                // align-items: center;
+
+                &.over {
+                  opacity: 0.3;
+                  border: 5px solid green;
+                }
+
+                &.dragging {
+                  opacity: 0.1;
+                }
+
+                // background-color: red;
+
+                // inline-block border border-blue-600 w-40 h-40 cursor-pointer
+
+                img {
+                  position:absolute;
+                  inset:0;
+                  width: 100%;
+                  // height: 100%;
+                  object-fit: fill;
+                }
+
+                .delete {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  // absolute top-0 right-0 w-10 h-10 transform translate-x-1/2 -translate-y-1/2 bg-red-600 rounded-full flex justify-center items-start text-white
+                }
+
+                .move {
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                }
+              }
+            }
+          }
+
+          .btn {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background-color: $slate-200;
+            color: $slate-800;
+
+            svg {
+              fill: $slate-800;
+            }
+          }
+        }
+        .media-selector {
+          position: fixed;
+          inset: 0;
+          background-color: $slate-200;
+          z-index: 9999;
+          // fixed top-0 left-0 w-full bg-slate-600
+        }
+      }
+
+      header {
+        // .title {
+        margin-bottom: 2rem;
+        text-transform: uppercase;
+        border-bottom: 1px solid $slate-200;
+        padding-bottom: 0.5rem;
+        display: inline-block;
+        font-weight: 500;
+        font-size: 1.4rem;
+        // }
+      }
+      // flex-1 border shadow-lg bg-white rounded py-4 px-4
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      .save-changes {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .btn {
+          padding-top: 1rem;
+          padding-bottom: 1rem;
+        }
+      }
+
+      .categories {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2rem;
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .category-list {
+          width: 100%;
+        }
+      }
+
+      // w-1/4 border shadow-lg bg-white rounded py-4 px-4
+    }
+  }
+
+  .link {
+    font-weight: 500;
+    color: $slate-400;
+
+    &:hover {
+      color: $slate-800;
+    }
+  }
+
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 2rem;
+  //   padding: 2rem;
+  //   background-color: rgba(225, 245, 254, 0.3);
+
+  //   &__header {
+  //     font-size: 120%;
+  //   }
+
+  //   &__columns {
+  //     display: grid;
+  //     grid-template-columns: 20rem 1fr 20rem;
+  //     gap: 2rem;
+
+  //     &-left {
+  //       // border: 1px solid red;
+  //       grid-column: 1 / 2;
+  //       background-color: #fff;
+
+  //       ul {
+  //         li {
+  //           border-bottom: 1px solid #ddd;
+  //           padding: 1rem;
+  //           cursor: pointer;
+  //           color: #42a5f5;
+  //         }
+  //       }
+  //     }
+
+  //     &-middle {
+  //       border: 1px solid red;
+  //       grid-column: 2 / 3;
+
+  //       .attributes {
+  //         .attribute {
+  //           .content {
+  //             .row {
+  //               display: flex;
+  //               gap: 2rem;
+  //               .values {
+  //                 flex: 1;
+  //                 border: 1px solid red;
+  //                 .options {
+  //                   display: flex;
+  //                   gap: 1rem;
+
+  //                   .option {
+  //                     display: flex;
+  //                     gap: 1rem;
+  //                     background-color: #ddd;
+  //                     padding: 0.5rem;
+
+  //                     .remove {
+  //                       color: #fff;
+  //                       background-color: #ccc;
+  //                       cursor: pointer;
+  //                     }
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+
+  //       .variants {
+  //         // .actions {
+  //         // }
+
+  //         .content {
+  //           .variant {
+  //             border: 1px solid teal;
+  //             background-color: #fff;
+
+  //             .header {
+  //               display: flex;
+  //               gap: 2rem;
+  //               padding: 1rem;
+  //             }
+  //             .content {
+  //               .row {
+  //                 display: flex;
+  //                 justify-content: space-between;
+  //                 align-items: center;
+  //                 gap: 4rem;
+  //                 padding: 2rem;
+
+  //                 .image {
+  //                   width: 7rem;
+  //                   height: 7rem;
+  //                   overflow: hidden;
+  //                   border: 1px solid red;
+
+  //                   img {
+  //                     width: 100%;
+  //                     height: 100%;
+  //                     object-fit: contain;
+  //                   }
+  //                 }
+
+  //                 .flex1 {
+  //                   flex: 1;
+
+  //                   &.multiple {
+  //                     display: flex;
+  //                   }
+  //                 }
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     &-right {
+  //       border: 1px solid red;
+
+  //       grid-column: 3 / 4;
+  //     }
+  //   }
+
+  //   form {
+  //     .info {
+  //       display: grid;
+  //       grid-template-columns: 1fr 1fr;
+  //       gap: 2rem;
+  //       .media {
+  //         grid-column: 1 / 2;
+  //         display: flex;
+  //         flex-direction: column;
+  //         gap: 2rem;
+
+  //         .featured-image {
+  //           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  //           img {
+  //             width: 100%;
+  //             object-fit: cover;
+  //           }
+  //         }
+
+  //         .gallery {
+  //           .images {
+  //             // border: 1px solid red;
+  //             display: flex;
+  //             gap: 2rem;
+  //             // justify-content: center;
+  //             align-items: center;
+  //             .thumb {
+  //               border: 1px solid #ddd;
+  //               padding: 0.2rem;
+  //               position: relative;
+  //               width: 10rem;
+  //               height: 10rem;
+
+  //               img {
+  //                 height: 100%;
+  //                 width: 100%;
+  //                 object-fit: cover;
+  //               }
+
+  //               .badge {
+  //                 display: flex;
+  //                 justify-content: center;
+  //                 align-items: center;
+  //                 position: absolute;
+  //                 top: 0;
+  //                 right: 0;
+  //                 transform: translate(1rem, -1rem);
+  //                 border-radius: 50%;
+  //                 background-color: red;
+  //                 color: #fff;
+  //                 width: 2rem;
+  //                 height: 2rem;
+  //                 cursor: pointer;
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+
+  //       .details {
+  //         grid-column: 2 / 3;
+  //         box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  //         // padding: 1rem;
+
+  //         .title {
+  //           display: flex;
+  //           justify-content: center;
+  //           align-items: center;
+  //           font-size: 2rem;
+  //           background-color: #b3e5fc;
+  //           padding: 1rem;
+  //         }
+
+  //         .average-rating {
+  //           display: flex;
+  //           justify-content: center;
+  //           align-items: center;
+  //           padding: 1rem;
+  //         }
+
+  //         // ul {
+  //         //   li {
+  //         //     // display: flex;
+  //         //     // justify-content: space-between;
+  //         //     // border-bottom: 1px solid #ddd;
+  //         //     // padding: 1rem;
+
+  //         //     // &.price {
+  //         //     //   border-top: 1px solid #ddd;
+  //         //     // }
+  //         //   }
+  //         // }
+
+  //         .actions {
+  //           display: flex;
+  //           justify-content: space-between;
+  //           align-items: center;
+  //           padding: 1rem;
+
+  //           .btn {
+  //             display: flex;
+  //             flex-direction: column;
+  //             justify-content: space-between;
+  //             align-items: center;
+  //             font-size: 1rem;
+  //             background-color: transparent;
+  //           }
+  //         }
+  //       }
+  //     }
+
+  //     form {
+  //       // .gallery {
+  //       //   .images {
+  //       //     // border: 1px solid red;
+  //       //     display: flex;
+  //       //     gap: 1rem;
+  //       //     // justify-content: center;
+  //       //     align-items: center;
+  //       //     .image {
+  //       //       // border: 1px solid red;
+  //       //       position: relative;
+  //       //       width: 10rem;
+  //       //       height: 10rem;
+
+  //       //       img {
+  //       //         height: 100%;
+  //       //         width: 100%;
+  //       //         object-fit: cover;
+  //       //       }
+
+  //       //       .badge {
+  //       //         display: flex;
+  //       //         justify-content: center;
+  //       //         align-items: center;
+  //       //         position: absolute;
+  //       //         top: 0;
+  //       //         right: 0;
+  //       //         transform: translate(1rem, -1rem);
+  //       //         border-radius: 50%;
+  //       //         background-color: red;
+  //       //         color: #fff;
+  //       //         width: 2rem;
+  //       //         height: 2rem;
+  //       //         cursor: pointer;
+  //       //       }
+  //       //     }
+  //       //   }
+  //       // }
+
+  //       .featured-image {
+  //         .image {
+  //           border: 1px solid red;
+
+  //           width: 20rem;
+  //           height: 20rem;
+  //           img {
+  //             height: 100%;
+  //             width: 100%;
+  //             object-fit: cover;
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+
+  //   .media-selector {
+  //     position: fixed;
+  //     top: 0;
+  //     left: 0;
+  //     background-color: rgba(0, 0, 0, 0.8);
+  //     width: 100vw;
+  //     height: 100vh;
+  //     padding: 1rem;
+  //   }
+
+  //   // .slide-enter-active,
+  //   // .slide-leave-active {
+  //   //   transition: all 0.5s ease-in-out;
+  //   // }
+}
 </style>
