@@ -8,6 +8,10 @@ defineProps({
     type: String,
     default: '',
   },
+  currency: {
+    type: Boolean,
+    default: false,
+  },
 });
 defineEmits(['update:modelValue']);
 
@@ -25,7 +29,7 @@ export default {
 
 <template>
   <div class="baseInput">
-    <div class="currency">$</div>
+    <div class="currency" v-if="currency">$</div>
     <input
       ref="inputRef"
       :placeholder="label"
@@ -57,16 +61,15 @@ export default {
   // margin-bottom: 2rem;
   // min-width: 100%;
 
-  .currency{
-    position:absolute;
-    top:1.5rem;
-    left:.75rem;
-
+  .currency {
+    position: absolute;
+    top: 1.5rem;
+    left: 0.75rem;
   }
 
   input {
     border: 1px solid $slate-300;
-    padding: 1.5rem 0.75rem 1rem 1.5rem;
+    padding: 1.5rem 0.75rem 1rem 2rem;
     min-width: 100%;
 
     // z-index: 9;
@@ -81,6 +84,7 @@ export default {
 
       & + label {
         transform: translateY(0);
+        font-size: 90%;
       }
     }
 
@@ -99,7 +103,7 @@ export default {
     left: 0;
     transition: all 0.3s;
     display: block;
-    margin-left: 0.9rem;
+    margin-left: 1.7rem;
     // transform: translateY(-4.2rem);
     // font-size: 80%;
 

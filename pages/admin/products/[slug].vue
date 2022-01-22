@@ -374,7 +374,7 @@ export default {
         </div>
         <div class="price shadow-md">
           <header>Price</header>
-          <FormsBaseInput label="Price" required v-model="prodState.selectedItem.price" />
+          <FormsBaseInput label="Price" required currency v-model="prodState.selectedItem.price" />
         </div>
         <div class="images shadow-md">
           <header>Images</header>
@@ -420,7 +420,7 @@ export default {
             <MediaUploader @mediaSelected="processSelectedMedia" @mediaSelectCancel="showMediaSelector = false" />
           </div>
         </div>
-        <div class="variants shadow-md">
+        <div class="variants-slideout shadow-md">
           <header>Variants</header>
           <div class="content">
             <div>Different types of this product (e.g. size, color)</div>
@@ -438,16 +438,71 @@ export default {
                 </div>
               </template>
               <div class="main">
-                <div class="empty-variant-message">
-                  <div class="card">
+                <div class="empty-variant-message" v-if="!prodState.selectedItem.variants.length">
+                  <div class="card shadow-md">
                     <h3>Set up variant groups to sell variations of the same product</h3>
                     <p>
                       Variants help you to sell products with slight differences, but are still the same product. For
-                      example, you might sell a t-shirt in different colors, or a plant pot in different sizes. You can
-                      configure variants to have their own price, SKU, and stock inventory. To get started, create
+                      example, you might sell a t-shirt in different colors, or a plant pot in different sizes.<br /><br />You
+                      can configure variants to have their own price, SKU, and stock inventory. To get started, create
                       groups and options for your variants. Groups define the type of variant (e.g. color). Options are
                       a choice your customer can make within that group (e.g. blue).
                     </p>
+                    <button
+                      class="btn btn-primary"
+                      @click="
+                        prodState.selectedItem.variants.unshift({
+                          groups: [{ name: '', options: [{ name: 'Red' }, { name: 'Green' }, { name: 'Blue' }] }],
+                          options: [{}],
+                        })
+                      "
+                    >
+                      Add Variant Group
+                    </button>
+                  </div>
+                </div>
+                <div class="variants" v-else>
+                  <div class="variant-groups">
+                    <header>
+                      <div class="th">Name</div>
+                      <div class="th">Options</div>
+                      <div class="th">Actions</div>
+                    </header>
+                    <main class="shadow-md">
+                      {{ prodState.selectedItem.variants }}
+                      <div
+                        class="variant-group"
+                        v-for="(group, i) in prodState.selectedItem.variants[0].groups"
+                        :key="group.name"
+                      >
+                        <div class="name">
+                          <FormsBaseInput
+                            label="Group Name (Example Color, Size ...)"
+                            v-model="prodState.selectedItem.variants[0].groups[i].name"
+                          />
+                        </div>
+                        <div class="options">
+                          <ul>
+                            <li v-for="(option, j) in group.options" :key="option">
+                              <span>{{ option.name }}</span>
+                              <IconsClose />
+                            </li>
+                            <li>
+                              <input
+                                class="option-input"
+                                type="text"
+                                @keyup.enter="
+                                  prodState.selectedItem.variants[0].groups[i].options.unshift({
+                                    name: $event.target.value,
+                                  })
+                                "
+                              />
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="actions">Actions</div>
+                      </div>
+                    </main>
                   </div>
                 </div>
               </div>
@@ -861,7 +916,7 @@ export default {
         }
       }
 
-      .variants {
+      .variants-slideout {
         background-color: white;
         border-radius: 5px;
         padding: 2rem 2rem;
@@ -901,23 +956,115 @@ export default {
           }
 
           .main {
-            border: 1px solid red;
+            // border: 1px solid green;
             min-height: 100vh;
-            .empty-variant-message {
-              border: 1px solid red;
-              min-height: 100vh;
 
+            .empty-variant-message {
+              // border: 1px solid red;
+              min-height: 100vh;
+              font-size: 1.4rem;
               display: flex;
               align-items: center;
               justify-content: center;
 
               .card {
-                border: 1px solid red;
+                display: flex;
+                flex-direction: column;
+                // gap:2rem;
+                padding: 4rem;
+                border: 1px solid $slate-200;
+                background-color: $slate-50;
+                border-radius: 5px;
+                max-width: 60rem;
 
-                max-width: 36rem;
-                
+                p {
+                  margin-block-start: 1em;
+                  margin-block-end: 1em;
+                }
+
+                .btn {
+                  align-self: flex-end;
+                }
               }
               // max-width: 36rem;
+            }
+
+            .variants {
+              padding: 0 1rem;
+              // border: 1px solid red;
+
+              .variant-groups {
+                header {
+                  // border: 1px solid red;
+
+                  padding: 2rem;
+                  display: grid;
+                  grid-template-columns: minmax(max-content, 30rem) 1fr 20rem;
+                  background-color: $slate-200;
+                  gap: 2rem;
+                  margin: 0;
+
+                  .th {
+                    // border: 1px solid red;
+                    &:last-of-type {
+                      justify-self: flex-end;
+                    }
+                  }
+                }
+
+                main {
+                  // border: 1px solid red;
+                  padding: 2rem;
+                  background-color: $slate-50;
+
+                  .variant-group {
+                    display: grid;
+                    grid-template-columns: minmax(max-content, 30rem) 1fr 20rem;
+                    gap: 2rem;
+
+                    // .name{
+
+                    // }
+
+                    .options {
+                      ul {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 1rem;
+
+                        li {
+                          display: flex;
+                          align-items: center;
+                          gap: 0.5rem;
+                          border: 1px solid $slate-300;
+                          background-color: white;
+                          padding: 0.5rem 1rem;
+                          border-radius: 5px;
+                          font-size: 1.2rem;
+                          font-weight: 500;
+
+                          svg {
+                            width: 1.2rem;
+                            height: 1.2rem;
+                            background-color: $slate-500;
+                            fill: $slate-50;
+                            padding:.1rem;
+                            border-radius:50%;
+                          }
+
+                          input {
+                            // border: 1px solid $slate-400;
+                          }
+                        }
+                      }
+                    }
+
+                    .actions {
+                      justify-self: flex-end;
+                    }
+                  }
+                }
+              }
             }
           }
         }

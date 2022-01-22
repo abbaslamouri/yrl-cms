@@ -37,8 +37,8 @@ const props = defineProps({
     height: 100vh;
     width: 100vw;
     max-width: 1040px;
-    max-width: 800px;
-    background-color: $slate-200;
+    // max-width: 800px;
+    background-color: $slate-100;
     z-index: 99;
 
     .backdrop {
