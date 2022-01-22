@@ -20,6 +20,8 @@ const mediaReference = ref({}); // sets which media to update once a selection i
 const draggableElements = ref([]);
 const galleryContainer = ref(null);
 
+const showSlideout = ref(false);
+
 const pickIndex = ref(null);
 const dropIndex = ref(null);
 
@@ -215,8 +217,6 @@ const handleDragstart = (event, index) => {
   console.log(pickIndex.value);
   // draggableElements.value[index].classList.remove('hovered');
   event.target.closest('.thumb').classList.remove('hovered');
-
-
 
   // event.dataTransfer.dropEffect = 'move'
   // event.dataTransfer.effectAllowed = 'move'
@@ -418,6 +418,43 @@ export default {
           </div>
           <div class="media-selector" v-if="showMediaSelector">
             <MediaUploader @mediaSelected="processSelectedMedia" @mediaSelectCancel="showMediaSelector = false" />
+          </div>
+        </div>
+        <div class="variants shadow-md">
+          <header>Variants</header>
+          <div class="content">
+            <div>Different types of this product (e.g. size, color)</div>
+            <button class="btn btn-primary" @click="showSlideout = true">
+              <IconsPlus />
+              <span>Add</span>
+            </button>
+          </div>
+          <div class="slideout-panel">
+            <Slideout :showSlideout="showSlideout">
+              <template v-slot:header>
+                <div class="header">
+                  <h3 class="title">Edit Variants</h3>
+                  <button class="btn close"><IconsClose @click="showSlideout = false" /></button>
+                </div>
+              </template>
+              <div class="main">
+                <div class="empty-variant-message">
+                  <div class="card">
+                    <h3>Set up variant groups to sell variations of the same product</h3>
+                    <p>
+                      Variants help you to sell products with slight differences, but are still the same product. For
+                      example, you might sell a t-shirt in different colors, or a plant pot in different sizes. You can
+                      configure variants to have their own price, SKU, and stock inventory. To get started, create
+                      groups and options for your variants. Groups define the type of variant (e.g. color). Options are
+                      a choice your customer can make within that group (e.g. blue).
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <template v-slot:footer>
+                <p>Here's some contact info</p>
+              </template>
+            </Slideout>
           </div>
         </div>
       </div>
@@ -821,6 +858,68 @@ export default {
           background-color: $slate-200;
           z-index: 9999;
           // fixed top-0 left-0 w-full bg-slate-600
+        }
+      }
+
+      .variants {
+        background-color: white;
+        border-radius: 5px;
+        padding: 2rem 2rem;
+
+        .content {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+        }
+
+        .btn {
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+
+          svg {
+            fill: $slate-50;
+            width: 1.8rem;
+            height: 1.8rem;
+          }
+        }
+
+        .slideout-panel {
+          .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 2rem;
+            background-color: $slate-50;
+            .btn {
+              svg {
+                fill: $slate-800 !important;
+                width: 1.8rem;
+                height: 1.8rem;
+              }
+            }
+          }
+
+          .main {
+            border: 1px solid red;
+            min-height: 100vh;
+            .empty-variant-message {
+              border: 1px solid red;
+              min-height: 100vh;
+
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              .card {
+                border: 1px solid red;
+
+                max-width: 36rem;
+                
+              }
+              // max-width: 36rem;
+            }
+          }
         }
       }
 
