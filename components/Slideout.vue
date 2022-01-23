@@ -12,15 +12,9 @@ const props = defineProps({
     <div class="backdrop" v-show="showSlideout"></div>
     <transition name="slide">
       <div class="dialog shadow-md" v-show="showSlideout">
-        <!-- <header class="shadow-md"> -->
         <slot name="header"></slot>
-        <!-- </header> -->
-        <!-- <main> -->
         <slot></slot>
-        <!-- </main> -->
-        <!-- <footer> -->
         <slot name="footer"></slot>
-        <!-- </footer> -->
       </div>
     </transition>
   </div>
@@ -34,29 +28,15 @@ const props = defineProps({
     position: fixed;
     top: 0;
     right: 0;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     max-width: 1040px;
-    // max-width: 800px;
     background-color: $slate-100;
     z-index: 99;
 
     .backdrop {
       opacity: 0.8;
     }
-
-    // .dialog {
-    //   position: absolute;
-    //   background-color: $slate-100;
-
-    // header {
-    //   display: flex;
-    //   align-items: center;
-    //   justify-content: space-between;
-    //   background-color: white;
-    //   padding: 2rem;
-
-    // }
   }
 }
 
@@ -74,6 +54,6 @@ const props = defineProps({
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: all 0.9s ease;
+  transition: all 0.3s ease;
 }
 </style>

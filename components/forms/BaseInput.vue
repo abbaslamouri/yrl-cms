@@ -72,8 +72,6 @@ export default {
     padding: 1.5rem 0.75rem 1rem 2rem;
     min-width: 100%;
 
-    // z-index: 9;
-
     &:focus {
       outline: 3px solid $sky-300;
 

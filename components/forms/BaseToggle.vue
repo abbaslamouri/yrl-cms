@@ -61,10 +61,6 @@ export default {
         left: 53.125%;
       }
     }
-
-    // &:checked + .slider:before {
-    //   left: 53.125%;
-    // }
   }
 
   .slider {

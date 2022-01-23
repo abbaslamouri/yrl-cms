@@ -46,7 +46,7 @@
   border: 1px solid $slate-400;
   color: $slate-900;
   text-transform: uppercase;
-  padding: .75rem 2rem;
+  padding: 0.75rem 2rem;
   border-radius: 5rem;
   cursor: pointer;
   transition: 0.3s ease-in-out;
@@ -64,6 +64,17 @@
     width: 2rem;
     height: 2rem;
   }
+}
+
+.admin-section-header {
+  margin-bottom: 2rem;
+  text-transform: uppercase;
+  border-bottom: 1px solid $slate-200;
+  padding-bottom: 0.5rem;
+  display: inline-block;
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
 }
 
 .shadow-md {
