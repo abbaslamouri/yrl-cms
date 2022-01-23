@@ -4,7 +4,7 @@ const prodState = inject('prodState');
 
 <template>
   <div class="empty-variant-message">
-    <div class="card shadow-md">
+    <div class="card">
       <h3>Set up variant groups to sell variations of the same product</h3>
       <p>
         Variants help you to sell products with slight differences, but are still the same product. For example, you
@@ -25,7 +25,7 @@ const prodState = inject('prodState');
 
 .empty-variant-message {
   // border: 1px solid red;
-  min-height: 100vh;
+  // min-height: 100vh;
   font-size: 1.4rem;
   display: flex;
   align-items: center;

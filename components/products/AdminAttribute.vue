@@ -1,218 +1,287 @@
 <script setup>
-const prodState = inject('prodState')
-const attTermsState = inject('attTermsState')
+import slugify from 'slugify';
+
+const attState = inject('attState');
+const attActions = inject('attActions');
+const attTermsState = inject('attTermsState');
+const attTermsActions = inject('attTermsActions');
 
 const props = defineProps({
-  index: {
-    type: Number,
+  attribute: {
+    type: Object,
     required: true,
   },
-})
+  i: {
+    type: Number,
+  },
+});
 
-const termSelect = ref('')
+// const emit = defineEmits(['toggleInputFieldVisibility']);
 
-const removeVariantCallback = (termId) => {
-  let j = 0
-  while (j < prodState.selectedItem.variants.length) {
-    const k = prodState.selectedItem.variants[j].attrTerms.findIndex((t) => t._id == termId)
-    const countBefore = prodState.selectedItem.variants[j].attrTerms.length
-    console.log('Before', countBefore)
-    if (k !== -1) prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
-    const countAfter = prodState.selectedItem.variants[j].attrTerms.length
-    console.log('After', countAfter)
-    if (countBefore != countAfter) prodState.selectedItem.variants[j].discard = true
+// Fetch all terms with item as parent id
+// const terms = computed(() => attTermsState.items.filter((el) => el.parent == props.attribute._id));
 
-    j++
-  }
-  prodState.selectedItem.variants = prodState.selectedItem.variants.filter((el) => !el.discard)
+const showNewTermForm = ref(false); // Tp toggle new term form
+const showActions = ref(false);
+const newTerm = ref('');
+const inputRef = ref(null);
 
-  if (!prodState.selectedItem.variants.length) prodState.selectedItem.variants = []
-}
+const handleInputRefBtnClick = async (index) => {
+  console.log('REF', inputRef.value);
+  showNewTermForm.value = true;
+  setTimeout(() => {
+    inputRef.value.focus();
+  }, 10);
+};
 
-const removeAttribute = () => {
-  if (!confirm('Are you sure?')) return
+const addAttributeTerm = async () => {
+  attTermsState.selectedItem = {
+    name: newTerm.value,
+    slug: slugify(newTerm.value, { lower: true }),
+    parent: props.attribute._id,
+  };
+  await attTermsActions.saveItem();
+  newTerm.value = '';
+};
 
-  // Remove all terms whose parent attarubute is to be deleted and mark all variants with empty eterms fro deletion
-  let j = 0
-  while (j < prodState.selectedItem.variants.length) {
-    const k = prodState.selectedItem.variants[j].attrTerms.findIndex(
-      (t) => t.parent == prodState.selectedItem.attributes[props.index].item._id
-    )
-    if (k !== -1) prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
-    if (!prodState.selectedItem.variants[j].attrTerms.length) prodState.selectedItem.variants[j].delete = true
-    j++
-  }
+const handleRemoveTerm = async (term) => {
+  if (!confirm('Are you sure?')) return;
+  attTermsState.selectedItem = term;
+  attTermsActions.deleteItem();
+};
 
-  // Delete all marked variations
-  prodState.selectedItem.variants = prodState.selectedItem.variants.filter((el) => !el.delete)
+const handleDelete = async (item) => {
+  if (!confirm('Are you sure? This attrubute and associated terms will be deleted')) return;
+  console.log(item);
+  attState.selectedItem = item;
+  await attActions.deleteItem();
+  attTermsState.selectedItems = attTermsState.items.filter((el) => el.parent == item._id);
+  await attTermsActions.deleteItems();
+};
 
-  // Delete attribute
-  prodState.selectedItem.attributes.splice(props.index, 1)
-}
-
-const addAllTerms = () => {
-  console.log('PAI', prodState.selectedItem.attributes[props.index].item._id)
-  console.log('TERMS', attTermsState.items)
-  const terms = attTermsState.items.filter((el) => el.parent == prodState.selectedItem.attributes[props.index].item._id)
-  console.log(terms)
-  prodState.selectedItem.attributes[props.index].terms = terms
-}
-
-const addTerm = () => {
-  console.log(termSelect.value)
-  const term = attTermsState.items.find((el) => el._id == termSelect.value)
-  console.log(term)
-  if (term) {
-    if (!prodState.selectedItem.attributes[props.index].terms) {
-      prodState.selectedItem.attributes[props.index].terms = [term]
-      console.log('here', prodState.selectedItem.attributes[props.index].terms)
-    } else {
-      const j = prodState.selectedItem.attributes[props.index].terms.findIndex((el) => el._id == term._id)
-      console.log(j)
-      if (j == -1) prodState.selectedItem.attributes[props.index].terms.push(term)
-    }
-  }
-  termSelect.value = ''
-}
-
-const removeTerm = (i, termId) => {
-  if (!confirm('Are you sure?')) return
-  prodState.selectedItem.attributes[props.index].terms.splice(i, 1)
-  removeVariantCallback(termId)
-  // let j = 0
-  // prodState.selectedItem.attributes[props.index].terms.splice(i, 1)
-  // while (j < prodState.selectedItem.variants.length) {
-  //   const k = prodState.selectedItem.variants[j].attrTerms.findIndex((t) => t._id == termId)
-  //   if (k !== -1) prodState.selectedItem.variants[j].discard = true
-  //   j++
-  // }
-  // prodState.selectedItem.variants = prodState.selectedItem.variants.filter((el) => !el.discard)
-
-  // if (prodState.selectedItem.variants.length < 2) prodState.selectedItem.variants = []
-
-  // if (!prodState.selectedItem.attributes[props.index].terms.length)
-  // delete prodState.selectedItem.attributes[props.index].terms
-
-  // if (prodState.selectedItem.attributes[props.index].terms.length < 2) {
-  //   while (j < prodState.selectedItem.variants.length) {
-  //     const k = prodState.selectedItem.variants[j].attrTerms.findIndex(
-  //       (t) => t._id == prodState.selectedItem.attributes[props.index].terms[0]._id
-  //     )
-  //     if (k !== -1) {
-  //       // prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
-  //       // if (prodState.selectedItem.variants[j].attrTerms.length < 2)
-  //       prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
-  //     }
-  //     j++
-  //   }
-  // }
-  // prodState.selectedItem.variants = prodState.selectedItem.variants.filter((el) => !el.delete)
-  // prodState.selectedItem.attributes[props.index].terms.splice(0, 1)
-  // if (prodState.selectedItem.attributes[props.index].terms.length < 2) {
-  //   prodState.selectedItem.variants.filter((v) => {
-  //     return v.attrTerms.filter((a) => a.parent != prodState.selectedItem.attributes[props.index].item._id)
-  //   })
-  // }
-  // j = 0
-  // while (j < prodState.selectedItem.variants.length) {
-  //   const k = prodState.selectedItem.variants[j].attrTerms.findIndex((t) => t._id == termId)
-  //   if (k !== -1) {
-  //     prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
-  //     if (prodState.selectedItem.variants[j].attrTerms.length < 2) prodState.selectedItem.variants[j].delete = true
-  //   }
-  //   j++
-  // }
-}
-
-const removeAllTerms = () => {
-  // Remove all terms from ttribute
-  if (!confirm('Are you sure?')) return
-  for (const prop in prodState.selectedItem.attributes[props.index].terms) {
-    console.log('TTTTT', prop)
-    removeVariantCallback(prodState.selectedItem.attributes[props.index].terms[prop]._id)
-  }
-  prodState.selectedItem.attributes[props.index].terms = []
-
-  // const index = prodState.selectedItem.attributes.findIndex(
-  //   (a) => a._id == prodState.selectedItem.attributes[props.index]._id
-  // )
-  // console.log(index)
-  // if (index !== -1) prodState.selectedItem.attributes[props.index].terms = []
-}
+// const toggleInputFieldVisibility = () => {
+// console.log(inputRef.value);
+// emit('toggleInputFieldVisibility', props.i);
+// inputRef.value.classList.remove('hidden');
+// inputRef.value.focus();
+// };
 </script>
 
 <template>
-  <div>
-    <!-- <pre>{{ prodState.selectedItem.attributes }}======</pre> -->
-    <div class="header bg-blue-100 p-2 flex justify-between">
-      <div>
-        {{ prodState.selectedItem.attributes[index].item.name }}
-      </div>
-      <div>
-        <IconsDeleteFill @click="removeAttribute" />
-      </div>
-    </div>
-    <div class="content flex gap-10">
-      <div class="checkboxes border">
-        <div>
-          <input
-            class="h-6 w-6 cursor-pointer"
-            type="checkbox"
-            v-model="prodState.selectedItem.attributes[index].item.visible"
-          />
-          <label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
-            Visible on the product page
-          </label>
-        </div>
-        <div v-show="prodState.selectedItem.type === 'variable'">
-          <input
-            class="h-6 w-6 cursor-pointer"
-            type="checkbox"
-            v-model="prodState.selectedItem.attributes[index].item.variation"
-          />
-          <label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
-            Used for variations
-          </label>
-        </div>
-      </div>
-      <div class="values">
-        <div class="options border border-blue-200 p-10 flex gap-4">
-          <div
-            v-if="prodState.selectedItem.attributes[index].terms"
-            class="option bg-gray-200 flex gap-2 rounded border border-gray-300 pl-4"
-            v-for="(term, i) in prodState.selectedItem.attributes[index].terms"
-            :key="term._id"
-          >
-            <span>{{ term.name }}</span>
-            <span class="remove bg-white px-2 ml-2 cursor-pointer" @click="removeTerm(i, term._id)">x</span>
-          </div>
-        </div>
-        <div class="actions">
-          <button class="btn" @click.prevent="addAllTerms()">Select All</button>
-          <button class="btn" @click.prevent="removeAllTerms(prodState.selectedItem.attributes[index]._id)">
-            Select None
-          </button>
+  <li class="attribute">
+    <!-- {{ attribute }} -->
 
-          <select class="" v-model="termSelect" @change="addTerm">
-            <option value="">select term</option>
-            <option
-              v-for="term in attTermsState.items.filter(
-                (el) => el.parent == prodState.selectedItem.attributes[index].item._id
-              )"
-              :key="term._id"
-              :value="term._id"
-              :disabled="
-                prodState.selectedItem.attributes[index].terms &&
-                prodState.selectedItem.attributes[index].terms.find((el) => el._id == term._id)
-              "
-            >
-              {{ term.name }}
-            </option>
-          </select>
-        </div>
+    <div class="name td">
+      <FormsBaseInput placeholder="Add New Attribute Name (Example: Color, Size ...)" v-model="attState.items[i].name" />
+    </div>
+    <div
+      class="terms td shadow-md"
+      @click="
+        inputRef.classList.remove('hidden');
+        inputRef.focus();
+      "
+    >
+      <div
+        class="list"
+        v-for="(term, j) in attTermsState.items.filter((el) => el.parent == props.attribute._id)"
+        :key="term"
+      >
+        <span>{{ term.name }}</span>
+        <IconsClose @click="handleRemoveTerm(term)" />
+      </div>
+      <div class="form-group">
+        <input
+          class="hidden"
+          ref="inputRef"
+          type="text"
+          v-model="newTerm"
+          placeholder="Add New Attribute Term (Example:
+        Green, Blue, Green ...)"
+          :disabled="attState.items[i].name == ''"
+          @keyup.enter="addAttributeTerm"
+          @blur="inputRef.classList.add('hidden')"
+        />
       </div>
     </div>
-  </div>
+    <div class="actions td">
+      <button class="btn" @click="showActions = !showActions"><IconsMoreHoriz /></button>
+      <div class="menu shadow-md" v-show="showActions">
+        <a href="#" class="link"><div class="advanced">Advanced</div></a>
+        <a href="#" class="link" @click="attState.items.splice(i, 1)"><div class="cancel">cancel</div></a>
+      </div>
+    </div>
+    <!-- <div class="name">{{ attribute.name }}</div>
+    <div class="terms">
+      <div class="terms-list">
+        <div class="term" v-for="term in terms" :key="term.slug">
+          <span>{{ term.name }}</span>
+          <span class="close" @click="handleRemoveTerm(term)">X</span>
+        </div>
+      </div>
+      <div v-if="showNewTermForm" class="add-term" @click="showNewTermForm = false">-</div>
+      <div v-else class="add-term" @click="handleInputRefBtnClick">+</div>
+      <form v-show="showNewTermForm" @submit.prevent="handleAddNewTerm(item)">
+        <input type="text" v-model="termInput" ref="inputRef" />
+        <button class="btn">Save</button>
+      </form>
+    </div>
+    <div class="actions">
+      <NuxtLink class="link" :to="{ name: 'admin-products-attributes-slug', params: { slug: item.slug } }">
+        <button class="btn edit"><IconsEditFill /></button>
+      </NuxtLink>
+      <button class="btn delete" @click="handleDelete(item)"><IconsDeleteFill /></button>
+    </div> -->
+  </li>
 </template>
 
-<style lang=""></style>
+<style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
+.attribute {
+  font-size: 1.2rem;
+
+  .name {
+    // border: 1px solid red;
+  }
+
+  .terms {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid $slate-200;
+    padding: 0.7rem 2rem;
+    cursor: text;
+
+    .list {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid $slate-300;
+      background-color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      font-weight: 500;
+    }
+
+    .form-group {
+      width: 100%;
+      flex: 1;
+
+      input {
+        width: 100%;
+        font-size: 1.2rem;
+        width: 100%;
+
+        &:disabled {
+          // background-color: #ddd;
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      background-color: $slate-500;
+      fill: $slate-50;
+      padding: 0.1rem;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+  }
+
+  .actions {
+    // border: 1px solid red;
+
+    position: relative;
+    justify-self: flex-end;
+
+    .btn {
+      // border: none;
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+
+    .menu {
+      position: absolute;
+      top: -40%;
+      right: 100%;
+      border: 1px solid $slate-300;
+      padding: 1rem 2rem;
+      background-color: white;
+      z-index: 9;
+      font-size: 1.4rem;
+
+      .cancel {
+        color: $red-500;
+      }
+    }
+  }
+
+  // display: flex;
+  // justify-content: space-between;
+  // align-items: center;
+  // background-color: #f5f5f5;
+  // margin-top: 2rem;
+
+  // .terms {
+  //   display: flex;
+  //   align-items: center;
+  //   gap: 2rem;
+
+  //   .terms-list {
+  //     display: flex;
+  //     gap: 1rem;
+
+  //     .term {
+  //       background-color: #ddd;
+  //       padding: 0.5rem;
+  //       border-radius: 0.5rem;
+  //       font-size: 80%;
+  //       display: flex;
+  //       gap: 1rem;
+
+  //       .close {
+  //         background-color: #bbb;
+  //         color: #fff;
+  //         cursor: pointer;
+  //       }
+  //     }
+  //   }
+
+  //   .add-term {
+  //     display: flex;
+  //     justify-content: center;
+  //     align-items: center;
+  //     background-color: #b3e5fc;
+  //     width: 4rem;
+  //     height: 4rem;
+  //     border-radius: 50%;
+  //     cursor: pointer;
+  //   }
+
+  //   .actions {
+  //     display: flex;
+  //     align-items: center;
+
+  //     .btn {
+  //       padding: 1rem;
+  //       border: none;
+  //       background-color: transparent;
+
+  //       &.delete {
+  //         svg {
+  //           fill: #d32f2f;
+  //         }
+  //       }
+
+  //       &.edit {
+  //         color: #43a047;
+  //       }
+  //     }
+  //   }
+  // }
+}
+</style>

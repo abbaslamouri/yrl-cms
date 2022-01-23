@@ -1,49 +1,17 @@
 <script setup>
-// const windowWidth = ref(null);
-// const mobile = ref(null);
-// const  = ref(null);
 const showAdminSidebar = ref(true);
-const sidebarRef = ref('');
 
 const checkScreen = () => {
   if (process.client) {
-    // console.log(showAdminSidebar.value, window.innerWidth);
     if (window.innerWidth < 768) showAdminSidebar.value = false;
     if (window.innerWidth >= 768) showAdminSidebar.value = true;
-    // windowWidth.value = window.innerWidth;
-    // console.log(windowWidth.value);
   }
 };
 
-// onMounted(() => {
 if (process.client) {
   window.addEventListener('resize', checkScreen);
   checkScreen();
 }
-
-const toggleAdminSidebar = () => {
-  console.log(sidebarRef.value.style);
-  // if (sidebarRef.value.classList.contains('show')) {
-  sidebarRef.value.classList.toggle('hide');
-  // } else {
-  //   sidebarRef.value.classList.remove('hide').classList.add('show');
-  // }
-};
-// console.log(sidebarRef.value);
-
-// import { useAuth } from '~/pinia/useAuth'
-// const authStore = useAuth()
-// const router = useRouter()
-// router.beforeEach((to, from) => {
-// 	if (to.name.includes('admin') && !authStore.token) {
-// 		return '/auth/login'
-// 	}
-// })
-
-// import { useError } from '~/pinia/useError'
-// const error = useError()
-
-// const snackbar = computed(() => error.snackbar)
 </script>
 
 <template>
@@ -62,9 +30,7 @@ const toggleAdminSidebar = () => {
             </svg>
             <Branding />
           </div>
-          <!-- <nav class=""> -->
           <AdminNav />
-          <!-- </nav> -->
         </aside>
       </transition>
       <div class="content">
@@ -73,23 +39,6 @@ const toggleAdminSidebar = () => {
     </main>
     <footer><Footer /></footer>
   </div>
-
-  <!-- <header> -->
-  <!-- <MainNav /> -->
-  <!-- <ProfileNav /> -->
-  <!-- </header> -->
-  <!-- <main> -->
-  <!-- <div class="sidebar"><AdminNav /></div> -->
-  <!-- <div class="main"><slot /></div> -->
-  <!-- </main> -->
-  <!-- <footer><Footer /></footer> -->
-  <!-- <SnackBar
-      :show="snackbar.show"
-      :message="snackbar.message"
-      :snackbarType="snackbar.type"
-      :duration="snackbar.duration"
-      @hideSnackbar="snackbar.show = false"
-    /> -->
 </template>
 
 <style lang="scss" scoped>
@@ -97,52 +46,38 @@ const toggleAdminSidebar = () => {
 
 .admin {
   header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: #000;
     color: white;
     padding: 1rem 2rem;
+    z-index: 99;
   }
 
   main {
     display: flex;
-    position: relative;
-    min-height: 100vh;
-    // border: 1px solid red;
 
     aside {
+      position: fixed;
       display: flex;
       flex-direction: column;
       background-color: $slate-800;
       width: 25rem;
-      // position: absolute;
       top: 0;
       bottom: 0;
       left: 0;
       height: 100vh;
       transition: all 0.2s ease-in-out;
       color: white;
-      // transform: translateX(-100%);
       font-size: 1.4rem;
       gap: 2rem;
       padding: 2rem 1rem;
-
-      // &.show {
-      //   transform: translateX(0);
-      //   position: relative;
-      // }
-
-      // &.hide {
-      //   transform: translateX(-100%);
-      //   position: absolute;
-      // }
-
-      // @media only screen and (min-width: 768px) {
-      //   position: relative;
-      //   transform: translateX(0);
-      // }
-      //  text-sm space-y-2 absolute inset-y-0 left-0 transform -translate-x-full transition duration-200 ease-in-out md:relative md:translate-x-0 shadow-xl
+      z-index: 999;
 
       .branding {
         display: flex;
@@ -163,7 +98,11 @@ const toggleAdminSidebar = () => {
 
     .content {
       flex: 1;
+      margin-left: 25rem;
+      margin-top: 5rem;
+      background-color: $slate-100;
       min-height: 100vh;
+      // min-height: 90vh;
     }
   }
 }

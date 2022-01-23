@@ -41,7 +41,7 @@ const updateVariant = (attribute, termId) => {
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-  <div class="variants shadow-md">
+  <div class="variants">
     <header class="admin-section-header">Variants</header>
     <div class="content">
       <div>Different types of this product (e.g. size, color)</div>
@@ -52,7 +52,7 @@ const updateVariant = (attribute, termId) => {
     </div>
     <Slideout :showSlideout="showSlideout">
       <template v-slot:header>
-        <div class="header">
+        <div class="header shadow-md">
           <h3 class="title">Edit Variants</h3>
           <button class="btn close"><IconsClose @click="showSlideout = false" /></button>
         </div>
@@ -64,7 +64,9 @@ const updateVariant = (attribute, termId) => {
         <ProductsAdminVariantsPanel v-else />
       </div>
       <template v-slot:footer>
-        <p>Here's some contact info</p>
+        <div class="footer shadow-md">
+          <p>Here's some contact info</p>
+        </div>
       </template>
     </Slideout>
   </div>
@@ -235,27 +237,27 @@ const updateVariant = (attribute, termId) => {
     }
   }
 
-  .slideout {
-    .dialog {
-      .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 2rem;
-        background-color: $slate-50;
-        .btn {
-          svg {
-            width: 1.8rem;
-            height: 1.8rem;
-          }
-        }
-      }
+  // .slideout {
+  //   .dialog {
+  //     .header {
+  //       display: flex;
+  //       align-items: center;
+  //       justify-content: space-between;
+  //       padding: 2rem;
+  //       background-color: $slate-50;
+  //       .btn {
+  //         svg {
+  //           width: 1.8rem;
+  //           height: 1.8rem;
+  //         }
+  //       }
+  //     }
 
-      .main {
-        // border: 1px solid green;
-        min-height: 100vh;
-      }
-    }
-  }
+  //     .main {
+  //       // border: 1px solid green;
+  //       min-height: 100vh;
+  //     }
+  //   }
+  // }
 }
 </style>

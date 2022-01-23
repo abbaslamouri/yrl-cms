@@ -144,11 +144,11 @@ const searchDb = (Model) =>
     res.status(200).json(docs);
   });
 
-const createSlug = asyncHandler(async (req, res, next) => {
-  console.log('RBS', req.body);
-  req.body.slug = slugify(req.body.name, { lower: true });
-  next();
-});
+// const createSlug = asyncHandler(async (req, res, next) => {
+//   console.log('RBS', req.body);
+//   req.body.slug = slugify(req.body.name, { lower: true });
+//   next();
+// });
 
 export {
   getAllDocs,
@@ -160,6 +160,6 @@ export {
   createMedia,
   getDoc,
   getDocsCount,
-  createSlug,
+  // createSlug,
   searchDb,
 };

@@ -90,6 +90,7 @@ const transitionName = computed(() => (getPosition().includes('right') ? 'rtl' :
   top: 6rem;
   left: 10rem;
   font-size: 1.4rem;
+  z-index:999;
 
   &.success {
     background: $green-50;

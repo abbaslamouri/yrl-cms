@@ -1,10 +1,14 @@
 <script setup>
-defineProps({
+const props = defineProps({
   modelValue: {
     type: [String, Number],
     default: '',
   },
   label: {
+    type: String,
+    default: '',
+  },
+  placeholder: {
     type: String,
     default: '',
   },
@@ -16,9 +20,11 @@ defineProps({
 defineEmits(['update:modelValue']);
 
 // const attrs = useAttrs();
+const inputRef = ref('');
 const errorMsg = ref('');
 const uuid = useUniqueId().getId();
-const inputRef = ref('');
+
+const placeholderColor = props.label ? 'transparent' : 'inherit';
 </script>
 
 <script>
@@ -31,8 +37,9 @@ export default {
   <div class="baseInput">
     <div class="currency" v-if="currency">$</div>
     <input
+      class="shadow-md"
       ref="inputRef"
-      :placeholder="label"
+      :placeholder="placeholder"
       :value="modelValue"
       v-bind="$attrs"
       :id="`base-input-${uuid}`"
@@ -87,7 +94,7 @@ export default {
     }
 
     &::placeholder {
-      color: transparent;
+      color: v-bind(placeholderColor);
     }
 
     &:placeholder-shown + label {

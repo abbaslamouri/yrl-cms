@@ -55,7 +55,7 @@ const handleDelete = async (item) => {
 </script>
 
 <template>
-  <div class="attribute">
+  <div class="coupon">
     <div class="name">{{ item.name }}</div>
           <div>{{ item.type }}</div>
           <div>{{ item.amount }}</div>
@@ -72,7 +72,7 @@ const handleDelete = async (item) => {
 </template>
 
 <style lang="scss">
-.attribute {
+.coupon {
   display: flex;
   justify-content: space-between;
   align-items: center;

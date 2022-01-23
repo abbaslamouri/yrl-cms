@@ -323,7 +323,7 @@ const setDefaultTerm = (index, value) => {
   padding: 0 1rem;
   // border: 1px solid red;
   padding: 2rem;
-  overflow: scroll;
+  // overflow: scroll;
 
   .groups {
     display: flex;
@@ -334,36 +334,6 @@ const setDefaultTerm = (index, value) => {
       display: flex;
       align-items: center;
       justify-content: space-between;
-    }
-    .table {
-      .table-header {
-        background-color: $slate-200;
-        padding: 2rem;
-      }
-
-      .table-body {
-        background-color: $slate-50;
-      }
-    }
-  }
-
-  .row {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    // background-color: $slate-200;
-    gap: 1rem;
-    // margin: 0;
-
-    .item {
-      &:nth-of-type(1) {
-        grid-column: 1 / 5;
-      }
-      &:nth-of-type(2) {
-        grid-column: 5 / 12;
-      }
-      &:nth-of-type(3) {
-        grid-column: 12/ 13;
-      }
     }
   }
 }
