@@ -90,7 +90,6 @@ const useFactory = (collection) => {
           if (index != -1) state.items.splice(index, 1, response.data);
         } else {
           response = await http.post(`v1/${collection}/`, state.selectedItem);
-          // console.log(response)
           state.items.push(response.data);
         }
         return response.data;

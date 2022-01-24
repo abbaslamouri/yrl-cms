@@ -67,11 +67,17 @@ const navLinks = ref([
   <!-- <transition name="admin-menu-slide"> -->
   <ul class="admin-menu">
     <li v-for="item in navLinks" :key="item.name" class="">
-      <NuxtLink :to="{ name: item.subMenu ? `${item.name}` : 'admin' }" @click="item.open = !item.open">
-        <component :is="item.icon"></component>
-        <p>{{ item.title }}</p>
-      </NuxtLink>
-      <div v-if="item.subMenu && item.open === true">
+      <div class="link">
+        <NuxtLink :to="{ name: item.subMenu ? `${item.name}` : 'admin' }">
+          <component :is="item.icon"></component>
+          <p>{{ item.title }}</p>
+        </NuxtLink>
+        <div class="chevron" v-if="item.subMenu.length > 0" @click="item.open = !item.open">
+          <IconsChevronUp v-if="item.subMenu.length > 0 && item.open" />
+          <IconsChevronDown v-else />
+        </div>
+      </div>
+      <div v-if="item.subMenu.length > 0 && item.open === true">
         <ul class="admin-sub-menu">
           <li v-for="subItem in item.subMenu" :key="subItem.name">
             <NuxtLink :to="{ name: subItem.name }">
@@ -125,6 +131,31 @@ const navLinks = ref([
 .admin-menu {
   font-size: 1.3rem;
   width: 100%;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: $slate-50;
+  }
+
+  .link {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    a {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .chevron {
+      width: 2rem;
+      height: 2rem;
+      cursor: pointer;
+      transition: all 1s ease;
+    }
+  }
+
   li {
     border-top: 1px solid $slate-400;
     transition: all 0.2s ease;
@@ -142,17 +173,19 @@ const navLinks = ref([
         color: $slate-800;
       }
 
-      svg {
-        width: 1.5rem;
-        height: 1.5rem;
-      }
-
       // link flex gap-2 px-6 py-2
     }
   }
   .admin-sub-menu {
     font-size: 1.1rem;
     padding-left: 1rem;
+    // display:flex;
+    // align-items: center;
+    // justify-content: space-between;
+
+    svg {
+      fill: white;
+    }
     // bg-slate-800 text-slate-200
     li {
       &:last-child {

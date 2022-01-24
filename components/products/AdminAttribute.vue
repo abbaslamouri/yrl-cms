@@ -1,5 +1,6 @@
 <script setup>
 import slugify from 'slugify';
+import { useError } from '~/pinia/useError';
 
 const attState = inject('attState');
 const attActions = inject('attActions');
@@ -16,25 +17,36 @@ const props = defineProps({
   },
 });
 
-// const emit = defineEmits(['toggleInputFieldVisibility']);
+const appError = useError();
 
-// Fetch all terms with item as parent id
-// const terms = computed(() => attTermsState.items.filter((el) => el.parent == props.attribute._id));
-
-const showNewTermForm = ref(false); // Tp toggle new term form
+// const showNewTermForm = ref(false); // Tp toggle new term form
 const showActions = ref(false);
 const newTerm = ref('');
-const inputRef = ref(null);
+const attInputFocus = ref(false);
+const termInputRef = ref(null);
 
-const handleInputRefBtnClick = async (index) => {
-  console.log('REF', inputRef.value);
-  showNewTermForm.value = true;
-  setTimeout(() => {
-    inputRef.value.focus();
-  }, 10);
+// const handletermInputRefBtnClick = async (index) => {
+//   console.log('REF', termInputRef.value);
+//   showNewTermForm.value = true;
+//   setTimeout(() => {
+//     termInputRef.value.focus();
+//   }, 10);
+// };
+
+const deleteAttribute = async () => {
+  if (!confirm('Are you sure? This attribute and all associated terms will be deleted')) return;
+  attState.selectedItem = props.attribute;
+  await attActions.deleteItem();
+  attTermsState.selectedItems = attTermsState.items.filter((el) => el.parent == props.attribute._id);
+  await attTermsActions.deleteItems();
 };
 
 const addAttributeTerm = async () => {
+  if (!props.attribute.name) {
+    appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error');
+    return;
+    // attInputFocus.value = true;
+  }
   attTermsState.selectedItem = {
     name: newTerm.value,
     slug: slugify(newTerm.value, { lower: true }),
@@ -44,41 +56,47 @@ const addAttributeTerm = async () => {
   newTerm.value = '';
 };
 
-const handleRemoveTerm = async (term) => {
+const deleteTerm = async (term) => {
   if (!confirm('Are you sure?')) return;
   attTermsState.selectedItem = term;
   attTermsActions.deleteItem();
 };
 
-const handleDelete = async (item) => {
-  if (!confirm('Are you sure? This attrubute and associated terms will be deleted')) return;
-  console.log(item);
-  attState.selectedItem = item;
-  await attActions.deleteItem();
-  attTermsState.selectedItems = attTermsState.items.filter((el) => el.parent == item._id);
-  await attTermsActions.deleteItems();
+const checkIfAttribute = () => {
+  if (!props.attribute.name || !props.attribute.name.trim()) {
+    newTerm.value = '';
+    return appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error');
+    // attInputFocus.value = true;
+  }
+  if (!props.attribute._id) {
+    newTerm.value = '';
+    return appError.setSnackbar(true, 'Please save attribute before adding terms ', 'Error');
+    // attInputFocus.value = true;
+  }
 };
 
 // const toggleInputFieldVisibility = () => {
-// console.log(inputRef.value);
+// console.log(termInputRef.value);
 // emit('toggleInputFieldVisibility', props.i);
-// inputRef.value.classList.remove('hidden');
-// inputRef.value.focus();
+// termInputRef.value.classList.remove('hidden');
+// termInputRef.value.focus();
 // };
 </script>
 
 <template>
-  <li class="attribute">
-    <!-- {{ attribute }} -->
-
+  <div class="attribute">
     <div class="name td">
-      <FormsBaseInput placeholder="Add New Attribute Name (Example: Color, Size ...)" v-model="attState.items[i].name" />
+      <FormsBaseInput
+        required
+        placeholder="Add New Attribute Name (Example: Color, Size ...)"
+        v-model="attState.items[i].name"
+      />
     </div>
     <div
       class="terms td shadow-md"
       @click="
-        inputRef.classList.remove('hidden');
-        inputRef.focus();
+        termInputRef.classList.remove('hidden');
+        termInputRef.focus();
       "
     >
       <div
@@ -87,27 +105,32 @@ const handleDelete = async (item) => {
         :key="term"
       >
         <span>{{ term.name }}</span>
-        <IconsClose @click="handleRemoveTerm(term)" />
+        <IconsClose @click="deleteTerm(term)" />
       </div>
-      <div class="form-group">
+      <div class="form-group" @click="checkIfAttribute">
         <input
           class="hidden"
-          ref="inputRef"
+          ref="termInputRef"
           type="text"
           v-model="newTerm"
           placeholder="Add New Attribute Term (Example:
         Green, Blue, Green ...)"
           :disabled="attState.items[i].name == ''"
-          @keyup.enter="addAttributeTerm"
-          @blur="inputRef.classList.add('hidden')"
+          @keyup.enter.prevent="addAttributeTerm"
+          @blur="termInputRef.classList.add('hidden')"
         />
       </div>
     </div>
     <div class="actions td">
-      <button class="btn" @click="showActions = !showActions"><IconsMoreHoriz /></button>
+      <button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
       <div class="menu shadow-md" v-show="showActions">
         <a href="#" class="link"><div class="advanced">Advanced</div></a>
-        <a href="#" class="link" @click="attState.items.splice(i, 1)"><div class="cancel">cancel</div></a>
+        <a href="#" class="link" @click.prevent="deleteAttribute" v-if="attribute._id">
+          <div class="cancel">Delete</div>
+        </a>
+        <a href="#" class="link" @click.prevent="attState.items.splice(i, 1)" v-else>
+          <div class="cancel">Cancel</div>
+        </a>
       </div>
     </div>
     <!-- <div class="name">{{ attribute.name }}</div>
@@ -115,13 +138,13 @@ const handleDelete = async (item) => {
       <div class="terms-list">
         <div class="term" v-for="term in terms" :key="term.slug">
           <span>{{ term.name }}</span>
-          <span class="close" @click="handleRemoveTerm(term)">X</span>
+          <span class="close" @click="deleteTerm(term)">X</span>
         </div>
       </div>
       <div v-if="showNewTermForm" class="add-term" @click="showNewTermForm = false">-</div>
-      <div v-else class="add-term" @click="handleInputRefBtnClick">+</div>
+      <div v-else class="add-term" @click="handletermInputRefBtnClick">+</div>
       <form v-show="showNewTermForm" @submit.prevent="handleAddNewTerm(item)">
-        <input type="text" v-model="termInput" ref="inputRef" />
+        <input type="text" v-model="termInput" ref="termInputRef" />
         <button class="btn">Save</button>
       </form>
     </div>
@@ -131,7 +154,7 @@ const handleDelete = async (item) => {
       </NuxtLink>
       <button class="btn delete" @click="handleDelete(item)"><IconsDeleteFill /></button>
     </div> -->
-  </li>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -140,9 +163,14 @@ const handleDelete = async (item) => {
 .attribute {
   font-size: 1.2rem;
 
-  .name {
-    // border: 1px solid red;
-  }
+  // .name {
+  //   input {
+  //     padding: 15rem !important;
+  //     color: red !important;
+  //   }
+
+  //   // border: 1px solid red;
+  // }
 
   .terms {
     display: flex;

@@ -16,6 +16,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  // focus: {
+  //   type: Boolean,
+  //   default: false,
+  // },
 });
 defineEmits(['update:modelValue']);
 
@@ -25,6 +29,18 @@ const errorMsg = ref('');
 const uuid = useUniqueId().getId();
 
 const placeholderColor = props.label ? 'transparent' : 'inherit';
+
+onMounted(() => {
+  if (!props.modelValue) inputRef.value.focus();
+});
+
+// watch(
+//   () => props.focus,
+//   (current, prev) => {
+//     console.log(current);
+//     if (current) inputRef.value.focus();
+//   }
+// );
 </script>
 
 <script>
@@ -34,7 +50,7 @@ export default {
 </script>
 
 <template>
-  <div class="baseInput">
+  <div class="base-input">
     <div class="currency" v-if="currency">$</div>
     <input
       class="shadow-md"
@@ -61,7 +77,7 @@ export default {
 <style scoped lang="scss">
 @import '@/assets/scss/variables';
 
-.baseInput {
+.base-input {
   position: relative;
   color: $slate-600;
   font-size: 1.4rem;
