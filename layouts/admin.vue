@@ -100,7 +100,7 @@ if (process.client) {
       flex: 1;
       margin-left: 25rem;
       margin-top: 5rem;
-      background-color: $slate-100;
+      background-color: $slate-50;
       min-height: 100vh;
       // min-height: 90vh;
     }

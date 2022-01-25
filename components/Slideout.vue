@@ -4,12 +4,12 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
-});
+})
 </script>
 
 <template>
   <div class="slideout">
-    <div class="overlay" v-show="showSlideout"></div>
+    <div class="overlay"></div>
     <transition name="slide">
       <div class="dialog shadow-md" v-show="showSlideout">
         <slot name="header"></slot>

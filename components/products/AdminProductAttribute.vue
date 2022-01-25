@@ -159,111 +159,97 @@ const setDefaultTerm = () => {
 
 <template>
   <div class="admin-product-attribute">
-    <div class="table">
-      <div class="table__header">
-        <div class="row">
-          <div class="th">Attribute</div>
-          <div class="th">Default Term</div>
-          <div class="th">Terms</div>
-          <div class="th">Actions</div>
+    <!-- <div class="td"> -->
+    <div class="base-select attribute td">
+      <select v-model="prodState.selectedItem.attributes[i].attribute" @change="setDefaultTerm">
+        <option
+          value="null"
+          v-if="prodState.selectedItem.attributes.length == 1 && prodState.selectedItem.attributes[0].attribute == null"
+        >
+          Select Option
+        </option>
+        <option
+          v-for="option in attState.items.map((a) => {
+            return { key: a._id, name: a.name }
+          })"
+          :key="option.key"
+          :value="option.key"
+          :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
+        >
+          {{ option.name }}
+        </option>
+      </select>
+    </div>
+    <div class="attribute-default-term td">
+      <FormsBaseSelect
+        v-model="prodState.selectedItem.attributes[i].defaultTerm"
+        :options="
+          attTermsState.items
+            .filter((t) => t.parent == props.prodAttr.attribute)
+            .map((t) => {
+              return { key: t._id, name: t.name }
+            })
+        "
+      />
+    </div>
+    <div class="terms td">
+      <!-- <div class="options"> -->
+      <div class="term-actions">
+        <button class="btn" @click.prevent="addAllTerms()">Select All</button>
+        <button class="btn" @click.prevent="removeAllTerms(prodState.selectedItem.attributes[i].attribute)">
+          Select None
+        </button>
+        <div class="base-select">
+          <select v-model="termSelect" @change="addTerm">
+            <option value="">Add term</option>
+            <option
+              v-for="term in attTermsState.items.filter((t) => t.parent == prodAttr.attribute)"
+              :key="term._id"
+              :value="term._id"
+              :disabled="prodAttr.terms && prodAttr.terms.find((t) => t == term._id)"
+            >
+              {{ term.name }}
+            </option>
+          </select>
         </div>
       </div>
-      <div class="table__body">
-        <div class="row">
-          <!-- <div class="td"> -->
-          <div class="base-select attribute td">
-            <select v-model="prodState.selectedItem.attributes[i].attribute" @change="setDefaultTerm">
-              <option
-                value="null"
-                v-if="
-                  prodState.selectedItem.attributes.length == 1 &&
-                  prodState.selectedItem.attributes[0].attribute == null
-                "
-              >
-                Select Option
-              </option>
-              <option
-                v-for="option in attState.items.map((a) => {
-                  return { key: a._id, name: a.name }
-                })"
-                :key="option.key"
-                :value="option.key"
-                :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
-              >
-                {{ option.name }}
-              </option>
-            </select>
+      <div class="terms-list">
+        <div class="list" v-if="prodState.selectedItem.attributes[i].terms.length">
+          <div
+            v-if="prodState.selectedItem.attributes[i].terms"
+            class="term shadow-md"
+            v-for="(termId, j) in prodState.selectedItem.attributes[i].terms"
+            :key="termId"
+          >
+            <span>{{ attTermsState.items.find((t) => t._id == termId).name }}</span>
+            <span class="remove-term" @click="removeTerm(i, termId)">
+              <IconsClose @click="deleteTerm(term)" />
+            </span>
           </div>
-          <div class="attribute-default-term td">
-            <FormsBaseSelect
-              v-model="prodState.selectedItem.attributes[i].defaultTerm"
-              :options="
-                attTermsState.items
-                  .filter((t) => t.parent == props.prodAttr.attribute)
-                  .map((t) => {
-                    return { key: t._id, name: t.name }
-                  })
-              "
-            />
-          </div>
-          <div class="terms td">
-            <!-- <div class="options"> -->
-            <div class="term-actions">
-              <button class="btn" @click.prevent="addAllTerms()">Select All</button>
-              <button class="btn" @click.prevent="removeAllTerms(prodState.selectedItem.attributes[i].attribute)">
-                Select None
-              </button>
+        </div>
+      </div>
 
-              <select class="base-select" v-model="termSelect" @change="addTerm">
-                <option value="">Add term</option>
-                <option
-                  v-for="term in attTermsState.items.filter((t) => t.parent == prodAttr.attribute)"
-                  :key="term._id"
-                  :value="term._id"
-                  :disabled="prodAttr.terms && prodAttr.terms.find((t) => t == term._id)"
-                >
-                  {{ term.name }}
-                </option>
-              </select>
-            </div>
-            <div class="terms-list">
-              <div class="list">
-                <div
-                  v-if="prodState.selectedItem.attributes[i].terms"
-                  class="term shadow-md"
-                  v-for="(termId, j) in prodState.selectedItem.attributes[i].terms"
-                  :key="termId"
-                >
-                  <span>{{ attTermsState.items.find((t) => t._id == termId).name }}</span>
-                  <span class="remove-term" @click="removeTerm(i, termId)">
-                    <IconsClose @click="deleteTerm(term)" />
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- </div> -->
-          </div>
-          <div class="attribute-actions td">
-            <button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
-            <div class="menu shadow-md" v-show="showActions">
-              <a href="#" class="link"><div class="advanced">Advanced</div></a>
-              <a href="#" class="link" @click.prevent="removeProductAttribute">
-                <div class="cancel">Delete</div>
-              </a>
-              <a href="#" class="link" @click.prevent="attState.items.splice(i, 1)">
-                <div class="cancel">Cancel</div>
-              </a>
-            </div>
-          </div>
-          <!-- <div class="actions td">
+      <!-- </div> -->
+    </div>
+    <div class="actions td">
+      <button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
+      <div class="menu shadow-md" v-show="showActions">
+        <a href="#" class="link"><div class="advanced">Advanced</div></a>
+        <a href="#" class="link" @click.prevent="removeProductAttribute">
+          <div class="cancel">Delete</div>
+        </a>
+        <a href="#" class="link" @click.prevent="attState.items.splice(i, 1)">
+          <div class="cancel">Cancel</div>
+        </a>
+      </div>
+    </div>
+    <!-- <div class="actions td">
             <IconsDeleteFill @click="removeProductAttribute" />
           </div> -->
 
-          <!-- </div> -->
-        </div>
+    <!-- </div> -->
 
-        <!-- <form @keypress.enter.prevent>
+    <!-- <form @keypress.enter.prevent>
           <ProductsAdminAttribute
             :attribute="attribute"
             :i="i"
@@ -278,8 +264,6 @@ const setDefaultTerm = () => {
           />
           <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>
         </form> -->
-      </div>
-    </div>
   </div>
   <!-- <div class="content flex gap-10"> -->
   <!-- <div class="checkboxes border">
@@ -347,135 +331,111 @@ const setDefaultTerm = () => {
 @import '@/assets/scss/variables';
 
 .admin-product-attribute {
-  .table__body {
-    .row {
-      display: grid;
-      grid-template-columns: repeat(24, 1fr);
-      // padding:2rem;
-      background-color: transparent;
-      // background-color: $slate-200;
-      gap: 0.5rem;
-      // margin: 0;
-      align-items: center;
+  .attribute {
+    // border: 1px solid red;
 
-      .th,
-      .td {
-        &:nth-of-type(1) {
-          grid-column: 1 / 5;
-        }
-        &:nth-of-type(2) {
-          grid-column: 5 / 9;
-        }
-        &:nth-of-type(3) {
-          grid-column: 10/ 22;
-        }
-        &:nth-of-type(4) {
-          grid-column: 22/ 25;
-          justify-self: flex-end;
-        }
-      }
-      .attribute {
-        border: 1px solid red;
-      }
+    &.base-select {
+      align-self: flex-start;
+    }
+  }
 
-      .attribute-default-term {
-        border: 1px solid red;
-      }
+  .attribute-default-term {
+    // border: 1px solid red;
+  }
 
-      .terms {
-        position: relative;
+  .terms {
+    position: relative;
+    border: 1px solid $slate-300;
+
+    display: flex;
+    // align-items: stretch;
+    gap: 1rem;
+    font-size: 1.2rem;
+    padding: 1rem;
+
+    .term-actions {
+      // border: 1px solid teal;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      .btn {
+        font-size: 1rem;
+        padding: 0.3rem;
+        background-color: $slate-400;
+        color: white;
+        width: 9rem;
+      }
+    }
+
+    .terms-list {
+      // display: flex;
+      // align-items: center;
+      padding: 0.7rem 2rem;
+      width: 100%;
+      min-height: 100%;
+      border: 1px solid $slate-300;
+
+      .list {
+        // flex: 1;
         border: 1px solid $slate-300;
 
         display: flex;
-        align-items: stretch;
+        flex-wrap: wrap;
+        align-items: center;
         gap: 1rem;
-        font-size: 1.2rem;
-        padding: 1rem;
-
-        .term-actions {
-          // border: 1px solid teal;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-
-          .btn {
-            font-size: 1rem;
-            padding: 0.5rem;
-            background-color: $slate-400;
-            color: white;
-          }
-        }
-
-        .terms-list {
-          // display: flex;
-          // align-items: center;
-          padding: 0.7rem 2rem;
-          width: 100%;
-          min-height: 100%;
-          border: 1px solid $slate-300;
-
-          .list {
-            // flex: 1;
-            border: 1px solid $slate-300;
-
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 1rem;
-            // height: 100%;
-            width: 100%;
-          }
-
-          .term {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: 1px solid $slate-300;
-            background-color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            font-weight: 500;
-
-            svg {
-              width: 1.2rem;
-              height: 1.2rem;
-              background-color: $slate-500;
-              fill: $slate-50;
-              padding: 0.1rem;
-              border-radius: 50%;
-              cursor: pointer;
-            }
-          }
-        }
+        // height: 100%;
+        width: 100%;
       }
 
-      .attribute-actions {
-        border: 1px solid red;
-        position: relative;
-        justify-self: flex-end;
+      .term {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border: 1px solid $slate-300;
+        background-color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 5px;
+        font-weight: 500;
 
-        .btn {
-          // border: none;
-          padding: 0.5rem;
-          border-radius: 5px;
-        }
-
-        .menu {
-          position: absolute;
-          top: -40%;
-          right: 100%;
-          border: 1px solid $slate-300;
-          padding: 1rem 2rem;
-          background-color: white;
-          z-index: 9;
-          font-size: 1.4rem;
-
-          .cancel {
-            color: $red-500;
-          }
+        svg {
+          width: 1.2rem;
+          height: 1.2rem;
+          background-color: $slate-500;
+          fill: $slate-50;
+          padding: 0.1rem;
+          border-radius: 50%;
+          cursor: pointer;
         }
       }
     }
   }
+
+  // .attribute-actions {
+  //   // border: 1px solid red;
+  //   position: relative;
+  //   justify-self: flex-end;
+
+  //   .btn {
+  //     // border: none;
+  //     padding: 0.5rem;
+  //     border-radius: 5px;
+  //   }
+
+  //   .menu {
+  //     position: absolute;
+  //     top: -40%;
+  //     right: 100%;
+  //     border: 1px solid $slate-300;
+  //     padding: 1rem 2rem;
+  //     background-color: white;
+  //     z-index: 9;
+  //     font-size: 1.4rem;
+
+  //     .cancel {
+  //       color: $red-500;
+  //     }
+  //   }
+  // }
 }
 </style>

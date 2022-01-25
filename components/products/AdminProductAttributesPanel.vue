@@ -45,16 +45,30 @@ const addAttribute = () => {
 <template>
   <div class="admin-product-attributes-panel">
     <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre>
-
     <div class="attributes">
       <header>
         <h2>Attributes</h2>
         <button class="btn btn-primary" @click="insertEmptyAttribute">Add New</button>
       </header>
       <main>
-        <div class="attribute" v-for="(item, i) in prodState.selectedItem.attributes">
-          <ProductsAdminProductAttribute :i="i" :prodAttr="item" />
-        </div>
+        <form @keypress.enter.prevent v-if="prodState.selectedItem.attributes.length">
+          <div class="table">
+            <div class="table__header">
+              <div class="row">
+                <div class="th">Attribute</div>
+                <div class="th">Default Term</div>
+                <div class="th">Terms</div>
+                <div class="th">Actions</div>
+              </div>
+            </div>
+            <div class="table__body">
+              <div class="attribute" v-for="(item, i) in prodState.selectedItem.attributes">
+                <ProductsAdminProductAttribute :i="i" :prodAttr="item" class="row" />
+              </div>
+            </div>
+          </div>
+          <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>
+        </form>
       </main>
 
       <!-- <div class="admin-attributes-list">

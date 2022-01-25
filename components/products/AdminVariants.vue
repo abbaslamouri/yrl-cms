@@ -50,7 +50,7 @@
 				<span>Add</span>
 			</button>
 		</div>
-		<Slideout :showSlideout="showSlideout">
+		<Slideout :showSlideout="showSlideout" v-if="showSlideout">
 			<template v-slot:header>
 				<div class="header shadow-md">
 					<h3 class="title">Edit Variants</h3>
@@ -63,8 +63,8 @@
         /> -->
 				<ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
 				<div v-else>
-					<ProductsAdminAttributesPanel />
-					<!-- <ProductsAdminVariantsPanel /> -->
+					<ProductsAdminProductAttributesPanel />
+					<ProductsAdminProductVariantsPanel />
 				</div>
 			</div>
 			<template v-slot:footer>
