@@ -7,10 +7,7 @@
 	const prodState = inject('prodState')
 	const attState = inject('attState')
 
-	const showAttributesVariantsSlideout = ref(false)
-	// const showVarianSlideout = ref(false)
-	// provide('showAttributeSlideout', showAttributeSlideout)
-	// provide('showVarianSlideout', showVarianSlideout)
+	const showAttVarSlideout = ref(false)
 
 	const getAttribute = (attributeId) => {
 		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
@@ -48,55 +45,41 @@
 		<header class="admin-section-header">Variants</header>
 		<div class="content">
 			<div>Different types of this product (e.g. size, color)</div>
-			<button class="btn btn-primary" @click="showAttributesVariantsSlideout = true">
+			<button class="btn btn-primary" @click="showAttVarSlideout = true">
 				<IconsPlus />
 				<span>Add</span>
 			</button>
 		</div>
-		<div class="slideout">
-			<div class="overlay" v-show="showAttributesVariantsSlideout"></div>
-			<transition name="slide">
-				<div class="dialog shadow-md" v-show="showAttributesVariantsSlideout">
-					<div class="header shadow-md">
-						<h3 class="title">Edit Variants</h3>
-						<button class="btn close"><IconsClose @click.prevent="showAttributesVariantsSlideout = false" /></button>
-					</div>
-					<div class="main">
-						<ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
-						<div v-else>
-							<ProductsAdminProductAttributesPanel />
-							<ProductsAdminProductVariantsPanel />
-						</div>
-					</div>
-					<div class="footer shadow-md">
-						<p>Here's some contact info</p>
-					</div>
+		<Slideout :showSlideout="showAttVarSlideout">
+			<!-- <template v-slot:header>
+				<div class="header shadow-md">
+					<h3 class="title">Edit Variants</h3>
+					<button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
 				</div>
-			</transition>
 		</div>
-		<!-- <ProductsAttributesVariantsSlideout
+		<ProductsAttributesVariantsSlideout
 			:showAttributesVariantsSlideout="showAttributesVariantsSlideout"
 			@closeAttributesVariantsSlideout="showAttributesVariantsSlideout = false"
 		/> -->
-		<!-- <template v-slot:header> -->
-		<!-- <div class="header shadow-md">
+			<template v-slot:header>
+				<div class="header shadow-md">
 					<h3 class="title">Edit Variants</h3>
 					<button class="btn close"><IconsClose @click="showAttributeSlideout = false" /></button>
-				</div> -->
-		<!-- </template> -->
-		<!-- <div class="main">
+				</div>
+			</template>
+			<div class="main">
 				<ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
 				<div v-else>
 					<ProductsAdminProductAttributesPanel />
 					<ProductsAdminProductVariantsPanel />
 				</div>
-			</div> -->
-		<!-- <template v-slot:footer> -->
-		<!-- <div class="footer shadow-md">
+			</div>
+			<template v-slot:footer>
+				<div class="footer shadow-md">
 					<p>Here's some contact info</p>
-				</div> -->
-		<!-- </template> -->
-		<!-- </Slideout> -->
+				</div>
+			</template>
+		</Slideout>
 	</div>
 	<!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
     <div class="header bg-blue-100 flex gap-8 py-4 justify-between">

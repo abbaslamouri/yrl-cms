@@ -20,11 +20,8 @@
 	const prodState = inject('prodState')
 	const attState = inject('attState')
 	const attTermsState = inject('attTermsState')
-	const showVarianSlideout = ref(false)
-
-	// const showVarianSlideout = inject('showVarianSlideout')
-
 	const showActions = ref(false)
+	const showVariantSlideout = ref(false)
 
 	const getAttribute = (attributeId) => {
 		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
@@ -60,7 +57,7 @@
 <template>
 	<div class="admin-product-variant">
 		<!-- <div class="td"> -->
-		<div class="image td" @click="showVarianSlideout = true">
+		<div class="image td" @click="showVariantSlideout = true">
 			<img v-if="prodVariant.featuredImage" :src="prodVariant.featuredImage.path" alt="Variant Image" />
 			<img v-else src="/placeholder.png" alt="Variant Image" />
 		</div>
@@ -89,45 +86,10 @@
 				</a>
 			</div>
 		</div>
-		<div class="slideout">
-			<div class="overlay" v-show="showVarianSlideout"></div>
-			<transition name="slide">
-				<div class="dialog shadow-md" v-show="showVarianSlideout">
-					<div class="header shadow-md">
-						<h3 class="title">
-							Edit Variants
-							<div class="option td">
-								<div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
-									<div class="attribute">
-										{{
-											attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name
-										}}
-									</div>
-									<div class="term">
-										{{ attTermsState.items.find((t) => t._id == term).name }}
-									</div>
-								</div>
-							</div>
-						</h3>
-						<button class="btn close"><IconsClose @click.prevent="showVarianSlideout = false" /></button>
-					</div>
-					<div class="main">Main</div>
-					<div class="footer shadow-md">
-						<p>Here's some contact info</p>
-					</div>
-				</div>
-			</transition>
-		</div>
 
-		<!-- <ProductsVariantSlideout
-			:prodVariant="prodVariant"
-			:showVarianSlideout="showVarianSlideout"
-			@closeVariantsSlideout="showVarianSlideout = false"
-		/> -->
-
-		<!-- <Slideout :showSlideout="showVarianSlideout">
-			<template v-slot:header> -->
-		<!-- <div class="header shadow-md">
+		<Slideout :showSlideout="showVariantSlideout">
+			<template v-slot:header>
+				<div class="header shadow-md">
 					<h3 class="title">
 						Edit Variants
 						<div class="option td">
@@ -141,16 +103,36 @@
 							</div>
 						</div>
 					</h3>
-					<button class="btn close"><IconsClose @click="showVarianSlideout = false" /></button>
-				</div> -->
-		<!-- </template>
-			<div class="main"></div>
+					<button class="btn close"><IconsClose @click.prevent="showVariantSlideout = false" /></button>
+				</div>
+			</template>
+			<div class="main">
+				<h2>Select options for your variant</h2>
+				<div class="attributes" v-if="prodState.selectedItem.attributes">
+					<div v-for="(termId, j) in prodVariant.attrTerms" :key="termId">
+						{{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == termId).parent).name }}
+						<select v-model="prodState.selectedItem.variants[i].attrTerms[j]">
+							<option
+								v-for="id in prodState.selectedItem.attributes.find(
+									(a) => a.attribute == attTermsState.items.find((t) => t._id == termId).parent
+								).terms"
+								:key="id"
+								:value="id"
+							>
+								{{ attTermsState.items.find((t) => t._id == id).name }}
+							</option>
+						</select>
+					</div>
+				</div>
+
+				<!-- @click.prevent="handleMediaSelectorClick({ image: 'variant', index })" -->
+			</div>
 			<template v-slot:footer>
 				<div class="footer shadow-md">
 					<p>Here's some contact info</p>
 				</div>
 			</template>
-		</Slideout> -->
+		</Slideout>
 		<!-- <div class="actions td">
             <IconsDeleteFill @click="removeProductAttribute" />
           </div> -->
