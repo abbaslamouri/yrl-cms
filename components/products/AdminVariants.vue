@@ -7,7 +7,7 @@
 	const prodState = inject('prodState')
 	const attState = inject('attState')
 
-	const showSlideout = ref(false)
+	const showAttVarSlideout = ref(false)
 
 	const getAttribute = (attributeId) => {
 		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
@@ -45,16 +45,16 @@
 		<header class="admin-section-header">Variants</header>
 		<div class="content">
 			<div>Different types of this product (e.g. size, color)</div>
-			<button class="btn btn-primary" @click="showSlideout = true">
+			<button class="btn btn-primary" @click="showAttVarSlideout = true">
 				<IconsPlus />
 				<span>Add</span>
 			</button>
 		</div>
-		<Slideout :showSlideout="showSlideout" v-if="showSlideout">
+		<Slideout :showSlideout="showAttVarSlideout">
 			<template v-slot:header>
 				<div class="header shadow-md">
 					<h3 class="title">Edit Variants</h3>
-					<button class="btn close"><IconsClose @click="showSlideout = false" /></button>
+					<button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
 				</div>
 			</template>
 			<div class="main">
