@@ -114,7 +114,7 @@ export default {
 
 <template>
   <div class="product-details">
-    <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre>
+    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
     <NuxtLink class="link" :to="{ name: 'admin-products' }">
       <IconsArrowWest />
