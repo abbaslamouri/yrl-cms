@@ -1,53 +1,56 @@
 <script setup>
-const props = defineProps({
-  prodVariant: {
-    type: Object,
-    required: true,
-  },
-  i: {
-    type: Number,
-    required: true,
-  },
-})
+	const props = defineProps({
+		prodVariant: {
+			type: Object,
+			required: true,
+		},
+		i: {
+			type: Number,
+			required: true,
+		},
+	})
 
-defineEmits(['mediaSelectorClicked'])
+	defineEmits(['mediaSelectorClicked'])
 
-// const props = defineProps({
-//   // variant: Object,
-//   index: Number,
-// })
+	// const props = defineProps({
+	//   // variant: Object,
+	//   index: Number,
+	// })
 
-const prodState = inject('prodState')
-const attState = inject('attState')
-const attTermsState = inject('attTermsState')
-const showActions = ref(false)
-const showVariantSlideout = ref(false)
+	const prodState = inject('prodState')
+	const attState = inject('attState')
+	const attTermsState = inject('attTermsState')
+	const showVarianSlideout = ref(false)
 
-const getAttribute = (attributeId) => {
-  return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
-}
+	// const showVarianSlideout = inject('showVarianSlideout')
 
-const getTerms = (attributeId) => {
-  const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
-  return terms
-}
+	const showActions = ref(false)
 
-const removeProductVariant = () => {
-  if (!confirm('Are you sure?')) return
-  prodState.selectedItem.variants.splice(props.i, 1)
-}
+	const getAttribute = (attributeId) => {
+		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
+	}
 
-const updateVariant = (attribute, termId) => {
-  console.log('AT', attribute)
-  // console.log(value)
-  const term = attribute.terms.find((t) => t._id == termId)
+	const getTerms = (attributeId) => {
+		const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
+		return terms
+	}
 
-  console.log('T', term)
+	const removeProductVariant = () => {
+		if (!confirm('Are you sure?')) return
+		prodState.selectedItem.variants.splice(props.i, 1)
+	}
 
-  // if (!prodState.selectedItem.variants[props.i].attrTerms.length) {
-  prodState.selectedItem.variants[props.i].attrTerms.push(term)
-  // }
-}
+	const updateVariant = (attribute, termId) => {
+		console.log('AT', attribute)
+		// console.log(value)
+		const term = attribute.terms.find((t) => t._id == termId)
+
+		console.log('T', term)
+
+		// if (!prodState.selectedItem.variants[props.i].attrTerms.length) {
+		prodState.selectedItem.variants[props.i].attrTerms.push(term)
+		// }
+	}
 </script>
 
 <!-- &&
@@ -55,73 +58,106 @@ const updateVariant = (attribute, termId) => {
       prodState.selectedItem.variants[i].attrTerms.length -->
 
 <template>
-  <div class="admin-product-variant">
-    <!-- <div class="td"> -->
-    <div class="image td" @click="showVariantSlideout = true">
-      <img v-if="prodVariant.featuredImage" :src="prodVariant.featuredImage.path" alt="Variant Image" />
-      <img v-else src="/placeholder.png" alt="Variant Image" />
-    </div>
-    <div class="option td">
-      <div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
-        <div class="attribute">
-          {{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name }}
-        </div>
-        <div class="term">
-          {{ attTermsState.items.find((t) => t._id == term).name }}
-        </div>
-      </div>
-    </div>
-    <div class="stock-qty td">{{ prodVariant.stockQty }}</div>
-    <div class="price td">{{ prodVariant.price }}</div>
-    <div class="sku td">{{ prodVariant.sku }}</div>
-    <div class="actions td">
-      <button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
-      <div class="menu shadow-md" v-show="showActions">
-        <a href="#" class="link"><div class="advanced">Advanced</div></a>
-        <a href="#" class="link" @click.prevent="removeProductVariant">
-          <div class="cancel">Delete</div>
-        </a>
-        <a href="#" class="link" @click.prevent="attState.items.splice(i, 1)">
-          <div class="cancel">Cancel</div>
-        </a>
-      </div>
-    </div>
+	<div class="admin-product-variant">
+		<!-- <div class="td"> -->
+		<div class="image td" @click="showVarianSlideout = true">
+			<img v-if="prodVariant.featuredImage" :src="prodVariant.featuredImage.path" alt="Variant Image" />
+			<img v-else src="/placeholder.png" alt="Variant Image" />
+		</div>
+		<div class="option td">
+			<div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
+				<div class="attribute">
+					{{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name }}
+				</div>
+				<div class="term">
+					{{ attTermsState.items.find((t) => t._id == term).name }}
+				</div>
+			</div>
+		</div>
+		<div class="stock-qty td">{{ prodVariant.stockQty }}</div>
+		<div class="price td">{{ prodVariant.price }}</div>
+		<div class="sku td">{{ prodVariant.sku }}</div>
+		<div class="actions td">
+			<button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
+			<div class="menu shadow-md" v-show="showActions">
+				<a href="#" class="link"><div class="advanced">Advanced</div></a>
+				<a href="#" class="link" @click.prevent="removeProductVariant">
+					<div class="cancel">Delete</div>
+				</a>
+				<a href="#" class="link" @click.prevent="attState.items.splice(i, 1)">
+					<div class="cancel">Cancel</div>
+				</a>
+			</div>
+		</div>
+		<div class="slideout">
+			<div class="overlay" v-show="showVarianSlideout"></div>
+			<transition name="slide">
+				<div class="dialog shadow-md" v-show="showVarianSlideout">
+					<div class="header shadow-md">
+						<h3 class="title">
+							Edit Variants
+							<div class="option td">
+								<div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
+									<div class="attribute">
+										{{
+											attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name
+										}}
+									</div>
+									<div class="term">
+										{{ attTermsState.items.find((t) => t._id == term).name }}
+									</div>
+								</div>
+							</div>
+						</h3>
+						<button class="btn close"><IconsClose @click.prevent="showVarianSlideout = false" /></button>
+					</div>
+					<div class="main">Main</div>
+					<div class="footer shadow-md">
+						<p>Here's some contact info</p>
+					</div>
+				</div>
+			</transition>
+		</div>
 
-    <!-- <Slideout :showSlideout="showVariantSlideout">
-      <template v-slot:header>
-        <div class="header shadow-md">
-          <h3 class="title">
-            Edit Variants
-            <div class="option td">
-              <div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
-                <div class="attribute">
-                  {{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name }}
-                </div>
-                <div class="term">
-                  {{ attTermsState.items.find((t) => t._id == term).name }}
-                </div>
-              </div>
-            </div>
-          </h3>
-          <button class="btn close"><IconsClose @click="showVariantSlideout = false" /></button>
-        </div>
-      </template>
-      <div class="main">
-       
-      </div>
-      <template v-slot:footer>
-        <div class="footer shadow-md">
-          <p>Here's some contact info</p>
-        </div>
-      </template>
-    </Slideout> -->
-    <!-- <div class="actions td">
+		<!-- <ProductsVariantSlideout
+			:prodVariant="prodVariant"
+			:showVarianSlideout="showVarianSlideout"
+			@closeVariantsSlideout="showVarianSlideout = false"
+		/> -->
+
+		<!-- <Slideout :showSlideout="showVarianSlideout">
+			<template v-slot:header> -->
+		<!-- <div class="header shadow-md">
+					<h3 class="title">
+						Edit Variants
+						<div class="option td">
+							<div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
+								<div class="attribute">
+									{{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name }}
+								</div>
+								<div class="term">
+									{{ attTermsState.items.find((t) => t._id == term).name }}
+								</div>
+							</div>
+						</div>
+					</h3>
+					<button class="btn close"><IconsClose @click="showVarianSlideout = false" /></button>
+				</div> -->
+		<!-- </template>
+			<div class="main"></div>
+			<template v-slot:footer>
+				<div class="footer shadow-md">
+					<p>Here's some contact info</p>
+				</div>
+			</template>
+		</Slideout> -->
+		<!-- <div class="actions td">
             <IconsDeleteFill @click="removeProductAttribute" />
           </div> -->
 
-    <!-- </div> -->
+		<!-- </div> -->
 
-    <!-- <form @keypress.enter.prevent>
+		<!-- <form @keypress.enter.prevent>
           <ProductsAdminAttribute
             :attribute="attribute"
             :i="i"
@@ -136,8 +172,8 @@ const updateVariant = (attribute, termId) => {
           />
           <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>
         </form> -->
-  </div>
-  <!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[i]">
+	</div>
+	<!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[i]">
     <div class="header bg-blue-100 flex gap-8 py-4 justify-between">
       <div class="flex gap-8 py-4 justify-between">
         <div
@@ -274,39 +310,39 @@ const updateVariant = (attribute, termId) => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/variables';
+	@import '@/assets/scss/variables';
 
-.admin-product-variant {
-  .image {
-    width: 5rem;
-    height: 5rem;
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-  }
+	.admin-product-variant {
+		.image {
+			width: 5rem;
+			height: 5rem;
+			img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+			}
+		}
 
-  .option {
-    display: flex;
-    .attribute-term {
-      display: flex;
-      align-items: center;
-      cursor: pointer;
+		.option {
+			display: flex;
+			.attribute-term {
+				display: flex;
+				align-items: center;
+				cursor: pointer;
 
-      .attribute {
-        background-color: $slate-400;
-        color: white;
-        padding: 0.5rem 1.5rem;
-        border-radius: 2rem 0 0 2rem;
-      }
+				.attribute {
+					background-color: $slate-400;
+					color: white;
+					padding: 0.5rem 1.5rem;
+					border-radius: 2rem 0 0 2rem;
+				}
 
-      .term {
-        background-color: $slate-200;
-        padding: 0.5rem 1.5rem;
-        border-radius: 0 2rem 2rem 0;
-      }
-    }
-  }
-}
+				.term {
+					background-color: $slate-200;
+					padding: 0.5rem 1.5rem;
+					border-radius: 0 2rem 2rem 0;
+				}
+			}
+		}
+	}
 </style>
