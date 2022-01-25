@@ -1,6 +1,6 @@
 <script setup>
 	const props = defineProps({
-		showAttributesVariantsSlideout: {
+		showSlideout: {
 			type: Boolean,
 			default: false,
 		},
@@ -13,12 +13,12 @@
 
 <template>
 	<div class="slideout">
-		<div class="overlay" v-show="showAttributesVariantsSlideout"></div>
+		<div class="overlay" v-show="showSlideout"></div>
 		<transition name="slide">
-			<div class="dialog shadow-md" v-show="showAttributesVariantsSlideout">
+			<div class="dialog shadow-md" v-show="showSlideout">
 				<div class="header shadow-md">
 					<h3 class="title">Edit Variants</h3>
-					<button class="btn close"><IconsClose @click="$emit('closeAttributesVariantsSlideout')" /></button>
+					<button class="btn close"><IconsClose @click="$emit('closeSlideout')" /></button>
 				</div>
 				<div class="main">
 					<ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
