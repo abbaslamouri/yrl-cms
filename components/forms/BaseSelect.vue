@@ -36,6 +36,7 @@ export default {
 <template>
   <div class="base-select">
     <label v-if="label">{{ label }}</label>
+    <!-- <div class="custom-select"> -->
     <select
       ref="selectRef"
       :value="modelValue"
@@ -47,11 +48,12 @@ export default {
       :aria-required="typeof $attrs.required != undefined ? true : null"
       @change="$emit('update:modelValue', $event.target.value)"
     >
-      <option value="">Select Option</option>
+      <option value="" disabled>Select Option</option>
       <option v-for="option in options" :key="option.key" :value="option.key" :selected="modelValue === option.key">
         {{ option.name }}
       </option>
     </select>
+    <!-- </div> -->
   </div>
 </template>
 

@@ -1,39 +1,39 @@
 <script setup>
-	const props = defineProps({
-		// variant: Object,
-		index: Number,
-	})
+const props = defineProps({
+  // variant: Object,
+  index: Number,
+})
 
-	const prodState = inject('prodState')
-	const attState = inject('attState')
+const prodState = inject('prodState')
+const attState = inject('attState')
 
-	const showAttVarSlideout = ref(false)
+const showAttVarSlideout = ref(false)
 
-	const getAttribute = (attributeId) => {
-		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
-	}
+const getAttribute = (attributeId) => {
+  return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
+}
 
-	const getTerms = (attributeId) => {
-		const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
-		return terms
-	}
+const getTerms = (attributeId) => {
+  const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
+  return terms
+}
 
-	const removeVariant = () => {
-		if (!confirm('Are you sure?')) return
-		prodState.selectedItem.variants.splice(props.index, 1)
-	}
+const removeVariant = () => {
+  if (!confirm('Are you sure?')) return
+  prodState.selectedItem.variants.splice(props.index, 1)
+}
 
-	const updateVariant = (attribute, termId) => {
-		console.log('AT', attribute)
-		// console.log(value)
-		const term = attribute.terms.find((t) => t._id == termId)
+const updateVariant = (attribute, termId) => {
+  console.log('AT', attribute)
+  // console.log(value)
+  const term = attribute.terms.find((t) => t._id == termId)
 
-		console.log('T', term)
+  console.log('T', term)
 
-		// if (!prodState.selectedItem.variants[props.index].attrTerms.length) {
-		prodState.selectedItem.variants[props.index].attrTerms.push(term)
-		// }
-	}
+  // if (!prodState.selectedItem.variants[props.index].attrTerms.length) {
+  prodState.selectedItem.variants[props.index].attrTerms.push(term)
+  // }
+}
 </script>
 
 <!-- &&
@@ -41,17 +41,17 @@
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-	<div class="variants">
-		<header class="admin-section-header">Variants</header>
-		<div class="content">
-			<div>Different types of this product (e.g. size, color)</div>
-			<button class="btn btn-primary" @click="showAttVarSlideout = true">
-				<IconsPlus />
-				<span>Add</span>
-			</button>
-		</div>
-		<Slideout :showSlideout="showAttVarSlideout">
-			<!-- <template v-slot:header>
+  <div class="variants">
+    <header class="admin-section-header">Variants</header>
+    <div class="content">
+      <div>Different types of this product (e.g. size, color)</div>
+      <button class="btn btn-primary" @click="showAttVarSlideout = true">
+        <IconsPlus />
+        <span>Add</span>
+      </button>
+    </div>
+    <Slideout :showSlideout="showAttVarSlideout">
+      <!-- <template v-slot:header>
 				<div class="header shadow-md">
 					<h3 class="title">Edit Variants</h3>
 					<button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
@@ -61,27 +61,27 @@
 			:showAttributesVariantsSlideout="showAttributesVariantsSlideout"
 			@closeAttributesVariantsSlideout="showAttributesVariantsSlideout = false"
 		/> -->
-			<template v-slot:header>
-				<div class="header shadow-md">
-					<h3 class="title">Edit Variants</h3>
-					<button class="btn close"><IconsClose @click="showAttributeSlideout = false" /></button>
-				</div>
-			</template>
-			<div class="main">
-				<ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
-				<div v-else>
-					<ProductsAdminProductAttributesPanel />
-					<ProductsAdminProductVariantsPanel />
-				</div>
-			</div>
-			<template v-slot:footer>
-				<div class="footer shadow-md">
-					<p>Here's some contact info</p>
-				</div>
-			</template>
-		</Slideout>
-	</div>
-	<!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
+      <template v-slot:header>
+        <div class="header shadow-md">
+          <h3 class="title">Edit Variants</h3>
+          <button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
+        </div>
+      </template>
+      <div class="main">
+        <ProductsAdminEmptyVariantMsg v-if="!attState.items.length" />
+        <div v-else>
+          <ProductsAdminProductAttributesPanel />
+          <ProductsAdminProductVariantsPanel />
+        </div>
+      </div>
+      <template v-slot:footer>
+        <div class="footer shadow-md">
+          <p>Here's some contact info</p>
+        </div>
+      </template>
+    </Slideout>
+  </div>
+  <!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
     <div class="header bg-blue-100 flex gap-8 py-4 justify-between">
       <div class="flex gap-8 py-4 justify-between">
         <div
@@ -192,13 +192,13 @@
           <option value="reduced">Reduced</option>
           <option value="zero">Xero</option>
         </select> -->
-	<!-- <input
+  <!-- <input
             class="bg-gray-300"
             type="text"
             v-model="prodState.selectedItem.variants[index].shippingClass"
             placeholder="Storewide threshold: 2"
           /> -->
-	<!-- </div>
+  <!-- </div>
       <div class="row flex items-center justify-around gap-10">
         <div class="shipping-class bg-gray-300">
           <label>Sipping Class</label>
@@ -223,52 +223,52 @@
 </template>
 
 <style lang="scss" scoped>
-	@import '@/assets/scss/variables';
+@import '@/assets/scss/variables';
 
-	.variants {
-		background-color: white;
-		border-radius: 5px;
-		padding: 2rem 2rem;
+.variants {
+  background-color: white;
+  border-radius: 5px;
+  padding: 2rem 2rem;
 
-		.content {
-			display: flex;
-			align-items: center;
-			justify-content: space-between;
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-			.btn {
-				display: flex;
-				align-items: center;
-				gap: 0.3rem;
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
 
-				svg {
-					fill: $slate-50;
-					width: 1.8rem;
-					height: 1.8rem;
-				}
-			}
-		}
+      svg {
+        fill: $slate-50;
+        width: 1.8rem;
+        height: 1.8rem;
+      }
+    }
+  }
 
-		// .slideout {
-		//   .dialog {
-		//     .header {
-		//       display: flex;
-		//       align-items: center;
-		//       justify-content: space-between;
-		//       padding: 2rem;
-		//       background-color: $slate-50;
-		//       .btn {
-		//         svg {
-		//           width: 1.8rem;
-		//           height: 1.8rem;
-		//         }
-		//       }
-		//     }
+  // .slideout {
+  //   .dialog {
+  //     .header {
+  //       display: flex;
+  //       align-items: center;
+  //       justify-content: space-between;
+  //       padding: 2rem;
+  //       background-color: $slate-50;
+  //       .btn {
+  //         svg {
+  //           width: 1.8rem;
+  //           height: 1.8rem;
+  //         }
+  //       }
+  //     }
 
-		//     .main {
-		//       // border: 1px solid green;
-		//       min-height: 100vh;
-		//     }
-		//   }
-		// }
-	}
+  //     .main {
+  //       // border: 1px solid green;
+  //       min-height: 100vh;
+  //     }
+  //   }
+  // }
+}
 </style>
