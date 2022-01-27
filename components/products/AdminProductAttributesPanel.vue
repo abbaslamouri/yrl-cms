@@ -14,7 +14,7 @@ const insertEmptyAttribute = () => {
   if (prodState.selectedItem.attributes.length == attState.items.length)
     return appError.setSnackbar(true, 'You have used all available attributes', 'Error')
 
-  prodState.selectedItem.attributes.push({ attribute: null, terms: [], defaultTerm: null })
+  prodState.selectedItem.attributes.push({ attribute: '', terms: [], defaultTerm: '' })
 }
 
 const addAttribute = () => {

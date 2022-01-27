@@ -160,25 +160,32 @@ const setDefaultTerm = () => {
 <template>
   <div class="admin-product-attribute">
     <!-- <div class="td"> -->
-    <div class="base-select attribute td">
-      <select v-model="prodState.selectedItem.attributes[i].attribute" @change="setDefaultTerm">
-        <option
-          value="null"
-          v-if="prodState.selectedItem.attributes.length == 1 && prodState.selectedItem.attributes[0].attribute == null"
-        >
-          Select Option
-        </option>
-        <option
-          v-for="option in attState.items.map((a) => {
+    <div class="attribute td">
+      <div class="base-select">
+        <!-- <FormsBaseSelect
+        label="Attribute"
+        :options="
+          attState.items.map((a) => {
             return { key: a._id, name: a.name }
-          })"
-          :key="option.key"
-          :value="option.key"
-          :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
-        >
-          {{ option.name }}
-        </option>
-      </select>
+          })
+        "
+        :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
+      /> -->
+        <select v-model="prodState.selectedItem.attributes[i].attribute" @change="setDefaultTerm" class="centered">
+          <option value="">Select Option</option>
+          <option
+            v-for="option in attState.items.map((a) => {
+              return { key: a._id, name: a.name }
+            })"
+            :key="option.key"
+            :value="option.key"
+            :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
+          >
+            {{ option.name }}
+          </option>
+        </select>
+        <!-- <label>Attribute</label> -->
+      </div>
     </div>
     <div class="attribute-default-term td">
       <FormsBaseSelect
@@ -200,7 +207,7 @@ const setDefaultTerm = () => {
           Select None
         </button>
         <div class="base-select">
-          <select v-model="termSelect" @change="addTerm">
+          <select v-model="termSelect" @change="addTerm" class="centered">
             <option value="">Add term</option>
             <option
               v-for="term in attTermsState.items.filter((t) => t.parent == prodAttr.attribute)"
@@ -332,14 +339,21 @@ const setDefaultTerm = () => {
 
 .admin-product-attribute {
   .attribute {
-    // border: 1px solid red;
-
-    &.base-select {
-      align-self: flex-start;
-    }
+    // .base-select {
+    //   select {
+    //     padding: 1rem 2rem;
+    //   }
+    // }
   }
 
+  // border: 1px solid red;
+
   .attribute-default-term {
+    // .base-select {
+    //   select {
+    //     padding: 1rem 2rem !important;
+    //   }
+    // }
     // border: 1px solid red;
   }
 
@@ -358,6 +372,7 @@ const setDefaultTerm = () => {
       display: flex;
       flex-direction: column;
       gap: 0.75rem;
+      min-width: 12rem;
 
       .btn {
         font-size: 1rem;
@@ -365,6 +380,10 @@ const setDefaultTerm = () => {
         background-color: $slate-400;
         color: white;
         width: 9rem;
+      }
+
+      select {
+        font-size: 1.2rem;
       }
     }
 

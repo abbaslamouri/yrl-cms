@@ -6,10 +6,10 @@ const prodState = inject('prodState');
   <div class="details shadow-md">
     <header class="admin-section-header">Details</header>
     <div class="info">
-      <FormsBaseInput label="Name" required v-model="prodState.selectedItem.name" />
+      <FormsBaseInput label="Name" placeholder="Name" required v-model="prodState.selectedItem.name" />
       <div class="sku-inventory">
         <div class="sku">
-          <FormsBaseInput label="SKU" v-model="prodState.selectedItem.sku" />
+          <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
         </div>
         <div class="inventory">
           <div class="available">
@@ -19,7 +19,7 @@ const prodState = inject('prodState');
           <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
         </div>
       </div>
-      <FormsBaseInput label="Description" v-model="prodState.selectedItem.description" />
+      <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
     </div>
   </div>
 </template>
