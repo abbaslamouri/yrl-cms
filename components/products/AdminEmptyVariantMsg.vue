@@ -1,21 +1,23 @@
 <script setup>
 	const prodState = inject('prodState')
+
+	defineEmits(['closeAttVarSlideout'])
 </script>
 
 <template>
 	<div class="empty-variant-message">
 		<div class="card">
 			<h3>Set up variant groups to sell variations of the same product</h3>
-			<p>
+			<p class="message">
 				Variants help you to sell products with slight differences, but are still the same product. For example, you
 				might sell a t-shirt in different colors, or a plant pot in different sizes.<br /><br />You can configure
-				variants to have their own price, SKU, and stock inventory. To get started, create groups and options for your
-				variants. Groups define the type of variant (e.g. color). Options are a choice your customer can make within
-				that group (e.g. blue).
+				variants to have their own price, SKU, and stock inventory. To get started, create attributes and attribute
+				terms for your variants. Attributes define the type of variant (e.g. color). Terms are a choice your customer
+				can make within that group (e.g. blue).
 			</p>
-			<button class="btn btn-primary" @click="prodState.selectedItem.variantGroups.unshift({})">
-				Add Variant Group
-			</button>
+			<p class="sub-message"><IconsInfo />Using this feature requires you to save the product first.</p>
+
+			<button class="btn btn-primary" @click="$emit('closeAttVarSlideout')">Cancel</button>
 		</div>
 	</div>
 </template>
@@ -45,6 +47,15 @@
 				margin-block-start: 1em;
 				margin-block-end: 1em;
 			}
+
+			// .sub-message {
+			// 	background-color: $sky-100;
+			// 	padding: 1.5rem 3rem;
+			// 	display: flex;
+			// 	align-items: center;
+			// 	gap: 2rem;
+			// 	border-radius: 1rem;
+			// }
 
 			.btn {
 				align-self: flex-end;

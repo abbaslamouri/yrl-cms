@@ -1,66 +1,67 @@
 <script setup>
-const prodState = inject('prodState');
+	const prodState = inject('prodState')
 </script>
 
 <template>
-  <div class="details shadow-md">
-    <header class="admin-section-header">Details</header>
-    <div class="info">
-      <FormsBaseInput label="Name" placeholder="Name" required v-model="prodState.selectedItem.name" />
-      <div class="sku-inventory">
-        <div class="sku">
-          <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
-        </div>
-        <div class="inventory">
-          <div class="available">
-            <h4 class="title">Available Stock:</h4>
-            <span>{{ prodState.selectedItem.stockQty || 0 }}</span>
-          </div>
-          <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
-        </div>
-      </div>
-      <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
-    </div>
-  </div>
+	<div class="details shadow-md">
+		<header class="admin-section-header">Details</header>
+		<div class="info">
+			<FormsBaseInput label="Name" placeholder="Name" required v-model="prodState.selectedItem.name" />
+			<div class="sku-inventory">
+				<div class="sku">
+					<FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
+				</div>
+				<div class="inventory">
+					<div class="available">
+						<h4 class="title">Available Stock:</h4>
+						<span>{{ prodState.selectedItem.stockQty || 0 }}</span>
+					</div>
+					<FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
+				</div>
+			</div>
+			<FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
+		</div>
+	</div>
 </template>
 
 <style lang="scss" scoped>
-.details {
-  background-color: white;
-  border-radius: 5px;
-  padding: 2rem 2rem;
+	.details {
+		background-color: white;
+		border-radius: 5px;
+		padding: 2rem 2rem;
 
-  .info {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    .sku-inventory {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
+		.info {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
 
-      .sku {
-        flex: 1;
-      }
+			.sku-inventory {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 2rem;
 
-      .inventory {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        font-size: 1.3rem;
+				.sku {
+					flex: 1;
+				}
 
-        .available {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
+				.inventory {
+					display: flex;
+					flex-direction: column;
+					gap: 0.5rem;
+					font-size: 1.3rem;
 
-          .title {
-            font-weight: 600;
-          }
-        }
-      }
-    }
-  }
-}
+					.available {
+						display: flex;
+						align-items: center;
+						gap: 1rem;
+
+						.title {
+							font-weight: 600;
+						}
+					}
+				}
+			}
+		}
+	}
 </style>
