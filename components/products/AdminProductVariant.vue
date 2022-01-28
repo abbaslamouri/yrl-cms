@@ -56,6 +56,7 @@ const updateVariant = (attribute, termId) => {
 
 <template>
   <div class="admin-product-variant">
+
     <!-- <div class="td"> -->
     <div class="image td" @click="$emit('showVariantSlideout')">
       <img v-if="prodVariant.featuredImage" :src="prodVariant.featuredImage.path" alt="Variant Image" />
@@ -71,7 +72,10 @@ const updateVariant = (attribute, termId) => {
         </div>
       </div>
     </div>
-    <div class="stock-qty td">{{ prodVariant.stockQty }}</div>
+    <div class="stock-qty td">
+      <div v-if="!prodState.selectedItem.manageInventory">&infin;</div>
+      <div v-else>{{ prodVariant.stockQty }}</div>
+    </div>
     <div class="price td">{{ prodVariant.price }}</div>
     <div class="sku td">{{ prodVariant.sku }}</div>
     <div class="actions td">
@@ -249,9 +253,17 @@ const updateVariant = (attribute, termId) => {
 @import '@/assets/scss/variables';
 
 .admin-product-variant {
+  cursor: pointer;
+
+  .td {
+    display: flex;
+    align-items: center;
+  }
+
   .image {
     width: 5rem;
     height: 5rem;
+
     img {
       width: 100%;
       height: 100%;
@@ -264,7 +276,7 @@ const updateVariant = (attribute, termId) => {
     .attribute-term {
       display: flex;
       align-items: center;
-      cursor: pointer;
+      // cursor: pointer;
 
       .attribute {
         background-color: $slate-400;

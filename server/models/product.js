@@ -13,7 +13,7 @@ const schema = new mongoose.Schema(
       unique: true,
       lowercase: true,
     },
-    customSlug: {
+    permalink: {
       type: String,
       unique: true,
       lowercase: true,
@@ -92,7 +92,7 @@ const schema = new mongoose.Schema(
     ],
     attributes: [
       {
-        item: { type: mongoose.Schema.Types.ObjectId, ref: 'Attribute' },
+        attribute: { type: mongoose.Schema.Types.ObjectId, ref: 'Attribute' },
         // required: [true, 'Product Category is required'],
         terms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Attributeterm' }],
         // required: [true, 'Product Category is required'],

@@ -77,7 +77,7 @@ export default {
         :aria-selected="items.includes(option.key)"
       >
         <label class="form-control" :class="{ disabled: inputRefs[index] && inputRefs[index].disabled }">
-          <input :ref="(el) => (inputRefs[index] = el)" readonly type="checkbox" :value="option.key" @click="addItem" />
+          <input :ref="(el) => (inputRefs[index] = el)" readonly type="checkbox" :value="option.key" @click="addItem" :checked="modelValue.includes(option.key)"/>
           <div class="label">{{ option.name }}</div>
         </label>
       </div>

@@ -17,6 +17,12 @@ const props = defineProps({
 const prodState = inject('prodState')
 const attState = inject('attState')
 const attTermsState = inject('attTermsState')
+const handleMediaSelectorClick = inject('handleMediaSelectorClick')
+const processSelectedMedia = inject('processSelectedMedia')
+
+const getAttributeByVariantTermId = (termId) => {
+  return attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == termId).parent)
+}
 
 // defineEmits(['mediaSelectorClicked', 'showVariantSlideout'])
 </script>
@@ -41,50 +47,69 @@ const attTermsState = inject('attTermsState')
         </div>
       </template>
       <div class="main">
-        <h2>Select options for your variant</h2>
+        <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
+
+        <h3>Select options for your variant</h3>
         <div class="attributes" v-if="prodState.selectedItem.attributes">
-          <div v-for="(termId, j) in prodVariantEdit.attrTerms" :key="termId">
-            {{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == termId).parent).name }}
-            <select v-model="prodState.selectedItem.variants[editIndex].attrTerms[j]">
+          <div class="attribute" v-for="(termId, j) in prodVariantEdit.attrTerms" :key="termId">
+            <!-- {{ getAttributeByVariantTermId(termId).name }} -->
+            <!-- <select v-model="prodState.selectedItem.variants[editIndex].attrTerms[j]">
               <option
                 v-for="id in prodState.selectedItem.attributes.find(
-                  (a) => a.attribute == attTermsState.items.find((t) => t._id == termId).parent
+                  (a) => a.attribute == getAttributeByVariantTermId(termId)._id
                 ).terms"
                 :key="id"
                 :value="id"
               >
                 {{ attTermsState.items.find((t) => t._id == id).name }}
               </option>
-            </select>
+            </select> -->
+            <!-- <div class="attribute"> -->
             <FormsBaseSelect
+              v-model="prodState.selectedItem.variants[editIndex].attrTerms[j]"
+              :label="getAttributeByVariantTermId(termId).name"
               :options="
-                prodState.selectedItem.attributes.find(
-                  (a) => a.attribute == attTermsState.items.find((t) => t._id == termId).parent
-                ).terms
+                prodState.selectedItem.attributes
+                  .find((a) => a.attribute == getAttributeByVariantTermId(termId)._id)
+                  .terms.map((el) => {
+                    return { key: el, name: attTermsState.items.find((t) => t._id == el).name }
+                  })
               "
             />
+            <!-- </div> -->
           </div>
         </div>
         <h3>Variant Details</h3>
         <div class="image">
-          <button class="btn btn-primary" @click.prevent="handleMediaSelectorClick({ image: 'gallery', index: null })">
-            <IconsImage />
-            <span> Select Images </span>
-          </button>
+          <ProductsAdminVariantImageGallery :editIndex="editIndex" />
 
-          <span>or</span>
-          <button class="btn btn-primary" @click.prevent="handleMediaSelectorClick({ image: 'gallery', index: null })">
-            <IconsImage />
-            <span> Choose Existing</span>
-          </button>
           <!-- @click.prevent="handleMediaSelectorClick({ image: 'variant', index })" -->
         </div>
         <div class="sku-stock">
-          <div class="sku">SKU</div>
-          <div class="stock-qty">Stock Qty</div>
+          <div class="sku">
+            <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.variants[editIndex].sku" />
+          </div>
+          <div class="stock">
+            <FormsBaseInput
+              label="Stck Qty"
+              placeholder="Stock Qty"
+              v-model="prodState.selectedItem.variants[editIndex].stockQty"
+            />
+          </div>
         </div>
-        <div class="price">Price</div>
-        <div class="description">Description</div>
+        <div class="price">
+          <FormsBaseInput
+              label="Price"
+              placeholder="Price"
+              currency
+              v-model="prodState.selectedItem.variants[editIndex].price"
+            />
+        </div>
+        <div class="description"><FormsBaseInput
+              label="Description"
+              placeholder="Description"
+              v-model="prodState.selectedItem.variants[editIndex].description"
+            /></div>
       </div>
       <template v-slot:footer>
         <div class="footer shadow-md">
@@ -128,10 +153,23 @@ const attTermsState = inject('attTermsState')
       align-items: center;
       justify-content: space-evenly;
 
+      .attribute {
+        flex: 1;
+      }
 
-      select {
-        width: 100%;
-        border: 1px solid red;
+      // select {
+      //   width: 100%;
+      //   border: 1px solid red;
+      // }
+    }
+
+    .sku-stock {
+      display: flex;
+      align-items: center;
+      gap:2rem;
+      .sku,
+      .stock {
+        flex: 1;
       }
     }
   }

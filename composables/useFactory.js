@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { useError } from '~/pinia/useError';
-const appError = useError();
+import axios from 'axios'
+import { useError } from '~/pinia/useError'
+const appError = useError()
 
-const baseURL = `http://localhost:3000/api`;
+const baseURL = `http://localhost:3000/api`
 
 const http = axios.create({
   baseURL,
-});
+})
 
 const useFactory = (collection) => {
   const state = reactive({
@@ -27,7 +27,7 @@ const useFactory = (collection) => {
       populate: null,
     },
     errorMsg: '',
-  });
+  })
 
   const actions = {
     async resetSelectedItem() {
@@ -41,68 +41,83 @@ const useFactory = (collection) => {
         countInStock: 20,
         featuredImage: null,
         gallery: [],
-      };
+      }
     },
 
     async fetchAll() {
-      state.errorMsg = '';
+      // console.log('SQ', state.query)
+      state.errorMsg = ''
       const { data, error } = await useFetch(`/v1/${collection}/`, {
         baseURL: state.baseURL,
         method: 'get',
         params: state.query,
         // pick: ['name', 'slug'],
         // lazy: true,
-      });
+      })
       // console.log(`${collection} DATA`, data.value)
       if (error.value) {
-        state.errorMsg = 'Error while fetching docs';
-        appError.setSnackbar(true, state.errorMsg);
+        state.errorMsg = 'Error while fetching docs'
+        appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)S
       } else {
-        state.items = data.value;
+        state.items = data.value
+      }
+    },
+
+    async fetchItemById(id) {
+      state.errorMsg = ''
+      try {
+        const response = await http.get(`v1/${collection}/${id}`)
+        console.log(response)
+        return response.data
+      } catch (err) {
+        console.log('MyERROR', err)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
       }
     },
 
     async fetchCount() {
-      state.errorMsg = '';
+      state.errorMsg = ''
       const { data, error } = await useFetch(`/v1/${collection}/count`, {
         baseURL: state.baseURL,
         method: 'get',
         params: state.query,
-      });
+      })
       // console.log('DATA', data.value)
       if (error.value) {
-        state.errorMsg = 'Error while fetching docs count';
-        appError.setSnackbar(true, state.errorMsg);
+        state.errorMsg = 'Error while fetching docs count'
+        appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)
       } else {
-        state.totalItemCount = data.value;
+        state.totalItemCount = data.value
       }
     },
 
     async saveItem() {
-      state.errorMsg = '';
+      state.errorMsg = ''
       try {
-        let response = {};
+        let response = {}
         if (state.selectedItem._id) {
-          response = await http.patch(`v1/${collection}/${state.selectedItem._id}`, state.selectedItem);
-          const index = state.items.findIndex((el) => el._id == response.data._id);
-          if (index != -1) state.items.splice(index, 1, response.data);
+          response = await http.patch(`v1/${collection}/${state.selectedItem._id}`, state.selectedItem)
+          const index = state.items.findIndex((el) => el._id == response.data._id)
+          if (index != -1) state.items.splice(index, 1, response.data)
         } else {
-          response = await http.post(`v1/${collection}/`, state.selectedItem);
-          state.items.push(response.data);
+          response = await http.post(`v1/${collection}/`, state.selectedItem)
+          state.items.push(response.data)
         }
-        return response.data;
+        appError.setSnackbar(true, 'Changes saved successfully', 'Success')
+        return response.data
         // state.selectedItem = {}
       } catch (err) {
-        console.error('MyERROR', err.response);
-        state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-        appError.setSnackbar(true, state.errorMsg);
+        console.error('MyERROR', err.response)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
       }
     },
 
     async saveMany() {
-      state.errorMsg = '';
+      state.errorMsg = ''
       // await Promise.all(
       // state.selectedItems.map(async (item) => {
       try {
@@ -112,67 +127,67 @@ const useFactory = (collection) => {
         // const index = state.items.findIndex((el) => el._id == response.data._id)
         // if (index != -1) state.items.splice(index, 1, response.data)
         // } else {
-        const response = await http.post(`v1/${collection}/`, state.selectedItems);
-        console.log(response);
+        const response = await http.post(`v1/${collection}/`, state.selectedItems)
+        console.log(response)
         // state.items.push(response.data)
         // }
         // return response.data
         // state.selectedItem = {}
       } catch (err) {
-        console.error('MyERROR', err.response);
-        state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-        appError.setSnackbar(true, state.errorMsg);
+        console.error('MyERROR', err.response)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
       }
       // })
       // )
     },
 
     async updateItems(payload) {
-      state.errorMsg = '';
+      state.errorMsg = ''
       await Promise.all(
         state.selectedItems.map(async (item) => {
           try {
-            const response = await http.patch(`v1/${collection}/${item._id}`, payload);
-            console.log(response);
+            const response = await http.patch(`v1/${collection}/${item._id}`, payload)
+            console.log(response)
           } catch (err) {
-            console.error('MyERROR', err);
-            state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-            appError.setSnackbar(true, state.errorMsg);
+            console.error('MyERROR', err)
+            state.errorMsg = err.response.data.message || err.response.data.statusMessage
+            appError.setSnackbar(true, state.errorMsg)
           }
         })
-      );
+      )
     },
 
     async deleteItem() {
-      state.errorMsg = '';
+      state.errorMsg = ''
       try {
-        const response = await http.delete(`v1/${collection}/${state.selectedItem._id}`);
-        console.log(response);
-        const index = state.items.findIndex((el) => el._id == state.selectedItem._id);
-        console.log(index);
-        if (index !== -1) state.items.splice(index, 1);
+        const response = await http.delete(`v1/${collection}/${state.selectedItem._id}`)
+        console.log(response)
+        const index = state.items.findIndex((el) => el._id == state.selectedItem._id)
+        console.log(index)
+        if (index !== -1) state.items.splice(index, 1)
       } catch (err) {
-        console.log('MyERROR', err.response);
-        state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-        appError.setSnackbar(true, state.errorMsg);
+        console.log('MyERROR', err.response)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
       }
     },
 
     async deleteMany(payload) {
-      state.errorMsg = '';
+      state.errorMsg = ''
       // await Promise.all(
       // state.selectedItems.map(async (item) => {
       try {
-        const response = await http.post(`v1/${collection}/delete-many`, payload);
-        console.log(response);
+        const response = await http.post(`v1/${collection}/delete-many`, payload)
+        console.log(response)
         // let index = state.items.findIndex((el) => el._id == item._id)
         // if (index !== -1) state.items.splice(index, 1)
         // index = state.selectedItems.findIndex((el) => el._id == item._id)
         // if (index !== -1) state.selectedItems.splice(index, 1)
       } catch (err) {
-        console.log('MyERROR', err);
-        state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-        appError.setSnackbar(true, state.errorMsg);
+        console.log('MyERROR', err)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
       }
       // })
       // )
@@ -180,44 +195,44 @@ const useFactory = (collection) => {
     },
 
     async searchDb(keyword) {
-      console.log(keyword);
-      state.errorMsg = '';
+      console.log(keyword)
+      state.errorMsg = ''
       const { data, error } = await useFetch(`/v1/${collection}/search`, {
         baseURL: state.baseURL,
         method: 'get',
         params: { keyword: keyword },
-      });
-      console.log('DATA', data.value);
+      })
+      console.log('DATA', data.value)
       if (error.value) {
-        state.errorMsg = 'Error while fetching docs count';
-        appError.setSnackbar(true, state.errorMsg);
+        state.errorMsg = 'Error while fetching docs count'
+        appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)
       } else {
-        state.selectedItems = data.value;
+        state.selectedItems = data.value
       }
     },
 
     async deleteItems() {
-      state.errorMsg = '';
-      console.log('state.selectedItems', [...state.selectedItems]);
+      state.errorMsg = ''
+      console.log('state.selectedItems', [...state.selectedItems])
 
       await Promise.all(
         state.selectedItems.map(async (item) => {
           try {
-            const response = await http.delete(`v1/${collection}/${item._id}`);
-            console.log(response);
-            let index = state.items.findIndex((el) => el._id == item._id);
-            if (index !== -1) state.items.splice(index, 1);
-            index = state.selectedItems.findIndex((el) => el._id == item._id);
-            if (index !== -1) state.selectedItems.splice(index, 1);
+            const response = await http.delete(`v1/${collection}/${item._id}`)
+            console.log(response)
+            let index = state.items.findIndex((el) => el._id == item._id)
+            if (index !== -1) state.items.splice(index, 1)
+            index = state.selectedItems.findIndex((el) => el._id == item._id)
+            if (index !== -1) state.selectedItems.splice(index, 1)
           } catch (err) {
-            console.log('MyERROR', err);
-            state.errorMsg = err.response.data.message || err.response.data.statusMessage;
-            appError.setSnackbar(true, state.errorMsg);
+            console.log('MyERROR', err)
+            state.errorMsg = err.response.data.message || err.response.data.statusMessage
+            appError.setSnackbar(true, state.errorMsg)
           }
         })
-      );
-      console.log('DONE');
+      )
+      console.log('DONE')
     },
 
     // async fetchAllProductsAndCategories() {
@@ -398,11 +413,11 @@ const useFactory = (collection) => {
     //     state.errorMsg = err.response.data.message || err.response.data.statusMessage
     //   }
     // },
-  };
-  return { state, actions };
-};
+  }
+  return { state, actions }
+}
 
-export default useFactory;
+export default useFactory
 
 // await Promise.all(
 //   req.files.images.map(async (file, i) => {

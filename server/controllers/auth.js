@@ -282,11 +282,12 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 // @desc      Protect middleware
 // @access    Private
 const protect = asyncHandler(async (req, res, next) => {
+  console.log('RC', JSON.parse(req.cookies.auth).token)
   let token = ''
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
-  } else if (req.cookies && req.cookies.token) {
-    token = req.cookies.token
+  } else if (req.cookies && req.cookies.auth) {
+    token = JSON.parse(req.cookies.auth).token
   }
 
   if (!token) return next(new AppError('You are not allowed to access these resources, please login', 401))

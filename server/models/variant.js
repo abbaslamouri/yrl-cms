@@ -45,6 +45,7 @@ const schema = new mongoose.Schema(
     // type: {
     //   type: String,
     // },
+    gallery: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Media' }],
     price: {
       type: Number,
     },

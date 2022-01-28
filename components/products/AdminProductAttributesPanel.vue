@@ -44,7 +44,7 @@ const addAttribute = () => {
 
 <template>
   <div class="admin-product-attributes-panel">
-    <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre>
+    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <div class="attributes">
       <header>
         <h2>Attributes</h2>

@@ -1,7 +1,6 @@
 <script setup>
 // const product = inject('product')
 import { useError } from '~/pinia/useError'
-import VariantEdit from './VariantEdit.vue'
 const appError = useError()
 const prodState = inject('prodState')
 const attState = inject('attState')
@@ -64,6 +63,10 @@ const bulkAddVariants = () => {
         shipping: {
           dimensions: {},
         },
+        stockQty: 0,
+        price: prodState.selectedItem.price,
+        sku: '',
+        gallery: [],
       }
     })
 }
@@ -243,7 +246,7 @@ const setProdVariantEdit = (variant, index) => {
         </form>
       </main>
     </div>
-    <VariantEdit
+    <ProductsAdminVariantEdit
       :prodVariantEdit="prodVariantEdit"
       :editIndex="editIndex"
       :showVariantSlideout="showVariantSlideout"

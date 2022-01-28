@@ -1,27 +1,27 @@
 <script setup>
-const { state, actions } = useFactory('products');
-provide('state', state);
-provide('actions', actions);
+const { state, actions } = useFactory('products')
+provide('state', state)
+provide('actions', actions)
 
-const page = ref(1);
-const perPage = ref(10);
-const selectedCategories = ref('');
-const timer = ref(null);
+const page = ref(1)
+const perPage = ref(10)
+const selectedCategories = ref('')
+const timer = ref(null)
 
 // state.query.fields = 'name,slug,price'
-state.query.page = 1;
-state.query.limit = perPage.value;
-state.query.populate = 'featuredImage categories';
-state.sort.field = 'createdAt';
-state.sort.order = '-';
-state.query.sort = `${state.sort.order}${state.sort.field}`;
-await Promise.all([actions.fetchAll(), actions.fetchCount()]);
+state.query.page = 1
+state.query.limit = perPage.value
+state.query.populate = 'featuredImage categories'
+state.sort.field = 'createdAt'
+state.sort.order = '-'
+state.query.sort = `${state.sort.order}${state.sort.field}`
+await Promise.all([actions.fetchAll(), actions.fetchCount()])
 
 const pages = computed(() =>
   state.totalItemCount % perPage.value
     ? parseInt(state.totalItemCount / perPage.value) + 1
     : parseInt(state.totalItemCount / perPage.value)
-);
+)
 
 // state.query.fields = 'name,slug,price'
 // state.query.page = 1
@@ -33,10 +33,10 @@ const pages = computed(() =>
 // await Promise.all([actions.fetchAll(), actions.fetchCount()])
 
 const setPage = async (currentPage) => {
-  console.log(currentPage);
-  state.query.page = currentPage;
-  await actions.fetchAll();
-};
+  console.log(currentPage)
+  state.query.page = currentPage
+  await actions.fetchAll()
+}
 
 // watch(
 //   () => selectedCategories.value,
@@ -76,7 +76,7 @@ const setPage = async (currentPage) => {
 <script>
 export default {
   layout: 'admin',
-};
+}
 </script>
 
 <template>
@@ -106,7 +106,7 @@ export default {
       </NuxtLink>
     </div>
     <!-- <ProductsSearch v-model="state.query.keyword" @keywordSet="submitSearch" /> -->
-    <!-- <ProductsAdminList /> -->
+    <ProductsAdminList />
     <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
   </div>
 </template>
@@ -136,13 +136,13 @@ export default {
       .btn {
         display: flex;
         align-items: center;
-        gap: .3rem;
+        gap: 0.3rem;
       }
 
       svg {
         fill: $slate-50;
-        width:1.8rem;
-        height:1.8rem;
+        width: 1.8rem;
+        height: 1.8rem;
       }
     }
     // justify-content: center;

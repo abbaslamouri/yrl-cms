@@ -68,7 +68,7 @@
 				</div>
 			</template>
 			<div class="main">
-				<ProductsAdminEmptyVariantMsg v-if="attState.items.length" @closeAttVarSlideout="showAttVarSlideout = false" />
+				<ProductsAdminEmptyVariantMsg v-if="!attState.items.length || !prodState.selectedItem._id" @closeAttVarSlideout="showAttVarSlideout = false" />
 				<div v-else>
 					<ProductsAdminProductAttributesPanel />
 					<ProductsAdminProductVariantsPanel />
