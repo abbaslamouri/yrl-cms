@@ -51,6 +51,8 @@ const bulkAddVariants = () => {
     // console.log('AAAAAA', attributes)
     if (attributes.length) terms = attributes.map((el) => [...el.terms])
   }
+
+  
   // Add term combinations if any to variants
   if (getCombinations(terms)[0].length)
     prodState.selectedItem.variants = [...getCombinations(terms)].map((el) => {
@@ -69,6 +71,7 @@ const bulkAddVariants = () => {
         gallery: [],
       }
     })
+
 }
 
 const handleVariantsAction = () => {
@@ -211,7 +214,7 @@ const setProdVariantEdit = (variant, index) => {
 
 <template>
   <div class="admin-product-variants-panel">
-    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
+    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre> -->
     <div class="variants">
       <header>
         <h2>Variants</h2>
@@ -219,7 +222,8 @@ const setProdVariantEdit = (variant, index) => {
         <button class="btn btn-primary" @click="bulkAddVariants">Bulk Add</button>
       </header>
       <main>
-        <form @keypress.enter.prevent v-if="prodState.selectedItem.variants.length">
+        <form @keypress.enter.prevent>
+          <!-- <form @keypress.enter.prevent v-if="prodState.selectedItem.variants.length"> -->
           <div class="table">
             <div class="table__header">
               <div class="row">

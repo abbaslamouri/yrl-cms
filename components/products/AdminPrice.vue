@@ -3,10 +3,10 @@ const prodState = inject('prodState');
 </script>
 
 <template>
-  <div class="price shadow-md" id="price">
+  <section class="price shadow-md" id="price">
     <header class="admin-section-header">Price</header>
     <FormsBaseInput label="Price" required currency v-model="prodState.selectedItem.price" />
-  </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

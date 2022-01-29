@@ -56,6 +56,8 @@ const updateVariant = (attribute, termId) => {
 
 <template>
   <div class="admin-product-variant">
+        <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
+
 
     <!-- <div class="td"> -->
     <div class="image td" @click="$emit('showVariantSlideout')">
@@ -65,10 +67,10 @@ const updateVariant = (attribute, termId) => {
     <div class="option td" @click="$emit('showVariantSlideout')">
       <div v-for="term in prodVariant.attrTerms" :key="term" class="attribute-term">
         <div class="attribute">
-          {{ attState.items.find((a) => a._id == attTermsState.items.find((t) => t._id == term).parent).name }}
+          {{ attState.items.find((a) => a._id == term.parent).name}}
         </div>
         <div class="term">
-          {{ attTermsState.items.find((t) => t._id == term).name }}
+          {{ attTermsState.items.find((t) => t._id == term._id).name }}
         </div>
       </div>
     </div>

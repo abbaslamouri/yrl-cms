@@ -4,7 +4,7 @@ const prodState = inject('prodState')
 </script>
 
 <template>
-  <div class="details shadow-md" id="details">
+  <section class="details shadow-md" id="details">
     <header class="admin-section-header">Details</header>
     <div class="info">
       <FormsBaseInput
@@ -27,7 +27,7 @@ const prodState = inject('prodState')
       </div>
       <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
     </div>
-  </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

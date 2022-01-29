@@ -16,43 +16,42 @@ defineProps({
     type: String,
     default: '',
   },
-});
+})
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue', 'itemsSelected'])
 
-const uuid = useUniqueId().getId();
-
-const items = ref([]);
-const inputRefs = ref([]);
-const showListBox = ref(false);
+const uuid = useUniqueId().getId()
+const items = ref([])
+const inputRefs = ref([])
+const showListBox = ref(false)
 
 const addItem = (event) => {
-  const index = items.value.findIndex((item) => item == event.target.value);
-  if (index === -1) items.value.push(event.target.value);
-  else items.value.splice(index, 1);
-  emit('update:modelValue', items);
-};
+  const index = items.value.findIndex((item) => item == event.target.value)
+  if (index === -1) items.value.push(event.target.value)
+  else items.value.splice(index, 1)
+  emit('update:modelValue', items.value)
+}
 
 onMounted(() => {
   document.addEventListener('click', (evt) => {
-    const flyoutElement = document.querySelector('.listbox-area');
-    let targetElement = evt.target; // clicked element
+    const flyoutElement = document.querySelector('.listbox-area')
+    let targetElement = evt.target // clicked element
     do {
       if (targetElement == flyoutElement) {
-        return;
+        return
       }
-      targetElement = targetElement.parentNode;
-    } while (targetElement);
+      targetElement = targetElement.parentNode
+    } while (targetElement)
 
-    showListBox.value = false;
-  });
-});
+    showListBox.value = false
+  })
+})
 </script>
 
 <script>
 export default {
   inheritAttrs: false,
-};
+}
 </script>
 
 <template>
@@ -62,7 +61,6 @@ export default {
       <div class="selected-options" v-else>
         <span class="option" v-for="item in items" :key="item"> {{ options.find((c) => c.key == item).name }}</span>
       </div>
-      <!-- <input type="text" :id="`listbox-${uuid}`" value="" readonly aria-readonly="false" /> -->
       <IconsChevronUp v-if="showListBox" />
       <IconsChevronDown v-else />
     </button>
@@ -77,7 +75,14 @@ export default {
         :aria-selected="items.includes(option.key)"
       >
         <label class="form-control" :class="{ disabled: inputRefs[index] && inputRefs[index].disabled }">
-          <input :ref="(el) => (inputRefs[index] = el)" readonly type="checkbox" :value="option.key" @click="addItem" :checked="modelValue.includes(option.key)"/>
+          <input
+            :ref="(el) => (inputRefs[index] = el)"
+            readonly
+            type="checkbox"
+            :value="option.key"
+            @click="addItem"
+            :checked="modelValue.includes(option.key)"
+          />
           <div class="label">{{ option.name }}</div>
         </label>
       </div>
@@ -91,7 +96,6 @@ export default {
 .listbox-area {
   display: flex;
   flex-direction: column;
-  // gap: 1rem;
 
   .select {
     display: grid;
@@ -139,10 +143,6 @@ export default {
   }
 
   .dropdown-options {
-    // padding: 0 1rem;
-    // display: flex;
-    // flex-direction: column;
-    // justify-content: center;
     gap: 1rem;
     border: 1px solid $slate-400;
     border-top: none;
@@ -207,13 +207,13 @@ export default {
   }
 }
 
-.base-select {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+// .base-select {
+//   display: flex;
+//   align-items: center;
+//   gap: 1rem;
 
-  select {
-    padding: 0.5rem 1rem;
-  }
-}
+//   select {
+//     padding: 0.5rem 1rem;
+//   }
+// }
 </style>

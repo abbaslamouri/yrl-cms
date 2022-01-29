@@ -14,7 +14,8 @@ const props = defineProps({
   },
 })
 
-const attributeSelect = ref('')
+const attributeSelect = ref(props.prodAttr.attribute._id)
+const defaultTermSelect = ref(props.prodAttr.defaultTerm._id)
 const termSelect = ref('')
 const showActions = ref(false)
 
@@ -36,6 +37,24 @@ const removeVariantCallback = (termId) => {
   if (!prodState.selectedItem.variants.length) prodState.selectedItem.variants = []
 }
 
+const setProductAttribute = () => {
+  for (const prop in prodState.selectedItem.attributes[props.i].terms) {
+    removeVariantCallback(prodState.selectedItem.attributes[props.i].terms[prop]._id)
+  }
+  prodState.selectedItem.attributes[props.i].terms = []
+  prodState.selectedItem.attributes[props.i].attribute = attState.items.find((a) => a._id == attributeSelect.value)
+  prodState.selectedItem.attributes[props.i].defaultTerm = attTermsState.items.find(
+    (t) => t.parent == attributeSelect.value
+  )
+  defaultTermSelect.value = prodState.selectedItem.attributes[props.i].defaultTerm._id
+}
+
+const setDefaultTerm = () => {
+  prodState.selectedItem.attributes[props.i].defaultTerm = defaultTermSelect
+}
+
+setDefaultTerm
+
 const removeProductAttribute = () => {
   if (!confirm('Are you sure?')) return
 
@@ -43,7 +62,7 @@ const removeProductAttribute = () => {
   let j = 0
   while (j < prodState.selectedItem.variants.length) {
     const k = prodState.selectedItem.variants[j].attrTerms.findIndex(
-      (t) => t.parent == prodState.selectedItem.attributes[props.i].item._id
+      (t) => t.parent == prodState.selectedItem.attributes[props.i].attribute._id
     )
     if (k !== -1) prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
     if (!prodState.selectedItem.variants[j].attrTerms.length) prodState.selectedItem.variants[j].delete = true
@@ -55,17 +74,17 @@ const removeProductAttribute = () => {
 
   // Delete attribute
   prodState.selectedItem.attributes.splice(props.i, 1)
+
+  prodState.selectedItem.variants = [...new Set(prodState.selectedItem.variants.map((el) => el))]
 }
 
 const addAllTerms = () => {
   // console.log('PAI', prodState.selectedItem.attributes[props.i].item._id)
   console.log('PAI', props.prodAttr.attribute)
   console.log('TERMS', attTermsState.items)
-  prodState.selectedItem.attributes[props.i].terms = attTermsState.items
-    .filter((el) => el.parent == props.prodAttr.attribute)
-    .map((t) => {
-      return t._id
-    })
+  prodState.selectedItem.attributes[props.i].terms = attTermsState.items.filter(
+    (el) => el.parent == props.prodAttr.attribute._id
+  )
 }
 
 const addTerm = () => {
@@ -150,28 +169,23 @@ const removeAllTerms = () => {
   // if (index !== -1) prodState.selectedItem.attributes[props.i].terms = []
 }
 
-const setDefaultTerm = () => {
-  prodState.selectedItem.attributes[props.i].defaultTerm = attTermsState.items.filter(
-    (t) => t.parent == props.prodAttr.attribute
-  )[0]._id
-}
+// watch(
+//   () => prodState.selectedItem.attributes[props.i],
+//   (current, old) => {
+//     console.log('C', current)
+//     console.log('O', old)
+//   },
+//   { deep: true }
+// )
 </script>
 
 <template>
   <div class="admin-product-attribute">
+    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <!-- <div class="td"> -->
     <div class="attribute td">
       <div class="base-select">
-        <!-- <FormsBaseSelect
-        label="Attribute"
-        :options="
-          attState.items.map((a) => {
-            return { key: a._id, name: a.name }
-          })
-        "
-        :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
-      /> -->
-        <select v-model="prodState.selectedItem.attributes[i].attribute" @change="setDefaultTerm" class="centered">
+        <select v-model="attributeSelect" @change="setProductAttribute" class="centered">
           <option value="">Select Option</option>
           <option
             v-for="option in attState.items.map((a) => {
@@ -179,7 +193,7 @@ const setDefaultTerm = () => {
             })"
             :key="option.key"
             :value="option.key"
-            :disabled="prodState.selectedItem.attributes.find((el) => el.attribute == option.key)"
+            :disabled="prodState.selectedItem.attributes.find((el) => el.attribute._id == option.key)"
           >
             {{ option.name }}
           </option>
@@ -189,10 +203,11 @@ const setDefaultTerm = () => {
     </div>
     <div class="attribute-default-term td">
       <FormsBaseSelect
-        v-model="prodState.selectedItem.attributes[i].defaultTerm"
+        v-model="defaultTermSelect"
+        @update:modelValue="setDefaultTerm"
         :options="
           attTermsState.items
-            .filter((t) => t.parent == props.prodAttr.attribute)
+            .filter((t) => t.parent == props.prodAttr.attribute._id)
             .map((t) => {
               return { key: t._id, name: t.name }
             })
@@ -225,11 +240,11 @@ const setDefaultTerm = () => {
           <div
             v-if="prodState.selectedItem.attributes[i].terms"
             class="term shadow-md"
-            v-for="(termId, j) in prodState.selectedItem.attributes[i].terms"
-            :key="termId"
+            v-for="(term, j) in prodState.selectedItem.attributes[i].terms"
+            :key="term._id"
           >
-            <span>{{ attTermsState.items.find((t) => t._id == termId).name }}</span>
-            <span class="remove-term" @click="removeTerm(i, termId)">
+            <span>{{ term.name }}</span>
+            <span class="remove-term" @click="removeTerm(i, term._id)">
               <IconsClose />
             </span>
           </div>

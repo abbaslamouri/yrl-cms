@@ -23,6 +23,8 @@ router.route('/search').get(searchDb(Product))
 router.route('/:id').get(getDoc(Product))
 router.route('/slug/:slug').get(fetchBySlug)
 
+console.log('PPPPPPPPPXXXXXXX')
+
 router.use(protect)
 router.use(authorize('admin', 'shop-manager'))
 

@@ -1,6 +1,5 @@
 <script setup>
 const props = defineProps({
-  // variant: Object,
   index: Number,
 })
 
@@ -41,14 +40,17 @@ const updateVariant = (attribute, termId) => {
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-  <div class="variants" id="variants">
-    <header class="admin-section-header">Variants</header>
-    <div class="content">
-      <div>Different types of this product (e.g. size, color)</div>
-      <button class="btn btn-primary" @click="showAttVarSlideout = true">
+  <section class="variants" id="variants">
+    <header class="header flex-bc">
+      <div class="admin-section-header">Variants</div>
+      <button class="btn btn-primary flex-cc" @click="showAttVarSlideout = true">
         <IconsPlus />
         <span>Add</span>
       </button>
+    </header>
+
+    <div class="content">
+      <div>Different types of this product (e.g. size, color)</div>
     </div>
     <Slideout :showSlideout="showAttVarSlideout">
       <!-- <template v-slot:header>
@@ -64,10 +66,12 @@ const updateVariant = (attribute, termId) => {
       <template v-slot:header>
         <div class="header shadow-md">
           <h3 class="title">Edit Variants</h3>
-          <button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
+          <button class="btn close"><IconsPlus @click.prevent="showAttVarSlideout = false" /></button>
         </div>
       </template>
       <div class="main">
+        <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre>
+
         <ProductsAdminEmptyVariantMsg
           v-if="!attState.items.length || !prodState.selectedItem._id"
           @closeAttVarSlideout="showAttVarSlideout = false"
@@ -85,7 +89,7 @@ const updateVariant = (attribute, termId) => {
         </div>
       </template>
     </Slideout>
-  </div>
+  </section>
   <!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
     <div class="header bg-blue-100 flex gap-8 py-4 justify-between">
       <div class="flex gap-8 py-4 justify-between">
@@ -234,6 +238,16 @@ const updateVariant = (attribute, termId) => {
   background-color: white;
   border-radius: 5px;
   padding: 2rem 2rem;
+
+  .header {
+    .btn {
+      gap: 0.25rem;
+
+      svg {
+        fill: $slate-50;
+      }
+    }
+  }
 
   // .main {
   //   display:flex;

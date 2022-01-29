@@ -1,22 +1,22 @@
 <script setup>
-const showAdminSidebar = ref(true);
+const showAdminSidebar = ref(true)
 
 const checkScreen = () => {
   if (process.client) {
-    if (window.innerWidth < 768) showAdminSidebar.value = false;
-    if (window.innerWidth >= 768) showAdminSidebar.value = true;
+    if (window.innerWidth < 768) showAdminSidebar.value = false
+    if (window.innerWidth >= 768) showAdminSidebar.value = true
   }
-};
+}
 
 if (process.client) {
-  window.addEventListener('resize', checkScreen);
-  checkScreen();
+  window.addEventListener('resize', checkScreen)
+  checkScreen()
 }
 </script>
 
 <template>
   <div class="app admin">
-    <header>
+    <header class="flex-bc">
       <MobileNavToggler @hideAdminSidebar="showAdminSidebar = !showAdminSidebar" />
       <ProfileNav />
     </header>
@@ -50,18 +50,13 @@ if (process.client) {
     top: 0;
     left: 0;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     background-color: #000;
     color: white;
     padding: 1rem 2rem;
-    z-index: 99;
+    z-index: 9;
   }
 
   main {
-    display: flex;
-
     aside {
       position: fixed;
       display: flex;
@@ -87,12 +82,6 @@ if (process.client) {
           fill: white;
           cursor: pointer;
         }
-
-        // text-white flex items-center gap-2 text-sm py-4 px-4
-      }
-
-      nav {
-        // text-slate-200
       }
     }
 
@@ -101,28 +90,19 @@ if (process.client) {
       margin-left: 25rem;
       margin-top: 5rem;
       background-color: $slate-100;
-      min-height: 100vh;
-      display:flex;
+      min-height: 100%;
+      display: flex;
       justify-content: center;
       // min-height: 90vh;
     }
   }
-}
 
-.slide-enter-from,
-.slide-leave-to {
-  transform: translateX(-100%);
-  opacity: 0;
-}
-
-.slide-enter-to,
-.slide-leave-from {
-  transform: translateX(0);
-  opacity: 1;
-}
-
-.slide-enter-active,
-.slide-leave-active {
-  transition: all 0.2s ease;
+  footer {
+    margin-left: 25rem;
+    width: 100%;
+    background-color: #000;
+    color: white;
+    padding: 1rem 2rem;
+  }
 }
 </style>
