@@ -4,8 +4,8 @@ const prodState = inject('prodState')
 </script>
 
 <template>
-  <div class="details shadow-md" id="details">
-    <header class="admin-section-header">Details</header>
+  <div class="seo shadow-md" id="seo">
+    <header class="admin-section-header">Seo</header>
     <div class="info">
       <FormsBaseInput
         label="Name"
@@ -31,7 +31,7 @@ const prodState = inject('prodState')
 </template>
 
 <style lang="scss" scoped>
-.details {
+.seo {
   background-color: white;
   border-radius: 5px;
   padding: 2rem 2rem;

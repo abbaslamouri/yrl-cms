@@ -41,10 +41,10 @@ const updateVariant = (attribute, termId) => {
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-  <div class="variants" id="variants">
-    <header class="admin-section-header">Variants</header>
+  <div class="extra-fields" id="extra-fields">
+    <header class="admin-section-header">Extra Fields</header>
     <div class="content">
-      <div>Different types of this product (e.g. size, color)</div>
+      <p>Collect custom information from your customer.</p>
       <button class="btn btn-primary" @click="showAttVarSlideout = true">
         <IconsPlus />
         <span>Add</span>
@@ -72,16 +72,14 @@ const updateVariant = (attribute, termId) => {
           v-if="!attState.items.length || !prodState.selectedItem._id"
           @closeAttVarSlideout="showAttVarSlideout = false"
         />
-        <div v-else class="attributes-variants">
-          <p>Please select attributes to use for variants</p>
+        <div v-else>
           <ProductsAdminProductAttributesPanel />
-          <ProductsAdminProductVariantsPanel v-if="prodState.selectedItem.attributes.length" />
+          <ProductsAdminProductVariantsPanel />
         </div>
       </div>
       <template v-slot:footer>
         <div class="footer shadow-md">
-          <button class="btn btn-secondary cancel" @click="saveAttributes">Cancel</button>
-          <button class="btn btn-primary save" @click="saveAttributes">Save Changes</button>
+          <p>Here's some contact info</p>
         </div>
       </template>
     </Slideout>
@@ -230,39 +228,28 @@ const updateVariant = (attribute, termId) => {
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 
-.variants {
+.extra-fields {
   background-color: white;
   border-radius: 5px;
   padding: 2rem 2rem;
 
-  // .main {
-  //   display:flex;
-  //   flex-direction: column;
+  .content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-  // }
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
 
-  // .content {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: space-between;
-
-  //   .btn {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 0.3rem;
-
-  //     svg {
-  //       fill: $slate-50;
-  //       width: 1.8rem;
-  //       height: 1.8rem;
-  //     }
-
-  //     &.save {
-  //       position: sticky;
-  //       bottom: 10vh;
-  //     }
-  //   }
-  // }
+      svg {
+        fill: $slate-50;
+        width: 1.8rem;
+        height: 1.8rem;
+      }
+    }
+  }
 
   // .slideout {
   //   .dialog {

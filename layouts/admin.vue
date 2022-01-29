@@ -100,8 +100,10 @@ if (process.client) {
       flex: 1;
       margin-left: 25rem;
       margin-top: 5rem;
-      background-color: $slate-50;
+      background-color: $slate-100;
       min-height: 100vh;
+      display:flex;
+      justify-content: center;
       // min-height: 90vh;
     }
   }

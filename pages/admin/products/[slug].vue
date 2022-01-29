@@ -29,17 +29,23 @@ onMounted(() => {})
 // const invalidProductName = ref(false)
 // provide('invalidProductName', invalidProductName)
 
-const dragging = ref(false)
-const productDataTabs = ref([
-  { key: 'general', title: 'General', open: true },
-  { key: 'attributes', title: 'Attribute', open: false },
-  { key: 'variants', title: 'Variants', open: false },
-])
+// const dragging = ref(false)
+// const productDataTabs = ref([
+//   { key: 'general', title: 'General', open: true },
+//   { key: 'attributes', title: 'Attribute', open: false },
+//   { key: 'variants', title: 'Variants', open: false },
+// ])
 
 const nav = ref([
   { key: 'details', title: 'Details', open: true },
   { key: 'price', title: 'Price', open: false },
+  { key: 'image-gallery', title: 'Image Gallery', open: false },
   { key: 'variants', title: 'Variants', open: false },
+  { key: 'shipping-options', title: 'Shipping Options', open: false },
+  { key: 'digital-delivery', title: 'Digital Delivery', open: false },
+  { key: 'extra-fields', title: 'Extra Fields', open: false },
+  { key: 'seo', title: 'SEO', open: false },
+  { key: 'misc', title: 'Misc', open: false },
 ])
 
 // provide('showMediaSelector', showMediaSelector.value);
@@ -308,7 +314,7 @@ export default {
 
 <template>
   <div class="product-details">
-    <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre>
+    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <!-- <pre class="text-sm">{{ cart.cart }}</pre> -->
     <NuxtLink class="link" :to="{ name: 'admin-products' }">
       <IconsArrowWest />
@@ -328,6 +334,11 @@ export default {
         <ProductsAdminPrice />
         <ProductsAdminImageGallery />
         <ProductsAdminVariants />
+        <ProductsAdminShippingOptions />
+        <ProductsAdminDigitalDelivery />
+        <ProductsAdminExtraFields />
+        <ProductsAdminSeo />
+        <ProductsAdminMisc />
       </div>
       <div class="right">
         <div class="save-changes shadow-md">
@@ -421,11 +432,6 @@ export default {
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 
-.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
 // .select-multi {
 // 	border: 1px solid red;
 
@@ -463,7 +469,8 @@ export default {
 // }
 
 .product-details {
-  background-color: $slate-100;
+  max-width: 1280px;
+  // background-color: $slate-100;
   min-height: 100vh;
   padding: 2rem;
   display: flex;
@@ -483,15 +490,18 @@ export default {
 
   .columns {
     display: grid;
-    grid-template-columns: 12rem 1fr 25rem;
+    grid-template-columns: 18rem 1fr 25rem;
     gap: 2rem;
     align-items: flex-start;
 
     .left {
+      position: sticky;
+      top: 10rem;
       background-color: white;
       border: 1px solid $slate-100;
       border-radius: 3px;
       padding: 2rem 0.5rem;
+
       // w-1/5 shadow-lg bg-white rounded py-4 px-2
 
       ul {
@@ -563,6 +573,8 @@ export default {
     }
 
     .right {
+      position: sticky;
+      top: 10rem;
       display: flex;
       flex-direction: column;
       gap: 2rem;

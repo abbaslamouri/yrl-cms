@@ -413,7 +413,7 @@ const setProdVariantEdit = (variant, index) => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 4rem 2rem;
+  // padding: 4rem 2rem;
   header {
     display: flex;
     align-items: center;

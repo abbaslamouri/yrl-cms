@@ -67,7 +67,6 @@ const addAttribute = () => {
               </div>
             </div>
           </div>
-          <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>
         </form>
       </main>
 
@@ -142,7 +141,7 @@ const addAttribute = () => {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  padding: 4rem 2rem;
+  // padding: 4rem 2rem;
   header {
     display: flex;
     align-items: center;
