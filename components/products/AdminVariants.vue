@@ -1,53 +1,54 @@
 <script setup>
-const props = defineProps({
-  index: Number,
-})
+	const props = defineProps({
+		index: Number,
+	})
 
-const prodState = inject('prodState')
-const attState = inject('attState')
-const variantState = inject('variantState')
-const variantActions = inject('variantActions')
+	const prodState = inject('prodState')
+	const attState = inject('attState')
+	const variantState = inject('variantState')
+	const variantActions = inject('variantActions')
 
-const showAttVarSlideout = inject('showAttVarSlideout')
+	const showAttVarSlideout = inject('showAttVarSlideout')
 
-const router = useRouter()
+	const router = useRouter()
 
-// const showAttVarSlideout = ref(false)
+	// const showAttVarSlideout = ref(false)
 
-const getAttribute = (attributeId) => {
-  return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
-}
+	const getAttribute = (attributeId) => {
+		return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
+	}
 
-const getTerms = (attributeId) => {
-  const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
-  return terms
-}
+	const getTerms = (attributeId) => {
+		const terms = prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].terms
+		return terms
+	}
 
-const removeVariant = () => {
-  if (!confirm('Are you sure?')) return
-  prodState.selectedItem.variants.splice(props.index, 1)
-}
+	const removeVariant = () => {
+		if (!confirm('Are you sure?')) return
+		prodState.selectedItem.variants.splice(props.index, 1)
+	}
 
-const updateVariant = (attribute, termId) => {
-  console.log('AT', attribute)
-  // console.log(value)
-  const term = attribute.terms.find((t) => t._id == termId)
+	const updateVariant = (attribute, termId) => {
+		console.log('AT', attribute)
+		// console.log(value)
+		const term = attribute.terms.find((t) => t._id == termId)
 
-  console.log('T', term)
+		console.log('T', term)
 
-  // if (!prodState.selectedItem.variants[props.index].attrTerms.length) {
-  prodState.selectedItem.variants[props.index].attrTerms.push(term)
-  // }
-}
+		// if (!prodState.selectedItem.variants[props.index].attrTerms.length) {
+		prodState.selectedItem.variants[props.index].attrTerms.push(term)
+		// }
+	}
 
-const saveVariants = async () => {
-  console.log(prodState.selectedItem)
-  variantState.selectedItems = prodState.selectedItem.variants
-  await variantActions.saveMany()
-  if (!variantState.errorMsg)
-    router.push({ name: 'admin-products-slug', params: { slug: prodState.selectedItem.slug } })
-  showAttVarSlideout.value = false
-}
+	const saveVariants = async () => {
+		console.log(prodState.selectedItem)
+		await variantActions.deleteMany({ product: prodState.selectedItem._id })
+		variantState.selectedItems = prodState.selectedItem.variants
+		await variantActions.saveMany()
+		if (!variantState.errorMsg)
+			router.push({ name: 'admin-products-slug', params: { slug: prodState.selectedItem.slug } })
+		showAttVarSlideout.value = false
+	}
 </script>
 
 <!-- &&
@@ -55,39 +56,39 @@ const saveVariants = async () => {
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-  <section class="attributes-variants-panels">
-    <Slideout :showSlideout="showAttVarSlideout">
-      <template v-slot:header>
-        <div class="header shadow-md">
-          <h3 class="title">Edit Variants</h3>
-          <button class="btn close"><IconsPlus @click.prevent="showAttVarSlideout = false" /></button>
-        </div>
-      </template>
+	<section class="attributes-variants-panels">
+		<Slideout :showSlideout="showAttVarSlideout">
+			<template v-slot:header>
+				<div class="header shadow-md">
+					<h3 class="title">Edit Variants</h3>
+					<button class="btn close"><IconsPlus @click.prevent="showAttVarSlideout = false" /></button>
+				</div>
+			</template>
 
-      <div class="main">
-        <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre> -->
-        <ProductsAdminEmptyVariantMsg
-          v-if="!attState.items.length || !prodState.selectedItem._id"
-          @closeAttVarSlideout="showAttVarSlideout = false"
-        />
-        <div v-else class="attributes-variants">
-          <h3>Please select attributes to use for variants</h3>
-          <ProductsAdminProductAttributesPanel />
-          <ProductsAdminProductVariantsPanel />
-        </div>
-      </div>
+			<div class="main">
+				<!-- <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre> -->
+				<ProductsAdminEmptyVariantMsg
+					v-if="!attState.items.length || !prodState.selectedItem._id"
+					@closeAttVarSlideout="showAttVarSlideout = false"
+				/>
+				<div v-else class="attributes-variants">
+					<h3>Please select attributes to use for variants</h3>
+					<ProductsAdminProductAttributesPanel />
+					<ProductsAdminProductVariantsPanel />
+				</div>
+			</div>
 
-      <template v-slot:footer>
-        <div class="footer shadow-md">
-          <div class="actions" v-if="prodState.selectedItem._id && prodState.selectedItem.attributes.length">
-            <button class="btn btn-secondary cancel" @click="saveAttributes">Cancel</button>
-            <button class="btn btn-primary save" @click="saveVariants">Save Changes</button>
-          </div>
-        </div>
-      </template>
-    </Slideout>
-  </section>
-  <!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
+			<template v-slot:footer>
+				<div class="footer shadow-md">
+					<div class="actions" v-if="prodState.selectedItem._id && prodState.selectedItem.attributes.length">
+						<button class="btn btn-secondary cancel" @click="saveAttributes">Cancel</button>
+						<button class="btn btn-primary save" @click="saveVariants">Save Changes</button>
+					</div>
+				</div>
+			</template>
+		</Slideout>
+	</section>
+	<!-- <div class="variant space-y-4 border p-6" v-if="prodState.selectedItem.variants[index]">
     <div class="header bg-blue-100 flex gap-8 py-4 justify-between">
       <div class="flex gap-8 py-4 justify-between">
         <div
@@ -198,13 +199,13 @@ const saveVariants = async () => {
           <option value="reduced">Reduced</option>
           <option value="zero">Xero</option>
         </select> -->
-  <!-- <input
+	<!-- <input
             class="bg-gray-300"
             type="text"
             v-model="prodState.selectedItem.variants[index].shippingClass"
             placeholder="Storewide threshold: 2"
           /> -->
-  <!-- </div>
+	<!-- </div>
       <div class="row flex items-center justify-around gap-10">
         <div class="shipping-class bg-gray-300">
           <label>Sipping Class</label>
@@ -229,80 +230,80 @@ const saveVariants = async () => {
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/variables';
+	@import '@/assets/scss/variables';
 
-.attributes-variants-panels {
-  .main {
-    .attributes-variants {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-    }
-  }
-  // background-color: white;
-  // border-radius: 5px;
-  // padding: 2rem 2rem;
+	.attributes-variants-panels {
+		.main {
+			.attributes-variants {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+		}
+		// background-color: white;
+		// border-radius: 5px;
+		// padding: 2rem 2rem;
 
-  // .header {
-  //   .btn {
-  //     gap: 0.25rem;
+		// .header {
+		//   .btn {
+		//     gap: 0.25rem;
 
-  //     svg {
-  //       fill: $slate-50;
-  //     }
-  //   }
-  // }
+		//     svg {
+		//       fill: $slate-50;
+		//     }
+		//   }
+		// }
 
-  // .main {
-  //   display:flex;
-  //   flex-direction: column;
+		// .main {
+		//   display:flex;
+		//   flex-direction: column;
 
-  // }
+		// }
 
-  // .content {
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: space-between;
+		// .content {
+		//   display: flex;
+		//   align-items: center;
+		//   justify-content: space-between;
 
-  //   .btn {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 0.3rem;
+		//   .btn {
+		//     display: flex;
+		//     align-items: center;
+		//     gap: 0.3rem;
 
-  //     svg {
-  //       fill: $slate-50;
-  //       width: 1.8rem;
-  //       height: 1.8rem;
-  //     }
+		//     svg {
+		//       fill: $slate-50;
+		//       width: 1.8rem;
+		//       height: 1.8rem;
+		//     }
 
-  //     &.save {
-  //       position: sticky;
-  //       bottom: 10vh;
-  //     }
-  //   }
-  // }
+		//     &.save {
+		//       position: sticky;
+		//       bottom: 10vh;
+		//     }
+		//   }
+		// }
 
-  // .slideout {
-  //   .dialog {
-  //     .header {
-  //       display: flex;
-  //       align-items: center;
-  //       justify-content: space-between;
-  //       padding: 2rem;
-  //       background-color: $slate-50;
-  //       .btn {
-  //         svg {
-  //           width: 1.8rem;
-  //           height: 1.8rem;
-  //         }
-  //       }
-  //     }
+		// .slideout {
+		//   .dialog {
+		//     .header {
+		//       display: flex;
+		//       align-items: center;
+		//       justify-content: space-between;
+		//       padding: 2rem;
+		//       background-color: $slate-50;
+		//       .btn {
+		//         svg {
+		//           width: 1.8rem;
+		//           height: 1.8rem;
+		//         }
+		//       }
+		//     }
 
-  //     .main {
-  //       // border: 1px solid green;
-  //       min-height: 100vh;
-  //     }
-  //   }
-  // }
-}
+		//     .main {
+		//       // border: 1px solid green;
+		//       min-height: 100vh;
+		//     }
+		//   }
+		// }
+	}
 </style>
