@@ -282,7 +282,7 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 // @desc      Protect middleware
 // @access    Private
 const protect = asyncHandler(async (req, res, next) => {
-  console.log('RC', JSON.parse(req.cookies.auth).token)
+  console.log('RC', req.cookies.auth)
   let token = ''
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
@@ -307,6 +307,7 @@ const protect = asyncHandler(async (req, res, next) => {
 // @desc      Grant access to specific roles
 // @access    Private
 const authorize = (...roles) => {
+  console.log('PPPPPPPPPPPPPP')
   return (req, res, next) => {
     if (!roles.includes(req.user.role))
       return next(new AppError('You do not have adequate permisson to perform this action', 403))

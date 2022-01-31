@@ -96,6 +96,7 @@ const useFactory = (collection) => {
 
     async saveItem() {
       state.errorMsg = ''
+
       try {
         let response = {}
         if (state.selectedItem._id) {
