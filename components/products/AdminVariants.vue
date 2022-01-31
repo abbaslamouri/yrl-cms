@@ -5,8 +5,14 @@ const props = defineProps({
 
 const prodState = inject('prodState')
 const attState = inject('attState')
+const variantState = inject('variantState')
+const variantActions = inject('variantActions')
 
-const showAttVarSlideout = ref(false)
+const showAttVarSlideout = inject('showAttVarSlideout')
+
+const router = useRouter()
+
+// const showAttVarSlideout = ref(false)
 
 const getAttribute = (attributeId) => {
   return prodState.selectedItem.attributes.filter((el) => el.item._id == attributeId)[0].item
@@ -33,6 +39,15 @@ const updateVariant = (attribute, termId) => {
   prodState.selectedItem.variants[props.index].attrTerms.push(term)
   // }
 }
+
+const saveVariants = async () => {
+  console.log(prodState.selectedItem)
+  variantState.selectedItems = prodState.selectedItem.variants
+  await variantActions.saveMany()
+  if (!variantState.errorMsg)
+    router.push({ name: 'admin-products-slug', params: { slug: prodState.selectedItem.slug } })
+  showAttVarSlideout.value = false
+}
 </script>
 
 <!-- &&
@@ -40,52 +55,34 @@ const updateVariant = (attribute, termId) => {
       prodState.selectedItem.variants[index].attrTerms.length -->
 
 <template>
-  <section class="variants" id="variants">
-    <header class="header flex-bc">
-      <div class="admin-section-header">Variants</div>
-      <button class="btn btn-primary flex-cc" @click="showAttVarSlideout = true">
-        <IconsPlus />
-        <span>Add</span>
-      </button>
-    </header>
-
-    <div class="content">
-      <div>Different types of this product (e.g. size, color)</div>
-    </div>
+  <section class="attributes-variants-panels">
     <Slideout :showSlideout="showAttVarSlideout">
-      <!-- <template v-slot:header>
-				<div class="header shadow-md">
-					<h3 class="title">Edit Variants</h3>
-					<button class="btn close"><IconsClose @click.prevent="showAttVarSlideout = false" /></button>
-				</div>
-		</div>
-		<ProductsAttributesVariantsSlideout
-			:showAttributesVariantsSlideout="showAttributesVariantsSlideout"
-			@closeAttributesVariantsSlideout="showAttributesVariantsSlideout = false"
-		/> -->
       <template v-slot:header>
         <div class="header shadow-md">
           <h3 class="title">Edit Variants</h3>
           <button class="btn close"><IconsPlus @click.prevent="showAttVarSlideout = false" /></button>
         </div>
       </template>
-      <div class="main">
-        <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre>
 
+      <div class="main">
+        <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem.variants }}</pre> -->
         <ProductsAdminEmptyVariantMsg
           v-if="!attState.items.length || !prodState.selectedItem._id"
           @closeAttVarSlideout="showAttVarSlideout = false"
         />
         <div v-else class="attributes-variants">
-          <p>Please select attributes to use for variants</p>
+          <h3>Please select attributes to use for variants</h3>
           <ProductsAdminProductAttributesPanel />
-          <ProductsAdminProductVariantsPanel v-if="prodState.selectedItem.attributes.length" />
+          <ProductsAdminProductVariantsPanel />
         </div>
       </div>
+
       <template v-slot:footer>
         <div class="footer shadow-md">
-          <button class="btn btn-secondary cancel" @click="saveAttributes">Cancel</button>
-          <button class="btn btn-primary save" @click="saveAttributes">Save Changes</button>
+          <div class="actions" v-if="prodState.selectedItem._id && prodState.selectedItem.attributes.length">
+            <button class="btn btn-secondary cancel" @click="saveAttributes">Cancel</button>
+            <button class="btn btn-primary save" @click="saveVariants">Save Changes</button>
+          </div>
         </div>
       </template>
     </Slideout>
@@ -234,20 +231,27 @@ const updateVariant = (attribute, termId) => {
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 
-.variants {
-  background-color: white;
-  border-radius: 5px;
-  padding: 2rem 2rem;
-
-  .header {
-    .btn {
-      gap: 0.25rem;
-
-      svg {
-        fill: $slate-50;
-      }
+.attributes-variants-panels {
+  .main {
+    .attributes-variants {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
     }
   }
+  // background-color: white;
+  // border-radius: 5px;
+  // padding: 2rem 2rem;
+
+  // .header {
+  //   .btn {
+  //     gap: 0.25rem;
+
+  //     svg {
+  //       fill: $slate-50;
+  //     }
+  //   }
+  // }
 
   // .main {
   //   display:flex;

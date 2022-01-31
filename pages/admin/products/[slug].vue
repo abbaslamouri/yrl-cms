@@ -9,6 +9,8 @@ const { state: attState, actions: attActions } = useFactory('attributes')
 const { state: attTermsState, actions: attTermsActions } = useFactory('attributeterms')
 const { state: variantState, actions: variantActions } = useFactory('variants')
 
+const showAttVarSlideout = ref(false)
+
 // Set product filters
 prodState.query.slug = route.params.slug
 prodState.query.populate =
@@ -84,8 +86,11 @@ provide('prodActions', prodActions)
 provide('catState', catState)
 provide('attState', attState)
 provide('attTermsState', attTermsState)
+provide('variantState', variantState)
+provide('variantActions', variantActions)
 provide('handleMediaSelectorClick', handleMediaSelectorClick)
 provide('processSelectedMedia', processSelectedMedia)
+provide('showAttVarSlideout', showAttVarSlideout)
 </script>
 
 <script>
@@ -101,10 +106,7 @@ export default {
       <Head><Title>Product</Title></Head>
     </Html>
 
-    <NuxtLink class="link" :to="{ name: 'admin-products' }">
-      <IconsArrowWest />
-      <span>Products</span>
-    </NuxtLink>
+    <NuxtLink class="link" :to="{ name: 'admin-products' }"> <IconsArrowWest /><span>Products</span> </NuxtLink>
 
     <h3 class="header">Edit Product</h3>
 
@@ -116,7 +118,22 @@ export default {
       <div class="center">
         <ProductsAdminDetails />
         <ProductsAdminPrice />
-        <ProductsAdminImageGallery />
+        <ProductsAdminProductImageGallery />
+
+        <section class="variants" id="variants">
+          <header class="header flex-bc">
+            <div class="admin-section-header">Variants</div>
+            <button class="btn btn-primary flex-cc" @click="showAttVarSlideout = true">
+              <IconsPlus />
+              <span>Add</span>
+            </button>
+          </header>
+
+          <div class="content">
+            <div>Different types of this product (e.g. size, color)</div>
+          </div>
+        </section>
+
         <ProductsAdminVariants />
         <ProductsAdminShippingOptions />
         <ProductsAdminDigitalDelivery />
@@ -180,51 +197,68 @@ export default {
       flex-direction: column;
       gap: 3rem;
 
-      .details {
+      .variants {
         background-color: white;
         border-radius: 5px;
         padding: 2rem 2rem;
 
-        .info {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
+        .header {
+          .btn {
+            gap: 0.25rem;
 
-          .sku-inventory {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 2rem;
-
-            .sku {
-              flex: 1;
-            }
-
-            .inventory {
-              display: flex;
-              flex-direction: column;
-              gap: 0.5rem;
-              font-size: 1.3rem;
-
-              .available {
-                display: flex;
-                align-items: center;
-                gap: 1rem;
-
-                .title {
-                  font-weight: 600;
-                }
-              }
+            svg {
+              fill: $slate-50;
             }
           }
         }
       }
+      // z-index:-1;
 
-      .price {
-        background-color: white;
-        border-radius: 5px;
-        padding: 2rem 2rem;
-      }
+      // .details {
+      //   background-color: white;
+      //   border-radius: 5px;
+      //   padding: 2rem 2rem;
+
+      //   .info {
+      //     display: flex;
+      //     flex-direction: column;
+      //     gap: 1rem;
+
+      //     .sku-inventory {
+      //       display: flex;
+      //       align-items: center;
+      //       justify-content: space-between;
+      //       gap: 2rem;
+
+      //       .sku {
+      //         flex: 1;
+      //       }
+
+      //       .inventory {
+      //         display: flex;
+      //         flex-direction: column;
+      //         gap: 0.5rem;
+      //         font-size: 1.3rem;
+
+      //         .available {
+      //           display: flex;
+      //           align-items: center;
+      //           gap: 1rem;
+
+      //           .title {
+      //             font-weight: 600;
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+
+      // .price {
+      //   background-color: white;
+      //   border-radius: 5px;
+      //   padding: 2rem 2rem;
+      // }
     }
 
     .right {

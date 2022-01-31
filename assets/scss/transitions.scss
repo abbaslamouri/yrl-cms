@@ -1,17 +1,17 @@
-.slide-enter-from,
-.slide-leave-to {
+.slide-right-enter-from,
+.slide-right-leave-to {
   transform: translateX(-100%);
   opacity: 0;
 }
 
-.slide-enter-to,
-.slide-leave-from {
+.slide-right-enter-to,
+.slide-right-leave-from {
   transform: translateX(0);
   opacity: 1;
 }
 
-.slide-enter-active,
-.slide-leave-active {
+.slide-right-enter-active,
+.slide-right-leave-active {
   transition: all 0.2s ease;
 }
 

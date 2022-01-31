@@ -57,10 +57,13 @@
   width: 100%;
   transition: opacity 0.3s ease;
   background-color: white;
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .btn {
+  display:flex;
+  align-items: center;
+  gap:1rem;
   background: transparent;
   border: 1px solid $slate-400;
   color: $slate-900;
@@ -79,6 +82,12 @@
     }
   }
 
+  &-image-select{
+    border-radius:5px;
+    background-color: $slate-200;
+
+  }
+
   svg {
     width: 2rem;
     height: 2rem;
@@ -94,6 +103,7 @@
   font-weight: 500;
   font-size: 1.4rem;
   margin-bottom: 1rem;
+  
 }
 
 .media-selector {
@@ -115,3 +125,10 @@
 .elevation-2 {
   box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 1px rgba(0, 0, 0, 0.141), 0 1px 3px rgba(0, 0, 0, 0.122);
 }
+
+// .image-gallery {
+//   background-color: white;
+//   border-radius: 5px;
+//   padding: 2rem 2rem;
+
+

@@ -81,7 +81,7 @@ export default {
 
 <template>
   <div class="products">
-    {{ state.items }}
+    <!-- {{ state.items }} -->
     <div v-if="state.items.length" class="list">
       <h3 class="text-xl font-bold">Products</h3>
       <NuxtLink class="link self-end" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">

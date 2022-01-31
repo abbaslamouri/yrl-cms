@@ -43,7 +43,7 @@ const addAttribute = () => {
 </script>
 
 <template>
-  <div class="admin-product-attributes-panel">
+  <div class="admin-product-attributes-panel shadow-md">
     <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <div class="attributes">
       <header>
@@ -135,7 +135,10 @@ const addAttribute = () => {
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
 .admin-product-attributes-panel {
+  background-color: white;
   // border: 1px solid red;
   height: 95%;
   display: flex;
@@ -147,6 +150,7 @@ const addAttribute = () => {
     align-items: center;
     justify-content: space-between;
     padding: 2rem;
+    background-color: $slate-300;
   }
 
   main {

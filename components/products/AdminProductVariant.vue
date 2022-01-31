@@ -61,7 +61,7 @@ const updateVariant = (attribute, termId) => {
 
     <!-- <div class="td"> -->
     <div class="image td" @click="$emit('showVariantSlideout')">
-      <img v-if="prodVariant.featuredImage" :src="prodVariant.featuredImage.path" alt="Variant Image" />
+      <img v-if="prodVariant.gallery[0]" :src="prodVariant.gallery[0].path" alt="Variant Image" />
       <img v-else src="/placeholder.png" alt="Variant Image" />
     </div>
     <div class="option td" @click="$emit('showVariantSlideout')">

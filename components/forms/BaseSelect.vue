@@ -14,6 +14,10 @@ defineProps({
     type: String,
     default: '',
   },
+  nullOption: {
+    type: String,
+    defualt: 'Select Option',
+  },
   hint: {
     type: String,
     default: '',
@@ -48,8 +52,14 @@ export default {
       :aria-required="typeof $attrs.required != undefined ? true : null"
       @change="$emit('update:modelValue', $event.target.value)"
     >
-      <option value="" disabled>Select Option</option>
-      <option v-for="option in options" :key="option.key" :value="option.key" :selected="modelValue === option.key">
+      <option value="" disabled :selected="modelValue === ''">{{ nullOption }}</option>
+      <option
+        v-for="option in options"
+        :key="option.key"
+        :value="option.key"
+        :selected="modelValue === option.key"
+        :disabled="option.disabled || option.disabledIf"
+      >
         {{ option.name }}
       </option>
     </select>
