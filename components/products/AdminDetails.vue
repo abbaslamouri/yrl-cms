@@ -6,7 +6,7 @@ const prodState = inject('prodState')
 <template>
   <section class="details shadow-md" id="details">
     <header class="admin-section-header">Details</header>
-    <div class="info">
+    <div class="content">
       <FormsBaseInput
         label="Name"
         placeholder="Name"
@@ -34,12 +34,12 @@ const prodState = inject('prodState')
 .details {
   background-color: white;
   border-radius: 5px;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 4rem;;
 
-  .info {
+  .content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
 
     .sku-inventory {
       display: flex;

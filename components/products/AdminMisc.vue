@@ -1,31 +1,13 @@
 <script setup>
 const prodState = inject('prodState')
-
 </script>
 
 <template>
   <div class="misc shadow-md" id="misc">
     <header class="admin-section-header">Misc</header>
-    <div class="info">
-      <FormsBaseInput
-        label="Name"
-        placeholder="Name"
-        required
-        v-model="prodState.selectedItem.name"
-      />
-      <div class="sku-inventory">
-        <div class="sku">
-          <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
-        </div>
-        <div class="inventory">
-          <div class="available">
-            <h4 class="title">Available Stock:</h4>
-            <span>{{ prodState.selectedItem.stockQty || 0 }}</span>
-          </div>
-          <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
-        </div>
-      </div>
-      <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
+    <div class="content">
+      <FormsBaseInput label="Thank You Page" placeholder="https://" v-model="prodState.selectedItem.thankYouPage" />
+      <FormsBaseInput label="Sort Order" placeholder="Sort Order" v-model="prodState.selectedItem.sortOrder" />
     </div>
   </div>
 </template>
@@ -34,12 +16,12 @@ const prodState = inject('prodState')
 .misc {
   background-color: white;
   border-radius: 5px;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 4rem;
 
-  .info {
+  .content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
 
     .sku-inventory {
       display: flex;

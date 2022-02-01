@@ -13,6 +13,6 @@ const prodState = inject('prodState');
 .price {
   background-color: white;
   border-radius: 5px;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 4rem;;
 }
 </style>

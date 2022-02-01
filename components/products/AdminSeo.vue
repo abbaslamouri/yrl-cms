@@ -1,31 +1,18 @@
 <script setup>
 const prodState = inject('prodState')
-
 </script>
 
 <template>
   <div class="seo shadow-md" id="seo">
     <header class="admin-section-header">Seo</header>
-    <div class="info">
+    <div class="content">
       <FormsBaseInput
-        label="Name"
-        placeholder="Name"
-        required
-        v-model="prodState.selectedItem.name"
+        label="Custom Permalink"
+        placeholder="Custom Permalink"
+        v-model="prodState.selectedItem.permalink"
       />
-      <div class="sku-inventory">
-        <div class="sku">
-          <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
-        </div>
-        <div class="inventory">
-          <div class="available">
-            <h4 class="title">Available Stock:</h4>
-            <span>{{ prodState.selectedItem.stockQty || 0 }}</span>
-          </div>
-          <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
-        </div>
-      </div>
-      <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
+      <FormsBaseInput label="SEO Title" placeholder="SEO Title" v-model="prodState.selectedItem.seoTitle" />
+      <FormsBaseInput label="SEO Description" placeholder="SEO Description" v-model="prodState.selectedItem.seoDescription" />
     </div>
   </div>
 </template>
@@ -34,12 +21,12 @@ const prodState = inject('prodState')
 .seo {
   background-color: white;
   border-radius: 5px;
-  padding: 2rem 2rem;
+  padding: 2rem 2rem 4rem;;
 
-  .info {
+  .content {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
 
     .sku-inventory {
       display: flex;

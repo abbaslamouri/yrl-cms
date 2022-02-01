@@ -69,67 +69,6 @@ const addAttribute = () => {
           </div>
         </form>
       </main>
-
-      <!-- <div class="admin-attributes-list">
-				<div class="attribute" v-for="(item, index) in prodState.selectedItem.attributes">
-					<ProductsAdminProductAttribute :index="index" />
-
-					<div class="admin-attribute">
-						<div class="name td">
-							<FormsBaseInput
-								required
-								placeholder="Add New Attribute Name (Example: Color, Size ...)"
-								v-model="item.attribute.name"
-							/>
-						</div>
-						<div class="terms td shadow-md" @click="termInputFocus">
-							<div
-								class="list"
-								v-for="(term, j) in attTermsState.items.filter((el) => el.parent == item.attribute._id)"
-								:key="term"
-							>
-								<span>{{ term.name }}</span>
-								<IconsClose @click="deleteTerm(term)" />
-							</div>
-							<div class="form-group" @click="checkIfAttribute">
-								<input
-									class="hidden"
-									ref="termInputRef"
-									type="text"
-									v-model="newTerm"
-									placeholder="Add New Attribute Term (Example:Green, Blue, Green ...)"
-									:disabled="item.attribute.name == ''"
-									@keyup.enter.prevent="addAttributeTerm"
-									@blur="termInputRef.classList.add('hidden')"
-								/>
-							</div>
-						</div>
-						<div class="actions td">
-							<button class="btn" @click.prevent="showActions = !showActions"><IconsMoreHoriz /></button>
-							<div class="menu shadow-md" v-show="showActions">
-								<a href="#" class="link"><div class="advanced">Advanced</div></a>
-								<a href="#" class="link" @click.prevent="deleteAttribute" v-if="attribute._id">
-									<div class="cancel">Delete</div>
-								</a>
-								<a href="#" class="link" @click.prevent="attState.items.splice(i, 1)" v-else>
-									<div class="cancel">Cancel</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="admin-attribute-select">
-				<FormsBaseSelect
-					@update:modelValue="addAttribute"
-					v-model="attributeSelect"
-					:options="
-						attState.items.map((a) => {
-							return { key: a._id, name: a.name }
-						})
-					"
-				/>
-			</div> -->
     </div>
   </div>
 </template>

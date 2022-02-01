@@ -129,7 +129,7 @@
 
 			.content {
 				background-color: $slate-100;
-				min-height: 100%;
+				// min-height: 100%;
 				border: 1px solid red;
 				display: flex;
 				justify-content: center;

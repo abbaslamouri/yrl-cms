@@ -3,9 +3,15 @@ const prodState = inject('prodState')
 </script>
 
 <template>
-  <div class="digital-delivery flex-bc shadow-md" id="digital-delivery">
-    <header class="admin-section-header">Digital Delivery</header>
-    <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Enable" />
+  <div class="digital-delivery shadow-md" id="digital-delivery">
+    <header class="admin-section-header">
+      <div class="title">Digital Delivery</div>
+      <div class="status">
+        <FormsBaseToggle v-model="prodState.selectedItem.downloadable" label="Enable" />
+      </div>
+    </header>
+
+    <div class="conten" v-if="prodState.selectedItem.downloadable">file upload dropzone goes here</div>
   </div>
 </template>
 
@@ -15,38 +21,16 @@ const prodState = inject('prodState')
   border-radius: 5px;
   padding: 2rem 2rem;
 
-  .info {
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .content {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    .sku-inventory {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 2rem;
-
-      .sku {
-        flex: 1;
-      }
-
-      .inventory {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        font-size: 1.3rem;
-
-        .available {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-
-          .title {
-            font-weight: 600;
-          }
-        }
-      }
-    }
   }
 }
 </style>

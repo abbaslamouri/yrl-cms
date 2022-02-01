@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
 const schema = new mongoose.Schema(
   {
@@ -17,6 +17,12 @@ const schema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
+    },
+    seoTitle: {
+      type: String,
+    },
+    seoDescription: {
+      type: String,
     },
     description: {
       type: String,
@@ -83,6 +89,10 @@ const schema = new mongoose.Schema(
         height: String,
       },
     },
+    sortOrder: {
+      type: String,
+      default: 0,
+    },
     categories: [
       {
         type: mongoose.Schema.Types.ObjectId,
@@ -114,22 +124,32 @@ const schema = new mongoose.Schema(
       default: 0,
     },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: [true, 'Product author is required'] },
+    tahnkYouPage: {
+      type: String,
+    },
+    extraFields: [
+      {
+        name: String,
+        isRequired: Boolean,
+      },
+    ],
   },
+
   {
     timestamps: true,
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
   }
-);
+)
 
-schema.index({ name: 'text', slug: 'text' });
+schema.index({ name: 'text', slug: 'text' })
 
 schema.virtual('averageRating').get(function () {
-  if (!this.ratings) return;
-  const ratingsArr = this.ratings.map((el) => el.rating);
+  if (!this.ratings) return
+  const ratingsArr = this.ratings.map((el) => el.rating)
   // console.log('ZZZZZZZZZ', ratingsArr)
-  return ratingsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / this.ratings.length;
-});
+  return ratingsArr.reduce((accumulator, currentValue) => accumulator + currentValue, 0) / this.ratings.length
+})
 
 // Document Middleware, runs before save() and create()
 // schema.pre('save', function (next) {
@@ -138,4 +158,4 @@ schema.virtual('averageRating').get(function () {
 //   next()
 // })
 
-export default mongoose.model('Product', schema);
+export default mongoose.model('Product', schema)

@@ -72,7 +72,7 @@ export default {
       </span>
       <span v-if="$attrs.required !== undefined">(required)</span>
     </label>
-    <div class="error"></div>
+    <div class="error">vvvvv</div>
   </div>
 </template>
 
@@ -85,9 +85,9 @@ export default {
   border-radius: 0.25rem;
   // height: 6rem;
   border: 1px solid $slate-200;
-  // box-shadow: 0 4px 3px rgb(0 0 0 / 0.07), 0 2px 2px rgb(0 0 0 / 0.06);
+  box-shadow: 0 4px 3px rgb(0 0 0 / 0.07), 0 2px 2px rgb(0 0 0 / 0.06);
   background-color: white;
-  margin-bottom: 2rem;
+  // margin-bottom: 2rem;
   // overflow: hidden;
 
   // border: 3px solid red;
