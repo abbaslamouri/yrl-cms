@@ -37,7 +37,7 @@ const sendTokenResponse = async (user, res, statusCode) => {
 // @access    Public
 const register = asyncHandler(async (req, res, next) => {
   // return next(new AppError('Email and Password are required', 401))
-  console.log('RB', req.body)
+  // console.log('RB', req.body)
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -47,7 +47,7 @@ const register = asyncHandler(async (req, res, next) => {
   const url = `${req.protocol}//:${req.get('host')}/auth/complete-registration?token=${token}`
   await user.save()
   user.password = undefined
-  console.log('YYYYYYYbbb', user)
+  // console.log('YYYYYYYbbb', user)
 
   try {
     await new Email(user, url).sendCompleteRegistration()
@@ -69,9 +69,8 @@ const register = asyncHandler(async (req, res, next) => {
 // @access    Public
 const completeRegistration = asyncHandler(async (req, res, next) => {
   // return next(new AppError('Email and Password are required', 401))
-  console.log('RB', req.body)
-  console.log('RR', req.params.token)
-
+  // console.log('RB', req.body)
+  // console.log('RR', req.params.token)
   const hashedToken = await crypto.createHash('sha256').update(req.params.token).digest('hex')
   const user = await User.findOne({
     passwordResetToken: hashedToken,
@@ -89,7 +88,6 @@ const completeRegistration = asyncHandler(async (req, res, next) => {
 
   const url = `${req.protocol}//:${req.get('host')}/shop`
   await new Email(user, url).sendWelcome()
-
   sendTokenResponse(user, res, 200)
   // const user = await User.create({
   //   name: req.body.name,
@@ -110,7 +108,7 @@ const completeRegistration = asyncHandler(async (req, res, next) => {
 // @access    Public
 const registerOld = asyncHandler(async (req, res, next) => {
   // return next(new AppError('Email and Password are required', 401))
-  console.log('RB', req.body)
+  // console.log('RB', req.body)
   const user = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -269,7 +267,7 @@ const updateCurrentUserInfo = asyncHandler(async (req, res, next) => {
 // @access    Public
 const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password')
-  console.log('USER', user)
+  // console.log('USER', user)
   if (!user) return next(new AppError('You must be logged in to change your password', 401))
   if (!(await user.checkPassword(req.body.currentPassword))) return next(new AppError('Invalid current password', 401))
   user.password = req.body.password
@@ -282,7 +280,7 @@ const updateCurrentUserPassword = asyncHandler(async (req, res, next) => {
 // @desc      Protect middleware
 // @access    Private
 const protect = asyncHandler(async (req, res, next) => {
-  console.log('RC', req.cookies.auth)
+  // console.log('RC', req.cookies.auth)
   let token = ''
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1]
@@ -307,7 +305,7 @@ const protect = asyncHandler(async (req, res, next) => {
 // @desc      Grant access to specific roles
 // @access    Private
 const authorize = (...roles) => {
-  console.log('PPPPPPPPPPPPPP')
+  // console.log('PPPPPPPPPPPPPP')
   return (req, res, next) => {
     if (!roles.includes(req.user.role))
       return next(new AppError('You do not have adequate permisson to perform this action', 403))

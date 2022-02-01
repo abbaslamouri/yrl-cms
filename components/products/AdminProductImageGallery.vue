@@ -11,9 +11,9 @@ const handleMediaSelectorClick = inject('handleMediaSelectorClick')
         <IconsInfo />
         <p>This image gallery contains all images associated with this product including its attached variants.</p>
       </div>
-      <div class="image-gallery">
-        <ProductsAdminImageGallery :gallery="prodState.selectedItem.gallery" />
-      </div>
+      <!-- <div class="image-gallery"> -->
+        <ProductsAdminImageGallery :gallery="prodState.selectedItem.gallery" v-if="prodState.selectedItem.gallery.length"/>
+      <!-- </div> -->
       <button
         class="btn btn-image-select"
         @click.prevent="handleMediaSelectorClick({ image: 'gallery', index: null })"
@@ -48,6 +48,7 @@ const handleMediaSelectorClick = inject('handleMediaSelectorClick')
       background-color: $sky-100;
       padding: 1rem 2rem;
       border-radius: 5px;
+      font-size:80%;
 
       svg {
         width: 3rem;

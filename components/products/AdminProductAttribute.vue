@@ -282,88 +282,8 @@ const removeAllTerms = () => {
         </a>
       </div>
     </div>
-    <!-- <div class="actions td">
-            <IconsDeleteFill @click="removeProductAttribute" />
-          </div> -->
-
-    <!-- </div> -->
-
-    <!-- <form @keypress.enter.prevent>
-          <ProductsAdminAttribute
-            :attribute="attribute"
-            :i="i"
-            class="row"
-            v-for="(attribute, i) in attState.items"
-            :key="attribute._id"
-            :ref="
-              (el) => {
-                if (el) attributeRefs[i] = el
-              }
-            "
-          />
-          <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>
-        </form> -->
   </div>
-  <!-- <div class="content flex gap-10"> -->
-  <!-- <div class="checkboxes border">
-				<div>
-					<input
-						class="h-6 w-6 cursor-pointer"
-						type="checkbox"
-						v-model="prodState.selectedItem.attributes[index].attribute.visible"
-					/>
-					<label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
-						Visible on the product page
-					</label>
-				</div>
-				<div v-show="prodState.selectedItem.type === 'variable'">
-					<input
-						class="h-6 w-6 cursor-pointer"
-						type="checkbox"
-						v-model="prodState.selectedItem.attributes[index].attribute.variation"
-					/>
-					<label class="form-check-label inline-block text-gray-800" for="flexCheckDefault">
-						Used for variations
-					</label>
-				</div>
-			</div> -->
-  <!-- <div class="values">
-        <div class="options border border-blue-200 p-10 flex gap-4">
-          <div
-            v-if="prodState.selectedItem.attributes[index].terms"
-            class="option bg-gray-200 flex gap-2 rounded border border-gray-300 pl-4"
-            v-for="(term, i) in prodState.selectedItem.attributes[i].terms"
-            :key="term._id"
-          >
-            <span>{{ term.name }}</span>
-            <span class="remove bg-white px-2 ml-2 cursor-pointer" @click="removeTerm(i, term._id)">x</span>
-          </div>
-        </div>
-        <div class="actions">
-          <button class="btn" @click.prevent="addAllTerms()">Select All</button>
-          <button class="btn" @click.prevent="removeAllTerms(prodState.selectedItem.attributes[i]._id)">
-            Select None
-          </button>
 
-          <select class="" v-model="termSelect" @change="addTerm">
-            <option value="">select term</option>
-            <option
-              v-for="term in attTermsState.items.filter(
-                (el) => el.parent == prodState.selectedItem.attributes[i].attribute._id
-              )"
-              :key="term._id"
-              :value="term._id"
-              :disabled="
-                prodState.selectedItem.attributes[i].terms &&
-                prodState.selectedItem.attributes[i].terms.find((el) => el._id == term._id)
-              "
-            >
-              {{ term.name }}
-            </option>
-          </select>
-        </div>
-      </div> -->
-  <!-- </div> -->
 </template>
 
 <style lang="scss" scoped>
