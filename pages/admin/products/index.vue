@@ -33,8 +33,12 @@ const pages = computed(() =>
 // await Promise.all([actions.fetchAll(), actions.fetchCount()])
 
 const setPage = async (currentPage) => {
-  console.log(currentPage)
+  // console.log(currentPage)
   state.query.page = currentPage
+  await actions.fetchAll()
+}
+
+const handleSearch = async () => {
   await actions.fetchAll()
 }
 
@@ -82,14 +86,20 @@ export default {
 <template>
   <div class="products">
     <!-- {{ state.items }} -->
-    <div v-if="state.items.length" class="list">
-      <h3 class="title">Products</h3>
-      <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">
-        <button class="btn btn-primary">
-          <IconsPlus />
-          <span>Add</span>
-        </button>
-      </NuxtLink>
+    <div v-if="state.items.length" class="main">
+      <header>
+        <h3 class="title">Products</h3>
+        <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">
+          <button class="btn btn-primary">
+            <IconsPlus />
+            <span>Add</span>
+          </button>
+        </NuxtLink>
+      </header>
+      <div class="content">
+        <Search v-model="state.query.keyword" @handleSubmit="handleSearch" /> <ProductsAdminList />
+        <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
+      </div>
     </div>
     <div v-else class="no-products shadow-md">
       <div class="inner">
@@ -103,9 +113,6 @@ export default {
         </NuxtLink>
       </div>
     </div>
-    <!-- <ProductsSearch v-model="state.query.keyword" @keywordSet="submitSearch" /> -->
-    <ProductsAdminList />
-    <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
   </div>
 </template>
 
@@ -115,6 +122,24 @@ export default {
 .products {
   min-height: 92vh;
   width: 100%;
+  padding: 3rem 2rem;
+
+  .main {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+  }
 
   .no-products {
     height: 92vh;
@@ -136,19 +161,19 @@ export default {
 
       .link {
         align-self: flex-end;
-
-        .btn {
-          svg {
-            fill: $slate-50;
-            width: 1.8rem;
-            height: 1.8rem;
-          }
-        }
       }
       // justify-content: center;
       // align-items: center;
 
       // absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border rounded flex flex-col gap-1 items-start w-84 p-4 space-y-2
+    }
+  }
+
+  .btn {
+    svg {
+      fill: $slate-50;
+      width: 1.8rem;
+      height: 1.8rem;
     }
   }
 }

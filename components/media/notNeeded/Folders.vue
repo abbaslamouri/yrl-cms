@@ -98,7 +98,7 @@
 		if (!confirm('Are you sure?')) return
 		const mediaQueryStr = `?folder=${folderToUpdate.slug}`
 		let response = await getAllMedia(mediaQueryStr)
-		console.log('respnse', response.length)
+		// console.log('respnse', response.length)
 		if (!mediaErrorMsg.value) {
 			if (response.length) {
 				errorMsg.value = 'You are not allowed to delete non-empty folders'

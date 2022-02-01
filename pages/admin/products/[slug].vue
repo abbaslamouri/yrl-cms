@@ -11,6 +11,8 @@ const { state: attTermsState, actions: attTermsActions } = useFactory('attribute
 const { state: variantState, actions: variantActions } = useFactory('variants')
 
 const showAttVarSlideout = ref(false)
+const showMediaSelector = ref(false) // media selector toggler
+const mediaReference = ref({}) // sets which media to update once a selection is made
 
 // Set product filters
 prodState.query.slug = route.params.slug
@@ -45,13 +47,24 @@ if (prodState.items.length) {
   }
 }
 
-const showMediaSelector = ref(false) // media selector toggler
-const mediaReference = ref({}) // sets which media to update once a selection is made
+const currentProduct = JSON.stringify(prodState.selectedItem)
+const currentVariants = JSON.stringify(prodState.selectedItem.variants)
+
+// router.beforeEach((to, from) => {
+//   console.log(to)
+
+//   if (currentProduct !== JSON.stringify(prodState.selectedItem)) {
+//     const answer = window.confirm('Do you really want to leave? you have unsaved changes!')
+//     // cancel the navigation and stay on the same page
+//     if (!answer) return false
+//     // else currentProduct = JSON.stringify(prodState.selectedItem)
+//   }
+// })
 
 // Show media selector
 const handleMediaSelectorClick = (payload) => {
   showMediaSelector.value = true
-  console.log(payload)
+  // console.log(payload)
   mediaReference.value = payload
 }
 
@@ -116,16 +129,21 @@ const saveProduct = async () => {
   // }
   // const itemToSave = { ...prodState.selectedItem }
   // prodState.selectedItem = {
-  const newProduct = await prodActions.saveItem()
-  await variantActions.deleteMany({ product: newProduct._id })
-  if (!prodState.errorMsg) {
-    if (prodState.selectedItem.variants.length) {
-      variantState.selectedItems = prodState.selectedItem.variants
-      await variantActions.saveMany()
-      if (!variantState.errorMsg)
-        if (!prodState.errorMsg) router.push({ name: 'admin-products-slug', params: { slug: newProduct.slug } })
-    } else {
-      if (!prodState.errorMsg) router.push({ name: 'admin-products-slug', params: { slug: newProduct.slug } })
+  variantState.selectedItems = prodState.selectedItem.variants
+
+  // console.log(currentProduct === JSON.stringify(prodState.selectedItem))
+  // console.log(currentVariants === JSON.stringify(prodState.selectedItem.variants))
+
+  if (currentProduct !== JSON.stringify(prodState.selectedItem)) {
+    const newProduct = await prodActions.saveItem()
+    if (!prodState.errorMsg) {
+      if (variantState.selectedItems.length && currentVariants !== JSON.stringify(variantState.selectedItems)) {
+        await variantActions.deleteMany({ product: newProduct._id })
+        await variantActions.saveMany()
+        if (!variantState.errorMsg) router.push({ name: 'admin-products-slug', params: { slug: newProduct.slug } })
+      } else {
+        router.push({ name: 'admin-products-slug', params: { slug: newProduct.slug } })
+      }
     }
   }
 }
@@ -302,7 +320,7 @@ export default {
                   background-color: $slate-500;
                   color: $slate-50;
                   font-size: 80%;
-                  padding: 0.25rem 1rem .5rem;;
+                  padding: 0.25rem 1rem 0.5rem;
                   border-radius: 2rem;
                 }
               }

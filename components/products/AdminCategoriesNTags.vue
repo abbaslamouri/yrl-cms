@@ -4,7 +4,7 @@ const catState = inject('catState')
 
 const addCategory = (catId) => {
   const category = catState.items.find((c) => c._id == catId)
-  console.log('CAT', category)
+  // console.log('CAT', category)
   const index = prodState.selectedItem.categories.findIndex((c) => c._id == catId)
   if (index === -1) prodState.selectedItem.categories.push(category)
   else prodState.selectedItem.categories.splice(index, 1)

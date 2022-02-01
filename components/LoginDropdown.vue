@@ -12,7 +12,7 @@ const user = reactive({
 });
 
 const handleSignin = async () => {
-  console.log(user);
+  // console.log(user);
   // mainStore.setSnackbar({ show: false })
   await auth.login(user);
   if (!auth.errorMsg) {
@@ -24,7 +24,7 @@ const handleSignin = async () => {
 };
 
 const handleSignup = async () => {
-  console.log(user);
+  // console.log(user);
   // mainStore.setSnackbar({ show: false })
   await auth.login(user);
   if (!auth.errorMsg) {

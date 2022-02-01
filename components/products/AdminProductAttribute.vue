@@ -24,10 +24,10 @@ const removeVariantByTermId = (termId) => {
   while (j < prodState.selectedItem.variants.length) {
     const k = prodState.selectedItem.variants[j].attrTerms.findIndex((t) => t._id == termId)
     const countBefore = prodState.selectedItem.variants[j].attrTerms.length
-    console.log('Before', countBefore)
+    // console.log('Before', countBefore)
     if (k !== -1) prodState.selectedItem.variants[j].attrTerms.splice(k, 1)
     const countAfter = prodState.selectedItem.variants[j].attrTerms.length
-    console.log('After', countAfter)
+    // console.log('After', countAfter)
     if (countBefore != countAfter) prodState.selectedItem.variants[j].discard = true
 
     j++
@@ -45,7 +45,7 @@ const removeDuplicateVariants = () => {
         for (const prop in obj.attrTerms) {
           id = `${id}_${obj.attrTerms[prop]._id}`
         }
-        console.log(id)
+        // console.log(id)
         return map.set(id, obj)
       }, new Map())
       .values()

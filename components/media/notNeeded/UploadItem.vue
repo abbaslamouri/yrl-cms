@@ -57,7 +57,7 @@
 			} else {
 				response = await http.post(`v1/media/`, formData, config)
 			}
-			console.log(response)
+			// console.log(response)
 			uploadItem.response = response.data.doc
 			uploadItem.state = 'complete'
 			state.files.push(response.data.doc)
@@ -65,7 +65,7 @@
 			if (index !== -1) state.filesToUpload.splice(index, 1)
 		} catch (err) {
 			if (axios.isCancel(err)) {
-				console.log('CANCELED')
+				// console.log('CANCELED')
 				uploadItem.state = 'canceled'
 			} else {
 				console.log('MyErrorxxx', err)

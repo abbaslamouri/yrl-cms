@@ -24,7 +24,7 @@ const uploadState = ref('');
 let axiosSource = axios.CancelToken.source();
 
 const upload = async () => {
-  console.log('ITEM', props.item);
+  // console.log('ITEM', props.item);
   let response = {};
   try {
     uploadState.value = 'uploading';
@@ -39,7 +39,7 @@ const upload = async () => {
     formData.append('folder', folderState.selectedItem._id);
     if (uploadItem.value.type.includes('image')) response = await http.post(`v1/media/image`, formData, config);
     else response = await http.post(`v1/media`, formData, config);
-    console.log('RES', response);
+    // console.log('RES', response);
     uploadState.value = 'complete';
     emit('itemUploaded', response.data);
   } catch (err) {

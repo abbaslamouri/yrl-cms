@@ -8,9 +8,9 @@ const newFolderId = ref('');
 const handleMoveMediaToFolder = async () => {
   // if (!confirm('Are you sure?')) return;
   setTimeout(async () => {
-    console.log('LLLLL', newFolderId);
+    // console.log('LLLLL', newFolderId);
     const index = folderState.items.findIndex((f) => f._id === newFolderId.value);
-    console.log(index);
+    // console.log(index);
     if (index != -1) {
       await mediaActions.updateItems({ folder: newFolderId.value });
       folderState.selectedItem = folderState.items[index];

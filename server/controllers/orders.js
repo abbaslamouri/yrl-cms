@@ -13,7 +13,7 @@ const createOrder = asyncHandler(async (req, res, next) => {
 			const foundObj = found[0]
 			if (foundObj.role === 'user') foundObj.role = 'customer'
 			customer = await User.findByIdAndUpdate(foundObj._id, foundObj)
-			console.log('RB1', customer)
+			// console.log('RB1', customer)
 		} else {
 			customer = await User.create({
 				name: req.body.customer.name,

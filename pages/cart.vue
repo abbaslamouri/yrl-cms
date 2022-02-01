@@ -9,7 +9,7 @@ const auth = useAuth()
 const coupon = ref('')
 
 onMounted(() => {
-  console.log(JSON.parse(localStorage.getItem('cart')))
+  // console.log(JSON.parse(localStorage.getItem('cart')))
 })
 
 // if (auth.authenticated) cart.cart.customer = auth.user

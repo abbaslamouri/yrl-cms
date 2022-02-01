@@ -23,7 +23,7 @@ const uploadProgress = ref(0);
 const uploadState = ref('');
 
 const upload = async () => {
-  console.log('ITEM', props.item);
+  // console.log('ITEM', props.item);
   let response = {};
   try {
     uploadState.value = 'uploading';
@@ -36,10 +36,10 @@ const upload = async () => {
     const formData = new FormData();
     formData.append('file', props.item.file);
     formData.append('folder', folderState.selectedItem._id);
-    console.log('FD', formData);
+    // console.log('FD', formData);
     if (props.item.file.type.includes('image')) response = await http.post(`v1/media/image`, formData, config);
     else response = await http.post(`v1/media`, formData, config);
-    console.log('RES', response);
+    // console.log('RES', response);
     uploadState.value = 'complete';
     const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
     if (index !== -1) mediaState.items.splice(index, 1, response.data);
@@ -48,7 +48,7 @@ const upload = async () => {
     // const error = err.response.data.message || err.response.data.statusMessage;
     // appError.setSnackbar(true, error, 'Error', 0);
     const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
-    console.log(index);
+    // console.log(index);
     if (index !== -1) mediaState.items.splice(index, 1);
     emit('itemUploadedError', `<p>${err.response.data.message || err.response.data.statusMessage}</p>`);
   }

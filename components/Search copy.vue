@@ -4,37 +4,26 @@ defineProps({
     type: [String, Number],
     default: '',
   },
-})
+});
 
-const emit = defineEmits(['update:modelValue', 'handleSubmit'])
-
-const inputRef = ref('')
+const emit = defineEmits(['update:modelValue', 'handleSubmit']);
 
 const handleInput = (event) => {
   if (!event.target.value) {
-    emit('update:modelValue', event.target.value)
-    emit('handleSubmit')
+    emit('update:modelValue', event.target.value);
+    emit('handleSubmit');
   } else {
-    emit('update:modelValue', event.target.value)
+    emit('update:modelValue', event.target.value);
   }
-}
+};
 </script>
 
 <template>
-  <form class="search base-input" @submit.prevent="$emit('handleSubmit')">
+  <form class="search" @submit.prevent="$emit('handleSubmit')">
+    <input type="input" :value="modelValue" placeholder="Search" aria-label="Search" @input="handleInput" />
     <button type="submit" class="btn">
       <IconsSearchFill />
     </button>
-    <input
-      type="text"
-      :value="modelValue"
-      placeholder="Search"
-      aria-label="Search"
-      @input="handleInput"
-      ref="inputRef"
-      @click.prevent="inputRef.closest('form').classList.add('selected')"
-      @blur="inputRef.closest('form').classList.remove('selected')"
-    />
   </form>
 </template>
 
@@ -42,37 +31,26 @@ const handleInput = (event) => {
 @import '@/assets/scss/variables';
 
 .search {
-  display: grid;
-  grid-template-columns: 4rem 1fr;
-  grid-template-rows: 1fr;
-  // align-items: stretch;
+  display: flex;
+  align-items: stretch;
   gap: 0;
   border: 1px solid $slate-400;
-  border-radius: 5px;
-  // overflow: hidden;
-  font-size: 1.3rem;
-  height: 4rem;
-  background-color: white;
+  border-radius: 2rem;
+  overflow: hidden;
+  font-size:1.3rem;
 
   // gap: 2rem;
-  // padding: 1rem 1rem;
+  padding: 0 0 0 1rem;
   // background-color: $slate-200;
 
   color: #fff;
 
-  &.selected {
-    outline: 3px solid $sky-200;
-  }
-
   input {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
     // border: 1px solid $slate-400;
+    background-color: white;
     border: none;
-    width: 100%;
-    height: 100%;
     // border-radius: 0 0 0 rem;
-    // padding: 0.5rem;
+    padding: 0.5rem;
 
     // padding: 0.6rem 2rem;
     // border-radius: 2rem 0 0 2rem;
@@ -80,21 +58,16 @@ const handleInput = (event) => {
   }
 
   .btn {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-
     // border:1px solid red;
     border: none;
-    // border-radius: 0;
+    border-radius: 0;
     padding: 0 1rem;
-    // display: flex;
-    // align-items: center;
-    // background-color: $slate-400;
+    display: flex;
+    align-items: center;
+    background-color: $slate-400;
 
     svg {
-      fill: $slate-500;
-      width: 2rem;
-      height: 2rem;
+      fill: $slate-50;
     }
 
     // border: none;

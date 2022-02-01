@@ -15,7 +15,7 @@ const resetPassword = async () => {
       confirmPassword: confirmPassword.value,
     },
   })
-  console.log(response.data)
+  // console.log(response.data)
 }
 </script>
 

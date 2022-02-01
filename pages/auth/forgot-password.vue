@@ -9,7 +9,7 @@ const sendPasswordResetEmail = async () => {
     url: 'http://localhost:3000/api/v1/auth/forgotpassword',
     data: { email: email.value },
   })
-  console.log(response.data)
+  // console.log(response.data)
 }
 </script>
 

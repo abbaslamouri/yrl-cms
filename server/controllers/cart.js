@@ -7,7 +7,7 @@ import Variant from '~/server/models/variant'
 import Cart from '../models/cart'
 
 const saveCart = asyncHandler(async (req, res, next) => {
-  console.log(req.body)
+  // console.log(req.body)
 
   // Create new items with the stored product prices
   const newItems = []

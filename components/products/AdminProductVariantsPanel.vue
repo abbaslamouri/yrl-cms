@@ -112,7 +112,7 @@ const addSingleVariant = () => {
   // Are there attribute terms
   const attributes = prodState.selectedItem.attributes.filter((a) => a.terms && a.terms.length > 0)
   if (!attributes.length) {
-    console.log('CC', attributes)
+    // console.log('CC', attributes)
     // showAddVariantForm.value = false
     return appError.setSnackbar(true, 'You must selecet at least 21terms per attribute to add a variation')
   }
@@ -223,7 +223,7 @@ const setSalePrices = () => {
 // }
 
 const setDefaultTerm = (index, value) => {
-  console.log(index, value)
+  // console.log(index, value)
   prodState.selectedItem.attributes[index].defaultTerm = attTermsState.items.filter((el) => el._id == value)[0]
 }
 
@@ -238,8 +238,8 @@ const setProdVariantEdit = (variant, index) => {
   prodVariantEdit.value = variant
   editIndex.value = index
   showVariantSlideout.value = true
-  console.log(editIndex.value)
-  console.log(prodVariantEdit.value)
+  // console.log(editIndex.value)
+  // console.log(prodVariantEdit.value)
 }
 </script>
 

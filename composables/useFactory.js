@@ -68,7 +68,7 @@ const useFactory = (collection) => {
       state.errorMsg = ''
       try {
         const response = await http.get(`v1/${collection}/${id}`)
-        console.log(response)
+        // console.log(response)
         return response.data
       } catch (err) {
         console.log('MyERROR', err)
@@ -96,7 +96,6 @@ const useFactory = (collection) => {
 
     async saveItem() {
       state.errorMsg = ''
-
       try {
         let response = {}
         if (state.selectedItem._id) {
@@ -129,7 +128,7 @@ const useFactory = (collection) => {
         // if (index != -1) state.items.splice(index, 1, response.data)
         // } else {
         const response = await http.post(`v1/${collection}/`, state.selectedItems)
-        console.log(response)
+        // console.log(response)
         // state.items.push(response.data)
         // }
         // return response.data
@@ -149,7 +148,7 @@ const useFactory = (collection) => {
         state.selectedItems.map(async (item) => {
           try {
             const response = await http.patch(`v1/${collection}/${item._id}`, payload)
-            console.log(response)
+            // console.log(response)
           } catch (err) {
             console.error('MyERROR', err)
             state.errorMsg = err.response.data.message || err.response.data.statusMessage
@@ -163,9 +162,9 @@ const useFactory = (collection) => {
       state.errorMsg = ''
       try {
         const response = await http.delete(`v1/${collection}/${state.selectedItem._id}`)
-        console.log(response)
+        // console.log(response)
         const index = state.items.findIndex((el) => el._id == state.selectedItem._id)
-        console.log(index)
+        // console.log(index)
         if (index !== -1) state.items.splice(index, 1)
       } catch (err) {
         console.log('MyERROR', err.response)
@@ -180,7 +179,7 @@ const useFactory = (collection) => {
       // state.selectedItems.map(async (item) => {
       try {
         const response = await http.post(`v1/${collection}/delete-many`, payload)
-        console.log(response)
+        // console.log(response)
         // let index = state.items.findIndex((el) => el._id == item._id)
         // if (index !== -1) state.items.splice(index, 1)
         // index = state.selectedItems.findIndex((el) => el._id == item._id)
@@ -196,14 +195,14 @@ const useFactory = (collection) => {
     },
 
     async searchDb(keyword) {
-      console.log(keyword)
+      // console.log(keyword)
       state.errorMsg = ''
       const { data, error } = await useFetch(`/v1/${collection}/search`, {
         baseURL: state.baseURL,
         method: 'get',
         params: { keyword: keyword },
       })
-      console.log('DATA', data.value)
+      // console.log('DATA', data.value)
       if (error.value) {
         state.errorMsg = 'Error while fetching docs count'
         appError.setSnackbar(true, state.errorMsg)
@@ -215,13 +214,13 @@ const useFactory = (collection) => {
 
     async deleteItems() {
       state.errorMsg = ''
-      console.log('state.selectedItems', [...state.selectedItems])
+      // console.log('state.selectedItems', [...state.selectedItems])
 
       await Promise.all(
         state.selectedItems.map(async (item) => {
           try {
             const response = await http.delete(`v1/${collection}/${item._id}`)
-            console.log(response)
+            // console.log(response)
             let index = state.items.findIndex((el) => el._id == item._id)
             if (index !== -1) state.items.splice(index, 1)
             index = state.selectedItems.findIndex((el) => el._id == item._id)
@@ -233,7 +232,7 @@ const useFactory = (collection) => {
           }
         })
       )
-      console.log('DONE')
+      // console.log('DONE')
     },
 
     // async fetchAllProductsAndCategories() {

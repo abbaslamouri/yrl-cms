@@ -1,10 +1,12 @@
-import { defineNuxtConfig } from 'nuxt3';
+import { defineNuxtConfig } from 'nuxt3'
 
 // https://v3.nuxtjs.org/docs/directory-structure/nuxt.config
 export default defineNuxtConfig({
   // modules: ['@nuxtjs/axios'],
 
   buildModules: ['@pinia/nuxt'],
+
+  // modules: ['vue-sweetalert2/nuxt'],
 
   // modules: ['@nuxtjs/axios'],
 
@@ -42,7 +44,7 @@ export default defineNuxtConfig({
   //     // { rel: 'stylesheet', href: 'https://awesome-lib.css' },
   //   ],
   // },
-});
+})
 
 // <link rel="preconnect" href="https://fonts.googleapis.com">
 // <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -43,7 +43,7 @@ export const useAuth = defineStore('auth', {
       this.errorMsg = ''
       try {
         const response = await http.post('v1/auth/register', user)
-        console.log(response)
+        // console.log(response)
         appError.setSnackbar(true, 'Please check your email', 'success')
       } catch (err) {
         console.log('MyERROR', err.response)
@@ -58,7 +58,7 @@ export const useAuth = defineStore('auth', {
       this.errorMsg = ''
       try {
         const response = await http.patch(`v1/auth/complete-registration/${payload.token}`, payload.user)
-        console.log(response)
+        // console.log(response)
         this.user = response.data.user
         this.token = response.data.token
       } catch (err) {
@@ -83,7 +83,7 @@ export const useAuth = defineStore('auth', {
           avatar: payload._id,
         }
         const response = await http.patch('v1/auth/update-current-user', user)
-        console.log(response)
+        // console.log(response)
         this.user = response.data.user
       } catch (err) {
         console.log('MyERROR', err)
@@ -105,7 +105,7 @@ export const useAuth = defineStore('auth', {
           name: this.user.name,
           email: this.user.email,
         })
-        console.log(response)
+        // console.log(response)
         // this.user = response.data.user
         // this.token = response.data.token
       } catch (err) {
@@ -128,7 +128,7 @@ export const useAuth = defineStore('auth', {
           currentPassword,
           password,
         })
-        console.log(response)
+        // console.log(response)
         // this.user = response.data.user
         // this.token = response.data.token
       } catch (err) {
@@ -147,7 +147,7 @@ export const useAuth = defineStore('auth', {
       this.errorMsg = ''
       try {
         const response = await http.post('v1/auth/login', payload)
-        console.log(response.data)
+        // console.log(response.data)
         // this.auth = response.data
         this.user = response.data.user
         this.token = response.data.token
@@ -165,7 +165,7 @@ export const useAuth = defineStore('auth', {
       this.errorMsg = ''
       try {
         const response = await http.get('v1/auth/logout')
-        console.log(response.data)
+        // console.log(response.data)
         // this.auth = null
         this.user = {}
         this.token = null

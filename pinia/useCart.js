@@ -98,14 +98,14 @@ export const useCart = defineStore('cart', {
     },
 
     incrementItemCount(item) {
-      console.log(item)
+      // console.log(item)
       const index = this.cart.items.findIndex((p) => p.product == item.product)
       if (index !== -1) this.cart.items[index].quantity++
       // Cookies.set('cart', JSON.stringify(this.cart))
     },
 
     decrementItemCount(item) {
-      console.log(item)
+      // console.log(item)
       const index = this.cart.items.findIndex((p) => p.product == item.product)
       if (index !== -1 && this.cart.items[index].quantity >= 2) {
         this.cart.items[index].quantity--
@@ -126,7 +126,7 @@ export const useCart = defineStore('cart', {
       try {
         if (!this.cart.customer.email) return
         const response = await http.post('v1/cart', this.cart)
-        console.log(response.data)
+        // console.log(response.data)
         // this.cart = response.data
         return true
       } catch (err) {
@@ -157,7 +157,7 @@ export const useCart = defineStore('cart', {
       try {
         this.errorMsg = ''
         const response = await http.post('v1/orders', order)
-        console.log(response.data)
+        // console.log(response.data)
         // this.user = response.data.data.user
         // this.token = response.data.data.token
       } catch (err) {

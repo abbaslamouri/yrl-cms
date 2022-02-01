@@ -38,11 +38,11 @@ const removeProductVariant = () => {
 }
 
 const updateVariant = (attribute, termId) => {
-  console.log('AT', attribute)
+  // console.log('AT', attribute)
   // console.log(value)
   const term = attribute.terms.find((t) => t._id == termId)
 
-  console.log('T', term)
+  // console.log('T', term)
 
   // if (!prodState.selectedItem.variants[props.i].attrTerms.length) {
   prodState.selectedItem.variants[props.i].attrTerms.push(term)

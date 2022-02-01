@@ -12,7 +12,7 @@ const priceInputRef = ref(null)
 
 const setProductCategories = () => {
   prodState.selectedItem.categories = []
-  console.log(selectedCategories.value)
+  // console.log(selectedCategories.value)
   for (const prop in selectedCategories.value) {
     prodState.selectedItem.categories.push(catState.items.find((c) => c._id == selectedCategories.value[prop]))
   }
@@ -22,7 +22,7 @@ const setProductCategories = () => {
 <template>
   <div class="admin-right-nav">
     <div class="save-changes shadow-md">
-      <button class="btn btn-primary" @click="$emit('saveProduct')">Save Changes</button>
+      <button class="btn btn-primary" @click.prevent="$emit('saveProduct')">Save Changes</button>
       <FormsBaseToggle v-model="prodState.selectedItem.active" label="Active" />
     </div>
     <div class="categories shadow-md">

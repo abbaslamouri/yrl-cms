@@ -19,7 +19,7 @@ const inputRef = ref('') // New term form input
 const termInput = ref('') // used to handle trem inout focus
 
 const handleInputRefBtnClick = async (index) => {
-  console.log('REF', inputRef.value)
+  // console.log('REF', inputRef.value)
   showNewTermForm.value = true
   setTimeout(() => {
     inputRef.value.focus()
@@ -27,7 +27,7 @@ const handleInputRefBtnClick = async (index) => {
 }
 
 const handleAddNewTerm = async (parent) => {
-  console.log('IPV', parent)
+  // console.log('IPV', parent)
   attTermsState.selectedItem = {
     name: termInput.value,
     slug: slugify(termInput.value, { lower: true }),
@@ -46,7 +46,7 @@ const handleRemoveTerm = async (term) => {
 
 const handleDelete = async (item) => {
   if (!confirm('Are you sure? This attrubute and associated terms will be deleted')) return
-  console.log(item)
+  // console.log(item)
   state.selectedItem = item
   await actions.deleteItem()
   attTermsState.selectedItems = attTermsState.items.filter((el) => el.parent == item._id)

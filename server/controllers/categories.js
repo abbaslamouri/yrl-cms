@@ -34,7 +34,7 @@ const preSave = asyncHandler(async (req, res, next) => {
 //   })
 
 const fetchBySlug = asyncHandler(async (req, res, next) => {
-  console.log('RP', req.params.slug)
+  // console.log('RP', req.params.slug)
   let query = Category.find({ slug: req.params.slug })
   // if (populateOptions) query.populate(populateOptions)
   const doc = await query

@@ -91,7 +91,7 @@ const hideRemoveButton = (index) => {
 };
 
 const handleMediaUploadError = (event) => {
-  console.log('EVENT', event);
+  // console.log('EVENT', event);
   // appError.setSnackbar(true, event, 'Error', 0);
 };
 

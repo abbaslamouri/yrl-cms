@@ -46,12 +46,12 @@
 		showDropZone.value = false
 		const index = droppedFiles.value.findIndex((item) => item.name === newFile.originalname)
 		droppedFiles.value.splice(index, 1)
-		console.log(droppedFiles.value)
+		// console.log(droppedFiles.value)
 		emit('fileUploaded', newFile)
 	}
 
 	const handleFileRightClick = (eventObj) => {
-		console.log(eventObj)
+		// console.log(eventObj)
 		filePopupLeft.value =
 			eventObj.event.pageX > window.screen.width - 300 ? window.screen.width - 300 : eventObj.event.pageX
 		filePopupTop.value = eventObj.event.pageY
@@ -67,7 +67,7 @@
 			folder: updatedFile.folder,
 		}
 		const response = await updateMedia(updatedFile._id, payload)
-		console.log('RESPONSE', response)
+		// console.log('RESPONSE', response)
 		if (!mediaErrorMsg.value) {
 			showMediaFormModal.value = false
 			selectedFiles.value.splice(0)
@@ -83,7 +83,7 @@
 		for await (const file of selectedFiles.value) {
 			const response = await deleteMedia(file._id)
 			if (!mediaErrorMsg.value) {
-				console.log('RESPONSE', response)
+				// console.log('RESPONSE', response)
 				emit('fileDeleted', file._id)
 			}
 		}

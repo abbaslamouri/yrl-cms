@@ -4,7 +4,7 @@ const schema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: [true, 'Product Name is required'],
+      required: [true, 'Product name is required'],
       maxlength: [50, 'Name cannot be more than 100 characters long'],
       trim: true,
     },
@@ -17,6 +17,10 @@ const schema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
+    },
+    price: {
+      type: Number,
+      required: [true, 'Product price is required'],
     },
     seoTitle: {
       type: String,
@@ -49,9 +53,7 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    price: {
-      type: Number,
-    },
+
     salePrice: {
       type: Number,
     },

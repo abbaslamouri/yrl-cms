@@ -27,7 +27,7 @@ await actions.fetchAll()
 state.selectedItem = route.params.slug !== ' ' ? state.items[0] : { products: [] }
 
 const handleSelectTab = (tabKey) => {
-  console.log(tabKey)
+  // console.log(tabKey)
   for (const prop in tabs.value) {
     // console.log(prop, tabs.value[prop])
     if (tabs.value[prop].key == tabKey) tabs.value[prop].open = true
@@ -58,7 +58,7 @@ const handleRemove = (product) => {
 
 const filterSerachResults = () => {
   const productIds = state.selectedItem.products.map((p) => p._id)
-  console.log(productIds)
+  // console.log(productIds)
   return prodState.selectedItems.filter((p) => !productIds.includes(p._id))
 }
 
