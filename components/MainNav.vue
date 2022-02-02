@@ -2,113 +2,169 @@
 const navLinkItems = ref([
   {
     title: 'Coffee',
-    icon: 'icon',
+    icon: 'IconsCoffee',
     open: false,
     subMenu: [
       {
         title: 'Coffee',
         image: 'coffee-OLVL-480x480.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Barista Creations',
         image: 'nav-caramel.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Capsule Recycling',
         image: 'caps-rec.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: '',
         content: 'Hello World',
         image: '2nav-coffee-reedem10.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
     ],
   },
   {
-    title: 'Coffee',
-    icon: 'icon',
+    title: 'Machines',
+    icon: 'IconsCoffeeMaker',
     open: false,
     subMenu: [
       {
         title: 'Coffee',
-        image: 'coffee-OLVL-480x480.webp',
-        link: 'index',
+        image: 'Machines-All-02.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Barista Creations',
         image: 'nav-caramel.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Capsule Recycling',
         image: 'caps-rec.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: '',
         content: 'Hello World',
         image: '2nav-coffee-reedem10.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
     ],
   },
   {
-    title: 'Coffee',
-    icon: 'icon',
+    title: 'Accessories',
+    icon: 'IconsAccessories',
     open: false,
     subMenu: [
       {
         title: 'Coffee',
         image: 'coffee-OLVL-480x480.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Barista Creations',
         image: 'nav-caramel.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Capsule Recycling',
         image: 'caps-rec.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: '',
         content: 'Hello World',
         image: '2nav-coffee-reedem10.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
     ],
   },
   {
-    title: 'Coffee',
-    icon: 'icon',
+    title: 'Recycling',
+    icon: 'IconsRecycling',
     open: false,
     subMenu: [
       {
         title: 'Coffee',
         image: 'coffee-OLVL-480x480.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Barista Creations',
         image: 'nav-caramel.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: 'Capsule Recycling',
         image: 'caps-rec.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
       {
         title: '',
         content: 'Hello World',
         image: '2nav-coffee-reedem10.webp',
-        link: 'index',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+    ],
+  },
+  {
+    title: 'Sustainability',
+    icon: 'IconsSustainability',
+    open: false,
+    subMenu: [
+      {
+        title: 'Coffee',
+        image: 'coffee-OLVL-480x480.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: 'Barista Creations',
+        image: 'nav-caramel.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: 'Capsule Recycling',
+        image: 'caps-rec.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: '',
+        content: 'Hello World',
+        image: '2nav-coffee-reedem10.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+    ],
+  },
+  {
+    title: 'Store Locator',
+    icon: 'IconsLocationPin',
+    open: false,
+    subMenu: [
+      {
+        title: 'Coffee',
+        image: 'coffee-OLVL-480x480.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: 'Barista Creations',
+        image: 'nav-caramel.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: 'Capsule Recycling',
+        image: 'caps-rec.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
+      },
+      {
+        title: '',
+        content: 'Hello World',
+        image: '2nav-coffee-reedem10.webp',
+        link: { title: 'Shop Original Coffee', page: 'index' },
       },
     ],
   },
@@ -181,32 +237,17 @@ const afterEnter = (el) => {
         @mouseenter="item.open = !item.open"
         @mouseleave="item.open = !item.open"
       >
-        <div
-          class="menu-item flex flex-col gap-1 items-center px-20 py-2 border-x border-x-gray-600 hover:bg-white hover:text-slate-600 hover:shadow-lg cursor-pointer -ml-[1px]"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-            />
-          </svg>
+        <div class="menu-item">
+          <component :is="item.icon"></component>
           <div>{{ item.title }}</div>
         </div>
         <transition name="dropdown" @enter="enter" @after-enter="afterEnter" @leave="leave">
-          <ul
-            class="grid grid-cols-4 bg-white absolute inset-x-0 top-full text-gray-800 overflow-hidden"
-            v-show="item.open"
-          >
-            <li
-              class="submenu-item border-x shadow-md border-x-gray-200 h-48 flex justify-center items-center overflow-hidden"
-              v-for="subItem in item.subMenu"
-              :key="subItem.title"
-            >
-              <NuxtLink class="link flex flex-col gap-2" :to="{ name: `${subItem.link}` }">
+          <ul class="submenu shadow-md" v-show="item.open">
+            <li class="submenu-item" v-for="subItem in item.subMenu" :key="subItem.title">
+              <NuxtLink class="link" :to="{ name: `${subItem.link.page}` }">
                 <div>{{ subItem.title }}</div>
-                <img class="w-24" :src="`/assets/${subItem.image}`" alt="" />
+                <img class="" :src="`/assets/${subItem.image}`" alt="" />
+                <div>{{ subItem.link.title }}</div>
               </NuxtLink>
             </li>
           </ul>
@@ -245,25 +286,107 @@ const afterEnter = (el) => {
 .main-nav {
   display: flex;
   justify-content: center;
-  border: 1px solid teal;
+  // border: 1px solid teal;
   width: 100%;
+  background-color: $slate-800;
 
   // margin: 0 auto;
 
   .items {
+    position: relative;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border: 1px solid red;
+    // border: 1px solid red;
     width: 996px;
 
     .item {
-      border: 1px solid teal;
-      width:100%;
+      // border: 1px solid teal;
+      width: 100%;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      color: $slate-50;
+      border-left: 1px solid $slate-50;
+      border-right: 1px solid $slate-50;
+      margin-right: -1px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: white;
+        color: $slate-800;
+
+        svg {
+          fill: $slate-800;
+        }
+      }
+
+      .menu-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        font-weight: 600;
+        padding: 1rem;
+
+        svg {
+          fill: $slate-50;
+        }
+
+        // px-20 py-2 border-x border-x-gray-600 hover:bg-white hover:text-slate-600 hover:shadow-lg cursor-pointer -ml-[1px]
+      }
+
+      .submenu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        color: $slate-800;
+        // border:10px solid teal;
+        // grid-template-rows: 1fr;
+        // width: 100%;
+        // z-index: 9999;
+        background-color: white;
+
+        .submenu-item {
+          border: 1px solid $slate-200;
+          border-top: none;
+          .link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+          }
+
+          // display: flex;
+          // grid-row: 1 / 2;
+          // grid-column: span 1;
+
+          img {
+            width: 50%;
+            height: 50%;
+            object-fit: contain;
+          }
+
+          &:last-child {
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: contain;
+            }
+          }
+        }
+        // border-x shadow-md border-x-gray-200 h-48 flex justify-center items-center overflow-hidden
+
+        // grid grid-cols-4 bg-white absolute inset-x-0 top-full text-gray-800 overflow-hidden
+      }
     }
   }
 }
@@ -284,17 +407,6 @@ svg {
 //       }
 //     }
 //   }
-// }
-
-// .dropdown-enter-active,
-// .dropdown-leave-active {
-//   transition: height 0.2s ease-in-out;
-// }
-
-// .dropdown-leave-from,
-// .dropdown-enter-to {
-//   // transform: translateX(20px);
-//   opacity: 0;
 // }
 
 // .main-nav {

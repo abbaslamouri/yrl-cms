@@ -31,3 +31,22 @@
 .slide-leave-active {
   transition: all 0.3s ease;
 }
+
+.dropdown-leave-from,
+.dropdown-enter-to {
+  max-height: 50rem;
+  overflow: hidden;
+  // opacity: 1;
+}
+
+.dropdown-enter-from,
+.dropdown-leave-to {
+  overflow: hidden;
+  max-height: 0;
+  // opacity: 0;
+}
+
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: height 0.1s ease-in-out;
+}
