@@ -115,6 +115,14 @@ const schema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    orders: {
+      type: Number,
+      default: 0,
+    },
+    sales: {
+      type: Number,
+      default: 0,
+    },
     ratings: [
       {
         rating: Number,

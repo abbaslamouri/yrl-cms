@@ -21,7 +21,7 @@ const handleInput = (event) => {
 </script>
 
 <template>
-  <form class="search base-input" @submit.prevent="$emit('handleSubmit')">
+  <form class="search base-input shadow-md" @submit.prevent="$emit('handleSubmit')">
     <button type="submit" class="btn">
       <IconsSearchFill />
     </button>

@@ -11,7 +11,7 @@ const timer = ref(null)
 // state.query.fields = 'name,slug,price'
 state.query.page = 1
 state.query.limit = perPage.value
-state.query.populate = 'featuredImage categories'
+state.query.populate = 'gallery categories'
 state.sort.field = 'createdAt'
 state.sort.order = '-'
 state.query.sort = `${state.sort.order}${state.sort.field}`
@@ -96,8 +96,8 @@ export default {
           </button>
         </NuxtLink>
       </header>
-      <div class="content">
-        <Search v-model="state.query.keyword" @handleSubmit="handleSearch" /> <ProductsAdminList />
+      <div class="content shadow-md">
+        <Search v-model="state.query.keyword" @handleSubmit="handleSearch" /> <ProductsAdminProductList />
         <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
       </div>
     </div>
@@ -120,7 +120,8 @@ export default {
 @import '@/assets/scss/variables';
 
 .products {
-  min-height: 92vh;
+  min-height: 100%;
+  height: 100%;
   width: 100%;
   padding: 3rem 2rem;
 
@@ -138,6 +139,7 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 3rem;
+      padding: 2rem;
     }
   }
 

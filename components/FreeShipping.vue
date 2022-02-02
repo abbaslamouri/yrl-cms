@@ -7,11 +7,10 @@
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 .free-shipping {
-  background-color: $green-800;
+  background-color: $yellow-700;
   color: white;
   text-align: center;
   padding: 1rem;
-  // letter-spacing: 0.05em;
-  font-size:1.4rem;
+  font-size: 1.4rem;
 }
 </style>

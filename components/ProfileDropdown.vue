@@ -1,38 +1,36 @@
 <script setup>
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 
-import { useAuth } from '~/pinia/useAuth';
+import { useAuth } from '~/pinia/useAuth'
 
 // const cart = useCart()
-const auth = useAuth();
-const { user: currentUser } = storeToRefs(auth);
-const showAuthDropdown = ref(false);
+const auth = useAuth()
+const { user: currentUser } = storeToRefs(auth)
+const showAuthDropdown = ref(false)
 
-const route = useRoute();
-const router = useRouter();
+const route = useRoute()
+const router = useRouter()
 
 const handleSignout = async () => {
   // const cartCustomer = useCookie('cartCustomer').value
   // cartCustomer._id = null
   // console.log(cartCustomer)
   // cart.updateCustomerInfo(cartCustomer)
-  await auth.logout();
+  await auth.logout()
   // currentUser = {}
   // auth.token = null
   // Cookies.remove('user')
   // Cookies.remove('token')
   // window.location.reload(true)
   // window.location.assign('/')
-  showAuthDropdown.value = false;
-};
+  showAuthDropdown.value = false
+}
 </script>
 
 <template>
   <div class="profile-dropdown">
     <div class="header" v-bind:class="{ selected: showAuthDropdown }">
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-      </svg>
+      <IconsPersonFill />
       <h3 @click="showAuthDropdown = !showAuthDropdown">Welcome {{ currentUser.name }}</h3>
     </div>
     <div v-if="showAuthDropdown" class="menu flex flex-col">
@@ -53,7 +51,7 @@ const handleSignout = async () => {
       </ul>
       <button class="btn btn-primary" @click="handleSignout">Sign out</button>
     </div>
-    <div class="backdrop" v-if="showAuthDropdown" @click="showAuthDropdown = !showAuthDropdown"></div>
+    <div class="overlay" v-if="showAuthDropdown" @click="showAuthDropdown = !showAuthDropdown"></div>
   </div>
 </template>
 
@@ -62,46 +60,56 @@ const handleSignout = async () => {
 
 .profile-dropdown {
   position: relative;
-  min-width: 20rem;
-  font-size: 1.25rem;
 
   .header {
-    display:flex;
+    display: flex;
     align-items: center;
-    gap:1rem;
+    gap: 1rem;
     position: relative;
     z-index: 99;
     font-size: 1.2rem;
-    padding: 0.5rem 2rem;
+    height: 3rem;
+    padding: 0.5rem 1rem;
     cursor: pointer;
-    // border-radius:3px;
-    // border:1px solid red;
-
-    &:hover,
-    &.selected {
-      background-color: white;
-      color: $slate-800;
-    }
+    border-radius: 3px;
+    border: 1px solid $slate-50;
 
     svg {
-      width: 2rem;
-      height: 2rem;
+      width: 3rem;
+      height: 3rem;
+      fill: white;
     }
 
     h3 {
       font-weight: 300;
       text-transform: uppercase;
     }
+
+    &:hover,
+    &.selected {
+      background-color: white;
+      color: $slate-800;
+      border-radius: 3px 3px 0 0;
+
+      svg {
+        fill: $slate-800;
+      }
+    }
   }
 
   .menu {
-    padding: 2rem 2rem;
-    gap: 2rem;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 2rem;
     z-index: 99;
     background-color: white;
     color: $slate-800;
     width: 100%;
+    font-size: 1.2rem;
+    border-radius: 0 0 3px 3px;
+
     ul {
       li {
         padding: 0.5rem 0;
@@ -114,9 +122,17 @@ const handleSignout = async () => {
       }
     }
 
-    // w-full bg-white text-gray-800 absolute -b py-2 px-4 space-y-6
-  }
+    .btn {
+      background-color: transparent;
+      border: none;
+      color: $yellow-800;
+      justify-content: flex-start;
+      font-size: 1.3rem;
 
-  //  hover:bg-white hover:text-gray-800 cursor-pointer
+      &:hover {
+        color: $yellow-600;
+      }
+    }
+  }
 }
 </style>

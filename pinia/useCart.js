@@ -182,7 +182,9 @@ export const useCart = defineStore('cart', {
       return this.cart.items.reduce((accumulator, item) => accumulator + item.price * item.quantity, 0)
     },
     numberOfItems() {
-      return this.cart.items.reduce((accumulator, item) => accumulator + item.quantity, 0)
+      return this.cart.items && this.cart.items.length
+        ? this.cart.items.reduce((accumulator, item) => accumulator + item.quantity, 0)
+        : 0
     },
   },
 })

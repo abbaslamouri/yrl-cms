@@ -56,7 +56,7 @@ const updateVariant = (attribute, termId) => {
 
 <template>
   <div class="admin-product-variant">
-    <div class="image td" @click="$emit('showVariantSlideout')">
+    <div class="thumb td" @click="$emit('showVariantSlideout')">
       <img v-if="prodVariant.gallery[0]" :src="prodVariant.gallery[0].path" alt="Variant Image" />
       <img v-else src="/placeholder.png" alt="Variant Image" />
     </div>
@@ -102,7 +102,7 @@ const updateVariant = (attribute, termId) => {
     align-items: center;
   }
 
-  .image {
+  .thumb {
     width: 5rem;
     height: 5rem;
 

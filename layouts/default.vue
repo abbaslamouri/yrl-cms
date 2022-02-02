@@ -1,4 +1,8 @@
 <script setup>
+import { useAuth } from '~/pinia/useAuth'
+
+// const cart = useCart()
+const auth = useAuth()
 // import { useAuth } from '~/pinia/useAuth'
 // const authStore = useAuth()
 // const router = useRouter()
@@ -14,61 +18,55 @@
 
 <template>
   <div class="app">
+    <FreeShipping />
     <header>
-      <FreeShipping />
-      <div class="header flex flex-between">
-        <!-- <div class="header__top"> -->
+      <div class="header">
         <Branding />
-        <!-- <div class="header__right"> -->
-        <ProfileNav />
-        <!-- <ProductsNavCart /> -->
-        <!-- </div> -->
-        <!-- </div> -->
+        <div class="profile-cart">
+          <div class="profile">
+            <LoginDropdown v-if="!auth.authenticated" />
+            <ProfileDropdown v-else />
+          </div>
+          <ProductsNavCart />
+        </div>
       </div>
-      <nav class="bg-slate-800 text-white">
-        <!-- <nav class=""> -->
-        <!-- <MainNav /> -->
-        <!-- </nav> -->
-        <!-- S -->
-      </nav>
     </header>
-    <main class="main">
-      <!-- <div class="sidebar"><AdminNav /></div> -->
-      <div class="main"><slot /></div>
+    <!-- <nav class="nav"> -->
+    <MainNav />
+    <!-- </nav> -->
+    <main>
+      <!-- <div class="main"> -->
+      <slot />
+      <!-- </div> -->
     </main>
     <footer><Footer /></footer>
   </div>
 </template>
 
 <style lang="scss" scoped>
+@import '@/assets/scss/variables';
+
 .app {
   header {
+    background-color: $slate-900;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
     .header {
-      // border: 1px solid white;
-      // display: flex;
-      // justify-content: space-between;
-      // align-items: center;
-      background-color: #000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       color: white;
-      padding: 1rem 2rem;
+      height: 6rem;
+      padding: 0 2rem;
+      width: 996px;
 
-      // &__profile{
-      //   flex:1
-      // }
-
-      // &__right {
-      //   display: flex;
-      //   justify-content: center;
-      //   align-items: center;
-      //   flex: 1;
-      //   gap: 1rem;
-      // }
-
-      // &__top {
-      //   width: 1024px;
-      //   padding: 1.5rem;
-      // }
-      // w-[1024px] mx-auto text-white flex justify-between items-center py-6
+      .profile-cart {
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+      }
     }
   }
 }

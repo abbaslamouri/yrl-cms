@@ -172,45 +172,49 @@ const afterEnter = (el) => {
 </script>
 
 <template>
-  <ul class="main-nav w-[1024px] mx-auto flex items-center justify-center relative">
-    <li
-      v-for="(item, i) in navLinkItems"
-      :key="item.title"
-      @mouseenter="item.open = !item.open"
-      @mouseleave="item.open = !item.open"
-    >
-      <div
-        class="menu-item flex flex-col gap-1 items-center px-20 py-2 border-x border-x-gray-600 hover:bg-white hover:text-slate-600 hover:shadow-lg cursor-pointer -ml-[1px]"
+  <div class="main-nav">
+    <ul class="items">
+      <li
+        class="item"
+        v-for="(item, i) in navLinkItems"
+        :key="item.title"
+        @mouseenter="item.open = !item.open"
+        @mouseleave="item.open = !item.open"
       >
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
-          />
-        </svg>
-        <div>{{ item.title }}</div>
-      </div>
-      <transition name="dropdown" @enter="enter" @after-enter="afterEnter" @leave="leave">
-        <ul
-          class="grid grid-cols-4 bg-white absolute inset-x-0 top-full text-gray-800 overflow-hidden"
-          v-show="item.open"
+        <div
+          class="menu-item flex flex-col gap-1 items-center px-20 py-2 border-x border-x-gray-600 hover:bg-white hover:text-slate-600 hover:shadow-lg cursor-pointer -ml-[1px]"
         >
-          <li
-            class="submenu-item border-x shadow-md border-x-gray-200 h-48 flex justify-center items-center overflow-hidden"
-            v-for="subItem in item.subMenu"
-            :key="subItem.title"
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+            />
+          </svg>
+          <div>{{ item.title }}</div>
+        </div>
+        <transition name="dropdown" @enter="enter" @after-enter="afterEnter" @leave="leave">
+          <ul
+            class="grid grid-cols-4 bg-white absolute inset-x-0 top-full text-gray-800 overflow-hidden"
+            v-show="item.open"
           >
-            <NuxtLink class="link flex flex-col gap-2" :to="{ name: `${subItem.link}` }">
-              <div>{{ subItem.title }}</div>
-              <img class="w-24" :src="`/assets/${subItem.image}`" alt="" />
-            </NuxtLink>
-          </li>
-        </ul>
-      </transition>
-    </li>
-  </ul>
+            <li
+              class="submenu-item border-x shadow-md border-x-gray-200 h-48 flex justify-center items-center overflow-hidden"
+              v-for="subItem in item.subMenu"
+              :key="subItem.title"
+            >
+              <NuxtLink class="link flex flex-col gap-2" :to="{ name: `${subItem.link}` }">
+                <div>{{ subItem.title }}</div>
+                <img class="w-24" :src="`/assets/${subItem.image}`" alt="" />
+              </NuxtLink>
+            </li>
+          </ul>
+        </transition>
+      </li>
+    </ul>
+  </div>
+
   <!-- {{ snackbar }} -->
   <!-- <div class="branding">
 			<NuxtLink :to="{ name: `index` }"><img src="/yrl-logo.png" alt="" /></NuxtLink>
@@ -236,23 +240,56 @@ const afterEnter = (el) => {
 </template>
 
 <style lang="scss" scoped>
-.submenu-item {
-  &:last-child {
-    a {
-      img {
-        width: 100%;
-        // height: 100%;
-        // object-fit: cover;
-      }
+@import '@/assets/scss/variables';
+
+.main-nav {
+  display: flex;
+  justify-content: center;
+  border: 1px solid teal;
+  width: 100%;
+
+  // margin: 0 auto;
+
+  .items {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid red;
+    width: 996px;
+
+    .item {
+      border: 1px solid teal;
+      width:100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
   }
 }
 
-.dropdown-enter-active,
-.dropdown-leave-active {
-  transition: height 0.2s ease-in-out;
+svg {
+  width: 2rem;
 }
 
+//  w-[1024px] mx-auto flex items-center justify-center relative
+
+// .submenu-item {
+//   &:last-child {
+//     a {
+//       img {
+//         width: 100%;
+//         // height: 100%;
+//         // object-fit: cover;
+//       }
+//     }
+//   }
+// }
+
+// .dropdown-enter-active,
+// .dropdown-leave-active {
+//   transition: height 0.2s ease-in-out;
+// }
 
 // .dropdown-leave-from,
 // .dropdown-enter-to {
