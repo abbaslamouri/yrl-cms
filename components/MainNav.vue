@@ -309,8 +309,8 @@ const afterEnter = (el) => {
       align-items: center;
       justify-content: center;
       color: $slate-50;
-      border-left: 1px solid $slate-50;
-      border-right: 1px solid $slate-50;
+      border-left: 1px solid $slate-600;
+      border-right: 1px solid $slate-600;
       margin-right: -1px;
       cursor: pointer;
 
@@ -327,6 +327,7 @@ const afterEnter = (el) => {
         display: flex;
         flex-direction: column;
         align-items: center;
+        gap: 0.5rem;
         text-transform: uppercase;
         font-size: 1.2rem;
         font-weight: 600;

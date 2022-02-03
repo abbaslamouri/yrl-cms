@@ -7,7 +7,9 @@ export default {
 </script>
 
 <template>
-  <div class="dashboard">Dashboard</div>
+  <div class="dashboard">
+    Dashboard
+  </div>
 </template>
 
 <style lang="scss" scoped>

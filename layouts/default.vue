@@ -18,16 +18,18 @@ const auth = useAuth()
 
 <template>
   <div class="app">
-    <FreeShipping />
     <header>
+      <FreeShipping />
       <div class="header">
-        <Branding />
-        <div class="profile-cart">
-          <div class="profile">
-            <LoginDropdown v-if="!auth.authenticated" />
-            <ProfileDropdown v-else />
+        <div class="branding-profile">
+          <Branding />
+          <div class="profile-cart">
+            <div class="profile">
+              <LoginDropdown v-if="!auth.authenticated" />
+              <ProfileDropdown v-else />
+            </div>
+            <ProductsNavCart />
           </div>
-          <ProductsNavCart />
         </div>
       </div>
     </header>
@@ -48,26 +50,40 @@ const auth = useAuth()
 
 .app {
   header {
-    background-color: $slate-900;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
+    position: sticky;
+    top: 0;
+    z-index: 9;
     .header {
+      background-color: $slate-900;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: center;
       color: white;
       height: 6rem;
       padding: 0 2rem;
-      width: 996px;
 
-      .profile-cart {
+      .branding-profile {
         display: flex;
         align-items: center;
-        gap: 2rem;
+        justify-content: space-between;
+        width: 996px;
+
+        .profile-cart {
+          display: flex;
+          align-items: center;
+          gap: 2rem;
+        }
       }
     }
+  }
+
+  footer{
+    height:6rem;
+    background-color: $slate-800;
+    color: $slate-50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 </style>
