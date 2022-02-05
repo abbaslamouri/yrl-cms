@@ -16,11 +16,17 @@ const props = defineProps({
     type: [String, Number],
     default: 1,
   },
+  height: {
+    type: [String, Number],
+    default: 10,
+  },
 })
 
 const currentSlide = ref(0)
 const slideInterval = ref(null)
 const direction = ref(null)
+const transitionName = computed(() => (direction.value === 'right' ? 'carousel-ltr' : 'carousel-rtl'))
+const carouselHeight = computed(() => `${props.height * 1}rem`)
 
 const setCurrentSlide = (index) => {
   currentSlide.value = index
@@ -30,19 +36,18 @@ const next = (step = 1) => {
   const index = currentSlide.value < props.slides.length - 1 ? currentSlide.value + step : 0
   setCurrentSlide(index)
   direction.value = 'right'
+
   // startCarouselInterval()
 }
 
-const prevSlide = (step = -1) => {
+const prevSlide = (step) => {
   const index = currentSlide.value > 0 ? currentSlide.value + step : props.slides.length - 1
   setCurrentSlide(index)
   direction.value = 'left'
   startCarouselInterval()
 }
 
-const nextSlide = (step = 1) => {
-  console.log(currentSlide.value)
-
+const nextSlide = (step) => {
   next(step)
   startCarouselInterval()
 }
@@ -75,10 +80,20 @@ onUnmounted(() => {
 
 <template>
   <div class="carousel">
-    {{ currentSlide }}
-
     <div class="carousel__inner">
-      <CarouselItem
+      <div v-for="(slide, index) in slides" :key="`slide-${index}`">
+        <transition :name="transitionName">
+          <div
+            v-show="currentSlide === index"
+            class="carousel__item"
+            @mouseenter="stopCarouselInterval"
+            @mouseleave="startCarouselInterval"
+          >
+            <img :src="slide" alt="" />
+          </div>
+        </transition>
+      </div>
+      <!-- <CarouselItem
         :slides="slides"
         v-for="(slide, index) in slides"
         :key="`slide-${index}`"
@@ -88,10 +103,10 @@ onUnmounted(() => {
         :direction="direction"
         @mouseEnter="stopCarouselInterval"
         @mouseLeave="startCarouselInterval"
-      />
+      /> -->
       <div class="carousel__controls" v-if="controls">
-        <button @click="prevSlide" class="control left">Prev</button>
-        <button @click="nextSlide" class="control right">Next</button>
+        <button @click="prevSlide(-1)" class="btn control left"><IconsChevronLeft /></button>
+        <button @click="nextSlide(1)" class="btn control right"><IconsChevronRight /></button>
       </div>
       <div class="carousel__indicators" v-if="indicators">
         <button
@@ -112,30 +127,51 @@ onUnmounted(() => {
 .carousel {
   display: flex;
   justify-content: center;
-  min-height: 40rem;
-  // width: 100%;
+  height: v-bind(carouselHeight);
+  background-color:$slate-100;
+  padding:1rem;
 
   &__inner {
     position: relative;
     width: 100%;
     overflow: hidden;
   }
+
+  &__item {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
   &__controls {
     .control {
       border: none;
-      background: rgba(0, 0, 0, 0.5);
+      // background-color: $slate-900;
+      opacity: 0.6;
       position: absolute;
-      height: 50px;
-      width: 70px;
+      // height: 50px;
+      // width: 70px;
       top: 50%;
       transform: translateY(-50%);
-      color: $slate-50;
-      cursor: pointer;
-      transition: 0.5s;
+      // color: white;
+      transition: 0.3s;
+
+      svg {
+        width: 3rem;
+        height: 3rem;
+        cursor: pointer;
+
+        &:hover {
+          // background-color: $slate-900;
+          fill: $slate-400;
+        }
+      }
     }
-    .control:hover {
-      background: rgba(0, 0, 0, 0.8);
-    }
+
     .left {
       left: 0;
     }

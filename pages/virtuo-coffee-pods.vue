@@ -2,9 +2,6 @@
 const { state, actions } = useFactory('products')
 provide('state', state)
 provide('actions', actions)
-const route = useRoute()
-
-console.log(route.name)
 
 const page = ref(1)
 const perPage = ref(10)
@@ -19,9 +16,6 @@ const slides = ref([
   // 'http://picsum.photos/id/1036/900/400',
   // 'http://picsum.photos/id/1037/900/400',
 ])
-const heroBgImage = computed(() =>
-  route.name === 'original-coffee-pods' ? 'assets/hero-original.webp' : 'assets/hero-virtuo.webp'
-)
 
 // state.query.fields = 'name,slug,price'
 state.query.page = 1
@@ -97,31 +91,11 @@ const handleSearch = async () => {
     <section class="offers-carousel">
       <Carousel :slides="slides" indicators controls interval="5" height="10" />
     </section>
-
-    <section class="hero" :style="{ backgroundImage: `url(${heroBgImage})` }">
-      <div class="links">
-        <NuxtLink class="link" :to="{ name: 'original-coffee-pods', params: { slug: ' ' } }">
-          <button class="btn">
-            <IconsOriginalActive />
-            <span>Original</span>
-          </button>
-        </NuxtLink>
-        <NuxtLink class="link" :to="{ name: 'virtuo-coffee-pods', params: { slug: ' ' } }">
-          <button class="btn">
-            <IconsVirtuoActive />
-            <span>Virtuo</span>
-          </button>
-        </NuxtLink>
-      </div>
-      <div class="content">
-        <div>Original</div>
-        <h1>The Classic Espresso Experience</h1>
-        <NuxtLink class="link" :to="{ name: 'original-coffee-pods', params: { slug: ' ' } }">
-          <button class="btn btn-primary">
-            <span>Learn more about the original system</span>
-          </button>
-        </NuxtLink>
-      </div>
+    <section class="hero">
+      <IconsVirtuoActive />
+      <IconsVirtuoInactive />
+      <IconsOriginalActive />
+      <IconsOriginalInactive />
     </section>
     <div v-if="state.items.length" class="main">
       <header>
@@ -170,71 +144,7 @@ const handleSearch = async () => {
   }
 
   .hero {
-    position: relative;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: auto;
-    min-height: 40rem;
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    gap: 2rem 3rem;
-    padding: 0 3rem;
-    color: $slate-50;
-
-    .links {
-      display: flex;
-      align-items: center;
-
-      .btn {
-        background-color: $slate-50;
-        color: $slate-800;
-        border-radius: 5px;
-        padding: 1rem 2rem;
-        font-size: 1.2rem;
-        letter-spacing: 0.2rem;
-        svg {
-          // width: 4rem;
-          // height: 4rem;
-        }
-        span {
-          opacity: 0.5;
-        }
-      }
-    }
-
-    .content {
-      align-self: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 2rem;
-      letter-spacing: 0.25rem;
-      text-align: center;
-      h1 {
-        font-size: 5rem;
-        letter-spacing: 1rem;
-        max-width: 996px;
-      }
-
-      .link {
-        .btn {
-          background-color: transparent;
-          border: none;
-          font-size: 1.4rem;
-          letter-spacing: 0.25rem;
-
-          &:hover {
-            color: $slate-300;
-          }
-        }
-      }
-    }
-
-    // background-image: url('assets/');
+    background-image: url('assets/');
   }
 
   // padding: 3rem 2rem;
