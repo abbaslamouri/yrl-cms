@@ -105,6 +105,7 @@ const handleDelete = async () => {
     .form {
       display: flex;
       align-items: center;
+      min-width: 20rem;
 
       gap: 1rem;
 

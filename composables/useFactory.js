@@ -116,6 +116,19 @@ const useFactory = (collection) => {
       }
     },
 
+    async savePayload(payload) {
+      state.errorMsg = ''
+      try {
+        const response = await http.post(`v1/${collection}/`, payload)
+        appError.setSnackbar(true, 'Changes saved successfully', 'Success')
+        return response.data
+      } catch (err) {
+        console.error('MyERROR', err.response)
+        state.errorMsg = err.response.data.message || err.response.data.statusMessage
+        appError.setSnackbar(true, state.errorMsg)
+      }
+    },
+
     async saveMany() {
       state.errorMsg = ''
       // await Promise.all(

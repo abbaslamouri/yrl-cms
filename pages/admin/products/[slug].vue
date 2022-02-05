@@ -168,7 +168,6 @@ export default {
 
 <template>
   <div class="product-details">
-    <!-- <pre style="font-size: 1rem">{{ prodState.selectedItem }}</pre> -->
     <Html>
       <Head><Title>Product</Title></Head>
     </Html>

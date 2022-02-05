@@ -94,6 +94,26 @@
   }
 }
 
+.admin-category-list .table .row {
+  .th,
+  .td {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
+    &:nth-of-type(1) {
+      grid-column: 1 / 13;
+    }
+    &:nth-of-type(2) {
+      grid-column: 13/ 22;
+    }
+    &:nth-of-type(3) {
+      grid-column: 22/ 25;
+      justify-self: flex-end;
+    }
+  }
+}
+
 .admin-attributes .table .row {
   .th,
   .td {

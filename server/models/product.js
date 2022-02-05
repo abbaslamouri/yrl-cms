@@ -157,7 +157,7 @@ const schema = new mongoose.Schema(
   }
 )
 
-schema.index({ name: 'text', slug: 'text' })
+// schema.index({ name: 'text', slug: 'text' })
 
 schema.virtual('averageRating').get(function () {
   if (!this.ratings) return

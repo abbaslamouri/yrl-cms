@@ -13,16 +13,25 @@ const schema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
-      index: true,
+    },
+    permalink: {
+      type: String,
+      unique: true,
+      lowercase: true,
+    },
+    description: {
+      type: String,
+      maxlength: [2000, 'Description cannot be more than 2000 characters long'],
     },
     parent: { type: mongoose.Schema.Types.ObjectId, ref: 'Category' },
+    gallery: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Media' }],
   },
   {
     timestamps: true,
   }
 )
 
-schema.index({ name: 'text', slug: 'text' })
+// schema.index({ name: 'text', slug: 'text' })
 
 // Document Middleware, runs before save() and create()
 // schema.pre('save', function (next) {

@@ -38,7 +38,8 @@ const setPage = async (currentPage) => {
   await actions.fetchAll()
 }
 
-const handleSearch = async () => {
+const handleSearch = async (event) => {
+  state.query.keyword = event
   await actions.fetchAll()
 }
 
@@ -85,7 +86,6 @@ export default {
 
 <template>
   <div class="products">
-    <!-- {{ state.items }} -->
     <div v-if="state.items.length" class="main">
       <header>
         <h3 class="title">Products</h3>
@@ -97,7 +97,8 @@ export default {
         </NuxtLink>
       </header>
       <div class="content shadow-md">
-        <Search v-model="state.query.keyword" @handleSubmit="handleSearch" /> <ProductsAdminProductList />
+        <Search @handleSubmit="handleSearch" />
+        <ProductsAdminProductList />
         <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
       </div>
     </div>
@@ -164,10 +165,6 @@ export default {
       .link {
         align-self: flex-end;
       }
-      // justify-content: center;
-      // align-items: center;
-
-      // absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border rounded flex flex-col gap-1 items-start w-84 p-4 space-y-2
     }
   }
 
@@ -179,5 +176,4 @@ export default {
     }
   }
 }
-// h-full relative py-6 px-4
 </style>
