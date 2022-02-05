@@ -17,7 +17,7 @@ const mediaReference = ref({}) // sets which media to update once a selection is
 // Set product filters
 prodState.query.slug = route.params.slug
 prodState.query.populate =
-  'featuredImage gallery categories attributes attributes.attribute attributes.terms attributes.defaultTerm'
+  'gallery featuredImage thumbImage bodyBgImage attributesImage recipeImage categories attributes attributes.attribute attributes.terms attributes.defaultTerm'
 
 // fetch product, categories, attributes and attribute terms
 await Promise.all([prodActions.fetchAll(), catActions.fetchAll(), attActions.fetchAll(), attTermsActions.fetchAll()])

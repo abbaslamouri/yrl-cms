@@ -1,4 +1,5 @@
 <script setup>
+const prodState = inject('prodState')
 const props = defineProps({
   gallery: {
     type: Array,
@@ -37,6 +38,11 @@ const handleDrop = async (event, index) => {
   props.gallery[index] = pickedElement
   event.target.closest('.thumb').classList.remove('over')
 }
+
+const setFeaturedImage = (event) => {
+  console.log(event.target, pickIndex.value)
+  prodState.selectedItem.featuredImage = props.gallery[pickIndex.value]
+}
 </script>
 
 <template>
@@ -68,6 +74,96 @@ const handleDrop = async (event, index) => {
           </div>
           <span class="thumb__index">{{ index + 1 }}</span>
           <div class="thumb__tooltip">{{ image.name }}</div>
+        </div>
+      </div>
+    </div>
+    <div class="gallery">
+      <div class="thumbs">
+        <div
+          class="featured-image images thumb shadow-md relative"
+          @drop="prodState.selectedItem.featuredImage = props.gallery[pickIndex]"
+          @dragover.prevent
+        >
+          <div class="header">
+            <p class="title">Featured Iage</p>
+            <IconsClose />
+          </div>
+          <div class="image">
+            <img
+              v-if="prodState.selectedItem.featuredImage"
+              :src="prodState.selectedItem.featuredImage.path"
+              :alt="`${prodState.selectedItem.featuredImage.name} Photo`"
+            />
+          </div>
+        </div>
+
+        <div
+          class="thumb-image images thumb shadow-md relative"
+          @drop="prodState.selectedItem.thumbImage = props.gallery[pickIndex]"
+          @dragover.prevent
+        >
+          <div class="header">
+            <p class="title">Thumbnail</p>
+            <IconsClose />
+          </div>
+          <div class="image">
+            <img
+              v-if="prodState.selectedItem.thumbImage"
+              :src="prodState.selectedItem.thumbImage.path"
+              :alt="`${prodState.selectedItem.thumbImage.name} Photo`"
+            />
+          </div>
+        </div>
+        <div
+          class="body-bg-image images thumb shadow-md relative"
+          @drop="prodState.selectedItem.bodyBgImage = props.gallery[pickIndex]"
+          @dragover.prevent
+        >
+          <div class="header">
+            <p class="title">Bg.Image</p>
+            <IconsClose />
+          </div>
+          <div class="image">
+            <img
+              v-if="prodState.selectedItem.bodyBgImage"
+              :src="prodState.selectedItem.bodyBgImage.path"
+              :alt="`${prodState.selectedItem.bodyBgImage.name} Photo`"
+            />
+          </div>
+        </div>
+        <div
+          class="attributes-image images thumb shadow-md relative"
+          @drop="prodState.selectedItem.attributesImage = props.gallery[pickIndex]"
+          @dragover.prevent
+        >
+          <div class="header">
+            <p class="title">Attrs. Image</p>
+            <IconsClose />
+          </div>
+          <div class="image">
+            <img
+              v-if="prodState.selectedItem.attributesImage"
+              :src="prodState.selectedItem.attributesImage.path"
+              :alt="`${prodState.selectedItem.attributesImage.name} Photo`"
+            />
+          </div>
+        </div>
+        <div
+          class="recipe-image images thumb shadow-md relative"
+          @drop="prodState.selectedItem.recipeImage = props.gallery[pickIndex]"
+          @dragover.prevent
+        >
+          <div class="header">
+            <p class="title">Recipe Image</p>
+            <IconsClose />
+          </div>
+          <div class="image">
+            <img
+              v-if="prodState.selectedItem.recipeImage"
+              :src="prodState.selectedItem.recipeImage.path"
+              :alt="`${prodState.selectedItem.recipeImage.name} Photo`"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -105,9 +201,42 @@ const handleDrop = async (event, index) => {
         cursor: pointer;
         border-radius: 5px;
 
-        &:first-child {
-          grid-column: span 2 / span 2;
-          grid-row: span 2 / span 2;
+        &.images {
+          position: relative;
+          padding: 1rem 1rem 2rem 1rem;
+
+          // flex-direction: column;
+          // gap: 2rem;
+          // border: 1px solid red;
+
+          &:first-child {
+            grid-column: span 2 / span 2;
+            grid-row: span 2 / span 2;
+          }
+
+          .header {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.1rem;
+            background-color: $slate-200;
+            padding: 0.5rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            svg {
+              cursor: pointer;
+              width: 1.5rem;
+              height: 1.5rem;
+            }
+          }
+
+          img {
+            transform: translateY(2rem);
+          }
         }
 
         img {
@@ -203,8 +332,24 @@ const handleDrop = async (event, index) => {
           opacity: 0.3;
           border: 2px dashed $slate-600;
         }
+
+        &.featured-image,
+        &.body-bg-image,
+        &.attributes-image,
+        &.recipe-image,
+        &.thumb-image {
+          // border: 1px solid red;
+          min-width: 10rem;
+          min-height: 10rem;
+        }
       }
     }
   }
+
+  // .featured-image {
+  //   min-height: 10rem;
+  //   min-width: 1orem;
+  //   border: 1px solid red;
+  // }
 }
 </style>

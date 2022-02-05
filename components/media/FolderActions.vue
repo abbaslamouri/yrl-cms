@@ -1,42 +1,42 @@
 <script setup>
-import { useError } from '~/pinia/useError';
+import { useError } from '~/pinia/useError'
 
-const appError = useError();
-const folderState = inject('folderState');
-const folderActions = inject('folderActions');
-const mediaState = inject('mediaState');
-const mediaActions = inject('mediaActions');
+const appError = useError()
+const folderState = inject('folderState')
+const folderActions = inject('folderActions')
+const mediaState = inject('mediaState')
+const mediaActions = inject('mediaActions')
 
-const showForm = ref(false);
+const showForm = ref(false)
 
 const toggleSort = async () => {
-  folderState.sort.order = folderState.sort.order == '-' ? `` : `-`;
-  folderState.query.sort = `${folderState.sort.order}${folderState.sort.field}`;
-  await folderActions.fetchAll();
-};
+  folderState.sort.order = folderState.sort.order == '-' ? `` : `-`
+  folderState.query.sort = `${folderState.sort.order}${folderState.sort.field}`
+  await folderActions.fetchAll()
+}
 
 const setSelectedFolder = (event) => {
-  folderState.selectedItem = event;
-  showForm.value = true;
-};
+  folderState.selectedItem = event
+  showForm.value = true
+}
 
 const handleSave = () => {
-  folderActions.saveItem();
-  showForm.value = false;
-};
+  folderActions.saveItem()
+  showForm.value = false
+}
 
 const handleDelete = async () => {
-  if (!confirm('Are you sure?')) return;
+  if (!confirm('Are you sure?')) return
   if (mediaState.items.length) {
-    const errorMsg = 'You cannot delete non-empty folders';
-    appError.setSnackbar(true, errorMsg);
+    const errorMsg = 'You cannot delete non-empty folders'
+    appError.setSnackbar(true, errorMsg)
   } else {
-    await folderActions.deleteItem();
-    folderState.selectedItem = {};
-    delete mediaState.query.folder;
-    await mediaActions.fetchAll();
+    await folderActions.deleteItem()
+    folderState.selectedItem = {}
+    delete mediaState.query.folder
+    await mediaActions.fetchAll()
   }
-};
+}
 </script>
 
 <template>
@@ -83,9 +83,6 @@ const handleDelete = async () => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // padding: 1rem 2rem;
-  // border-bottom: 1px #ccc solid;
-  // font-size: 1.3rem;
 
   .new-folder {
     display: flex;
@@ -94,7 +91,6 @@ const handleDelete = async () => {
     align-items: center;
 
     .add-new-folder {
-      // flex: 1 auto;
       display: flex;
       align-items: center;
       gap: 0.5rem;
@@ -104,7 +100,6 @@ const handleDelete = async () => {
       svg {
         fill: $sky-600;
       }
-      // add-new-folder flex items-center gap-1 border border-blue-400 px-3 py-1 rounded text-blue-600
     }
 
     .form {
@@ -118,24 +113,6 @@ const handleDelete = async () => {
         gap: 0.5rem;
       }
     }
-
-    //   .btn {
-    //     &.add-new-folder {
-    //       background-color: transparent;
-    //       color: #4285f4;
-    //       display: flex;
-    //       align-items: center;
-    //       gap: 1rem;
-    //       border: 1px solid teal;
-    //       border-radius: 3px;
-    //       padding: 0.4rem 2rem;
-    //       font-size: 1.2rem;
-    //       margin-right: 2rem;
-    //     }
-
-    //     svg {
-    //       width: 2rem;
-    //     }
   }
   .sort-actions {
     display: flex;
@@ -161,85 +138,27 @@ const handleDelete = async () => {
 
     .actions {
       display: flex;
-      gap: 1rem;
 
-      .delete {
-        svg {
-          fill: $red-800;
+      .btn {
+        border: none;
+
+        &.delete {
+          svg {
+            fill: $red-600;
+          }
         }
-      }
 
-      .edit {
+        &.edit {
+          svg {
+            fill: $green-800;
+          }
+        }
         svg {
-          fill: $green-800;
+          width: 2.5rem;
+          height: 2.5rem;
         }
       }
     }
-
-    // class="sort-order flex items-center gap-1 cursor-pointer"
-
-    // flex items-center gap-10
   }
-
-  //   form {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 1.5rem;
-
-  //     input {
-  //       background-color: #e3f2fd;
-  //       border-bottom: 1px solid grey;
-  //     }
-  //     .actions {
-  //       display: flex;
-  //       align-items: center;
-  //       gap: 0.5rem;
-  //     }
-  //   }
 }
-
-// .actions {
-//   display: flex;
-//   align-items: center;
-//   gap: 3rem;
-
-//   .edit-delete {
-//     display: flex;
-//     align-items: center;
-//     gap: 1rem;
-
-//     span {
-//       cursor: pointer;
-
-//       &.edit {
-//         color: green;
-//       }
-
-//       &.delete {
-//         svg {
-//           fill: red;
-//         }
-//       }
-//     }
-//   }
-
-//   .sort-order {
-//     display: flex;
-//     align-items: center;
-//     gap: 1rem;
-
-//     button {
-//       border: none;
-//       cursor: pointer;
-//       background-color: transparent;
-
-//       svg {
-//         width: 2rem;
-//         height: 2rem;
-//         fill: #4285f4;
-//       }
-//     }
-//   }
-// }
-// }
 </style>

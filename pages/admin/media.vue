@@ -1,13 +1,13 @@
 <script setup>
 useMeta({
   title: 'Home | YRL',
-});
+})
 </script>
 
 <script>
 export default {
   layout: 'admin',
-};
+}
 </script>
 
 <template>
@@ -20,80 +20,8 @@ export default {
 @import '@/assets/scss/variables';
 
 .media {
-  min-height:100vh;
+  min-height: 100vh;
+  width:100%;
   background-color: $slate-100;
-
-  // border: 1px solid $slate-400;
-  // padding:1rem
-  // }
-  // .home {
-  //   .product-list {
-  //     padding: 2rem;
-  //   }
-  //   .actions {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 2rem;
-  //   }
-  //   // padding: 2rem;
 }
 </style>
-
-<!-- <script setup>
-useMeta({
-  title: 'Home | YRL',
-})
-
-// const categoryStore = useCategory()
-
-// const children = computed(() => categoryStore.items.filter((el) => el.parent))
-// const parents = computed(() => categoryStore.items.filter((el) => !el.parent))
-
-// const getChildren = (parent_id) => {
-// 	return children.value.filter((el) => el.parent._id === parent_id)
-// }
-
-// categoryStore.fetchAll()
-</script>
-
-<template>
-  <div class="shop">
-    <h3>Shop</h3>
-    <nav>
-			<h3>Categories</h3>
-			{{ categoryStore.items }}========{{ children }}++++++++++{{ parents }}
-			<ul class="parents">
-				<li class="parent" v-for="parent in parents" :key="parent.slug">
-					{{ parent.name }}
-					<ul class="children" v-if="getChildren(parent._id).length">
-						<li class="child" v-for="child in getChildren(parent._id)" :key="child._id">{{ child.name }}</li>
-					</ul>
-				</li>
-				<NuxtLink class="link" :to="{ name: 'index' }" v-for=><span>Home</span></NuxtLink>
-			</ul>
-		</nav>
-  </div>
-</template>
-
-<style lang="scss" scoped>
-.shop {
-  padding: 2rem;
-
-  nav {
-    .parents {
-      border: 1px solid red;
-      display: flex;
-
-      .parent {
-        border: 1px solid teal;
-        background-color: #ddd;
-        padding: 2rem 1rem;
-
-        .children {
-          display: flex;
-        }
-      }
-    }
-  }
-}
-</style> -->

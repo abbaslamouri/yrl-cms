@@ -79,8 +79,8 @@ export default {}
     // border: 1px solid red;
     width: 996px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    // align-items: center;
+    // justify-content: center;
     color: white;
 
     .promo {

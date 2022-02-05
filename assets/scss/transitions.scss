@@ -50,3 +50,23 @@
 .dropdown-leave-active {
   transition: height 0.1s ease-in-out;
 }
+
+
+.carousel-rtl-enter-from,
+.carousel-ltr-leave-to {
+  transform: translateX(100%);
+  // opacity: 0;
+}
+
+.carousel-rtl-leave-to,
+.carousel-ltr-enter-from {
+  transform: translateX(-100%);
+  // opacity: 0;
+}
+
+.carousel-rtl-enter-active,
+.carousel-rtl-leave-active,
+.carousel-ltr-enter-active,
+.carousel-ltr-leave-active {
+  transition: all 0.5s ease-in-out;
+}

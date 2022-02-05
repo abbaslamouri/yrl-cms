@@ -1,62 +1,56 @@
 <script setup>
-import iconType from '~/composables/useUtils';
-import { useError } from '~/pinia/useError';
-import axios from 'axios';
+import iconType from '~/composables/useUtils'
+import { useError } from '~/pinia/useError'
+import axios from 'axios'
 
 const props = defineProps({
   item: {
     type: Object,
     required: true,
   },
-});
-const emit = defineEmits(['itemUploadedError']);
+})
+const emit = defineEmits(['itemUploadedError'])
 
-const folderState = inject('folderState');
-const mediaState = inject('mediaState');
-const appError = useError();
+const folderState = inject('folderState')
+const mediaState = inject('mediaState')
+const appError = useError()
 
 const http = axios.create({
   baseURL: 'http://localhost:3000/api',
-});
-let axiosSource = axios.CancelToken.source();
-const uploadProgress = ref(0);
-const uploadState = ref('');
+})
+let axiosSource = axios.CancelToken.source()
+const uploadProgress = ref(0)
+const uploadState = ref('')
 
 const upload = async () => {
-  // console.log('ITEM', props.item);
-  let response = {};
+  let response = {}
   try {
-    uploadState.value = 'uploading';
+    uploadState.value = 'uploading'
     const config = {
       onUploadProgress: (e) => {
-        if (e.lengthComputable) uploadProgress.value = Math.round((e.loaded * 100) / e.total);
+        if (e.lengthComputable) uploadProgress.value = Math.round((e.loaded * 100) / e.total)
       },
       cancelToken: axiosSource.token,
-    };
-    const formData = new FormData();
-    formData.append('file', props.item.file);
-    formData.append('folder', folderState.selectedItem._id);
-    // console.log('FD', formData);
-    if (props.item.file.type.includes('image')) response = await http.post(`v1/media/image`, formData, config);
-    else response = await http.post(`v1/media`, formData, config);
-    // console.log('RES', response);
-    uploadState.value = 'complete';
-    const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
-    if (index !== -1) mediaState.items.splice(index, 1, response.data);
+    }
+    const formData = new FormData()
+    formData.append('file', props.item.file)
+    formData.append('folder', folderState.selectedItem._id)
+    if (props.item.file.type.includes('image')) response = await http.post(`v1/media/image`, formData, config)
+    else response = await http.post(`v1/media`, formData, config)
+    uploadState.value = 'complete'
+    const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name)
+    if (index !== -1) mediaState.items.splice(index, 1, response.data)
   } catch (err) {
-    console.log('MyERROR', err);
-    // const error = err.response.data.message || err.response.data.statusMessage;
-    // appError.setSnackbar(true, error, 'Error', 0);
-    const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name);
-    // console.log(index);
-    if (index !== -1) mediaState.items.splice(index, 1);
-    emit('itemUploadedError', `<p>${err.response.data.message || err.response.data.statusMessage}</p>`);
+    console.log('MyERROR', err)
+    const index = mediaState.items.findIndex((m) => m.file && m.file.name == props.item.file.name)
+    if (index !== -1) mediaState.items.splice(index, 1)
+    emit('itemUploadedError', `<p>${err.response.data.message || err.response.data.statusMessage}</p>`)
   }
-};
+}
 
 onMounted(async () => {
-  if (props.item.uploadState === 'uploading') await upload();
-});
+  if (props.item.uploadState === 'uploading') await upload()
+})
 </script>
 
 <template>

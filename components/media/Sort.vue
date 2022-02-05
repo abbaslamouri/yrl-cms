@@ -1,18 +1,18 @@
 <script setup>
-const state = inject('mediaState');
-const actions = inject('mediaActions');
+const state = inject('mediaState')
+const actions = inject('mediaActions')
 
 const sortByOptions = [
   { key: 'name', name: 'Filename' },
   { key: 'size', name: 'File size' },
   { key: 'dateCreated', name: 'Date Created' },
-];
+]
 
 const toggleSort = async () => {
-  state.sort.order = state.sort.order == '-' ? `` : `-`;
-  state.query.sort = `${state.sort.order}${state.sort.field}`;
-  await actions.fetchAll();
-};
+  state.sort.order = state.sort.order == '-' ? `` : `-`
+  state.query.sort = `${state.sort.order}${state.sort.field}`
+  await actions.fetchAll()
+}
 </script>
 
 <template>
@@ -39,6 +39,10 @@ const toggleSort = async () => {
   gap: 2rem;
   font-size: 1.2rem;
 
+  .sort-field{
+    min-width:15rem;
+  }
+
   .sort-order {
     display: flex;
     align-items: center;
@@ -53,39 +57,6 @@ const toggleSort = async () => {
         height: 2rem;
       }
     }
-
-    // flex items-center gap-1 cursor-pointer
   }
-  //  text-sm flex gap-8
-
-  //   .sort-by,
-  //   .sort-order {
-  //     display: flex;
-  //     align-items: center;
-  //     gap: 1rem;
-  //     font-size: 1.3rem;
-  //   }
-
-  //   select {
-  //     padding: 0.7rem 1rem;
-  //   }
-
-  //   .btn {
-  //     background-color: transparent;
-  //     border: none;
-  //     color: #4285f4;
-  //     padding: 0;
-
-  //     :hover {
-  //       background-color: #e8f0fe;
-  //     }
-
-  //     svg {
-  //       width: 4.5rem;
-  //       height: 4.5rem;
-  //       padding: 1rem;
-  //       border-radius: 50%;
-  //     }
-  //   }
 }
 </style>

@@ -40,8 +40,13 @@ const schema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    featuredImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
     gallery: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Media' }],
+
+    featuredImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
+    thumbImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
+    bodyBgImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
+    attributesImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
+    recipeImage: { type: mongoose.Schema.Types.ObjectId, ref: 'Media' },
     type: {
       type: String,
     },

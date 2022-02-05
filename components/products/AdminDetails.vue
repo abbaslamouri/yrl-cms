@@ -1,18 +1,12 @@
 <script setup>
 const prodState = inject('prodState')
-
 </script>
 
 <template>
   <section class="details shadow-md" id="details">
     <header class="admin-section-header">Details</header>
     <div class="content">
-      <FormsBaseInput
-        label="Name"
-        placeholder="Name"
-        required
-        v-model="prodState.selectedItem.name"
-      />
+      <FormsBaseInput label="Name" placeholder="Name" required v-model="prodState.selectedItem.name" />
       <div class="sku-inventory">
         <div class="sku">
           <FormsBaseInput label="SKU" placeholder="SKU" v-model="prodState.selectedItem.sku" />
@@ -25,7 +19,15 @@ const prodState = inject('prodState')
           <FormsBaseToggle v-model="prodState.selectedItem.manageInventory" label="Manage Inventory" />
         </div>
       </div>
-      <FormsBaseInput label="Description" placeholder="Description" v-model="prodState.selectedItem.description" />
+      <div class="base-textarea">
+        <textarea
+          v-model="prodState.selectedItem.description"
+          label="Description"
+          placeholder="Description"
+          rows="5"
+        ></textarea>
+        <label>Description</label>
+      </div>
     </div>
   </section>
 </template>
@@ -34,7 +36,7 @@ const prodState = inject('prodState')
 .details {
   background-color: white;
   border-radius: 5px;
-  padding: 2rem 2rem 4rem;;
+  padding: 2rem 2rem 4rem;
 
   .content {
     display: flex;

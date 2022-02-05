@@ -115,15 +115,11 @@ const setPage = (currentPage) => {
   display: flex;
   flex-direction: column;
   gap: 4rem;
-  // border: 1px solid $slate-300;
   padding: 1rem;
 
   .folders {
     display: flex;
     flex-direction: column;
-    // gap: 2rem;
-    // border: 1px solid $slate-300;
-    // padding: 1rem;
     background-color: white;
 
     .title {
@@ -144,8 +140,6 @@ const setPage = (currentPage) => {
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    // border: 1px solid $slate-300;
-    // padding: 1rem;
     background-color: white;
 
     .title {
@@ -170,45 +164,5 @@ const setPage = (currentPage) => {
       padding: 1rem 2rem;
     }
   }
-
-  // border p-2 space-y-6
-
-  // border m-2 p-2 space-y-8
-  //   // border: 1px solid red;
-  //   // margin: 1rem;
-
-  //   // padding: 1rem;
-
-  //   // background-color: #fff;
-
-  //   .folders {
-  //     // border: 1px solid grey;
-  //     h2 {
-  //       // display: flex;
-  //       // justify-content: center;
-  //     }
-  //   }
-
-  //   .files {
-  //     border: 1px solid grey;
-  //     margin-top: 1rem;
-  //     h2 {
-  //       display: flex;
-  //       justify-content: center;
-  //     }
-  //   }
-
-  //   .actions {
-  //     display: flex;
-  //     gap: 2rem;
-  //     justify-content: flex-end;
-  //     margin: 1rem 4rem;
-
-  //     .btn {
-  //       &.cancel {
-  //         background-color: #ddd;
-  //       }
-  //     }
-  //   }
 }
 </style>

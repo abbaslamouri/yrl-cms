@@ -1,26 +1,26 @@
 <script setup>
-const mediaState = inject('mediaState');
-const mediaActions = inject('mediaActions');
-const folderState = inject('folderState');
+const mediaState = inject('mediaState')
+const mediaActions = inject('mediaActions')
+const folderState = inject('folderState')
 
-const newFolderId = ref('');
+const newFolderId = ref('')
 
 const handleMoveMediaToFolder = async () => {
   // if (!confirm('Are you sure?')) return;
   setTimeout(async () => {
     // console.log('LLLLL', newFolderId);
-    const index = folderState.items.findIndex((f) => f._id === newFolderId.value);
+    const index = folderState.items.findIndex((f) => f._id === newFolderId.value)
     // console.log(index);
     if (index != -1) {
-      await mediaActions.updateItems({ folder: newFolderId.value });
-      folderState.selectedItem = folderState.items[index];
-      mediaState.query.folder = folderState.selectedItem._id;
-      mediaActions.fetchAll();
-      newFolderId.value = null;
-      mediaState.selectedItems = [];
+      await mediaActions.updateItems({ folder: newFolderId.value })
+      folderState.selectedItem = folderState.items[index]
+      mediaState.query.folder = folderState.selectedItem._id
+      mediaActions.fetchAll()
+      newFolderId.value = null
+      mediaState.selectedItems = []
     }
-  }, 200);
-};
+  }, 200)
+}
 
 // watch(newFolderId, (currentVal, oldVal) => {
 //   console.log(currentVal);
@@ -31,7 +31,6 @@ const handleMoveMediaToFolder = async () => {
 
 <template>
   <div class="move-to-folder" v-if="mediaState.selectedItems.length">
-
     <!-- Move to Folder
     <select v-model="newFolderId" @change="handleMoveMediaToFolder">
       <option value="">Select Folder</option>
@@ -40,10 +39,11 @@ const handleMoveMediaToFolder = async () => {
     <!-- <span>Move to Folder</span> -->
     <FormsBaseSelect
       v-model="newFolderId"
+      nullOption="Select Folder"
       @change="handleMoveMediaToFolder"
       :options="
         folderState.items.map((f) => {
-          return { key: f._id, name: f.name };
+          return { key: f._id, name: f.name }
         })
       "
       label="Move to folder"
@@ -58,12 +58,12 @@ const handleMoveMediaToFolder = async () => {
 </template>
 
 <style lang="scss" scoped>
-
 .move-to-folder {
-  display:flex;
+  display: flex;
   align-items: center;
-  gap:1rem;
+  gap: 1rem;
   font-size: 1.2rem;
+  min-width: 18rem;
 }
 // .media-uploader {
 //   padding: 1rem;

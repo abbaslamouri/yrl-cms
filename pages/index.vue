@@ -16,6 +16,12 @@ export default {}
     <PromoBar />
     <ProductPathway />
     <GuidedSelling />
+
+    <div style="height: 300px; background-color: black">
+      <img src="assets/venezia-title.svg" alt="" />
+    </div>
+
+    <div><span class="glyphicon glyphicon-envelope"></span>opopopopopopop</div>
   </div>
 </template>
 
