@@ -1,27 +1,38 @@
 <script setup>
-const { state, actions } = useFactory('products')
-provide('state', state)
-provide('actions', actions)
+// const { state, actions } = useFactory('products')
+const { fetchAll } = useHttp('products')
+// provide('state', state)
+// provide('actions', actions)
+
+const products = ref([])
 
 const page = ref(1)
 const perPage = ref(10)
-const selectedCategories = ref('')
-const timer = ref(null)
+// const selectedCategories = ref('')
+// const timer = ref(null)
 
 // state.query.fields = 'name,slug,price'
-state.query.page = 1
-state.query.limit = perPage.value
-state.query.populate = 'gallery categories'
-state.sort.field = 'createdAt'
-state.sort.order = '-'
-state.query.sort = `${state.sort.order}${state.sort.field}`
-await Promise.all([actions.fetchAll(), actions.fetchCount()])
+// state.query.page = 1
+// state.query.limit = perPage.value
+// state.query.populate = 'gallery categories'
+// state.sort.field = 'createdAt'
+// state.sort.order = '-'
+// state.query.sort = `${state.sort.order}${state.sort.field}`
+// await Promise.all([actions.fetchAll(), actions.fetchCount()])
 
-const pages = computed(() =>
-  state.totalItemCount % perPage.value
-    ? parseInt(state.totalItemCount / perPage.value) + 1
-    : parseInt(state.totalItemCount / perPage.value)
-)
+// onMounted(() => {
+products.value = await fetchAll({
+  fields: 'name, slug, permalink, stockQty, orders, sales, featuredImage',
+  populate: 'thumbImage',
+})
+console.log(products.value)
+// })
+
+// const pages = computed(() =>
+//   state.totalItemCount % perPage.value
+//     ? parseInt(state.totalItemCount / perPage.value) + 1
+//     : parseInt(state.totalItemCount / perPage.value)
+// )
 
 // state.query.fields = 'name,slug,price'
 // state.query.page = 1
@@ -43,39 +54,7 @@ const handleSearch = async (event) => {
   await actions.fetchAll()
 }
 
-// watch(
-//   () => selectedCategories.value,
-//   async (newVal) => {
-//     if (newVal) {
-//       console.log(newVal)
-//       filters.categories = selectedCategories.value
-//     } else {
-//       delete filters.categories
-//     }
-//   }
-// )
-
-// watch(
-//   () => price,
-//   async (newVal) => {
-//     filters['price[gte]'] = newVal.min || '0'
-//     filters['price[lte]'] = newVal.max || '0'
-//   },
-//   { deep: true }
-// )
-
-// watch(
-//   () => filters,
-//   async (newVal) => {
-//     if (timer.value) {
-//       clearTimeout(timer.value)
-//     }
-//     timer.value = setTimeout(async () => {
-//       await Promise.all([await actions.fetchAll(filters), await actions.fetchCount(filters)])
-//     }, 500)
-//   },
-//   { deep: true }
-// )
+provide('products', products.value)
 </script>
 
 <script>
@@ -86,7 +65,7 @@ export default {
 
 <template>
   <div class="products">
-    <div v-if="state.items.length" class="main">
+    <div v-if="products.length" class="main">
       <header>
         <h3 class="title">Products</h3>
         <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">
@@ -98,7 +77,8 @@ export default {
       </header>
       <div class="content shadow-md">
         <Search @handleSubmit="handleSearch" />
-        <ProductsAdminProductList />
+        <!-- <ProductsAdminProductList /> -->
+        <ProductAdminProductList />
         <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
       </div>
     </div>
