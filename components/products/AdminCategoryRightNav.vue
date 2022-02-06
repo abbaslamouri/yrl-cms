@@ -36,11 +36,29 @@ const router = useRouter()
     <div class="save-changes shadow-md">
       <button class="btn btn-primary" @click.prevent="$emit('saveCategory')">Save Changes</button>
     </div>
-    <pre>    {{ state.items.length }}</pre>
 
     <section class="parent shadow-md">
       <header class="admin-section-header">Parent</header>
-      <div class="content">Please add another category first</div>
+      <div class="content">
+        Please add another category first
+        <div class="parent">
+          <FormsBaseSelect
+            label="Parent"
+            v-model="state.selectedItem.parent"
+            :options="
+              state.items
+                .filter(
+                  (c) =>
+                    c._id != state.selectedItem._id &&
+                    (!c.parent || (c.parent && c.parent._id != state.selectedItem._id))
+                )
+                .map((el) => {
+                  return { key: el._id, name: el.name }
+                })
+            "
+          />
+        </div>
+      </div>
     </section>
     <section class="sub-categories shadow-md">
       <header class="admin-section-header">

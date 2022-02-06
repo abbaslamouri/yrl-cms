@@ -1,31 +1,33 @@
 <script setup>
-const state = inject('state')
-const actions = inject('actions')
-
-defineProps({
+const props = defineProps({
   product: {
     type: Object,
     required: true,
   },
 })
-
+const deleteById = inject('deleteById')
+const router = useRouter()
 const showActions = ref(false)
+const showAlert = ref(false)
+const itemToDeleteId = ref(null)
 
-const handleDelete = (product) => {
-  if (!confirm('Are you sure?')) return
-  state.selectedItem = product
-  actions.deleteItem()
+const setItemToDelete = () => {
+  itemToDeleteId.value = props.product._id
+  showActions.value = false
+  showAlert.value = true
+}
+
+const deleteProduct = async () => {
+  if (await deleteById(itemToDeleteId.value)) router.go()
 }
 </script>
 
 <template>
   <div class="product row shadow-md">
     <div class="thumb-title td">
+      <!-- {{ itemToDeleteId }} -->
       <div class="thumb">
-        <img
-          v-if="product.gallery.length && product.gallery[0] && product.gallery[0].mimetype.includes('image')"
-          :src="`${product.gallery[0].path}`"
-        />
+        <img v-if="product.thumbImage && product.thumbImage.path" :src="`${product.thumbImage.path}`" />
         <img v-else class="thumb" :src="`/placeholder.png`" />
       </div>
       <h3 class="title">{{ product.name }}</h3>
@@ -39,11 +41,17 @@ const handleDelete = (product) => {
         <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: product.slug } }">
           <span>Edit</span>
         </NuxtLink>
-        <a href="#" class="link" @click.prevent="handleDelete(product)">
+        <a href="#" class="link" @click.prevent="setItemToDelete">
           <div class="cancel">Delete</div>
         </a>
       </div>
     </div>
+    <Alert @cancel="showAlert = false" @ok="deleteProduct" v-show="showAlert">
+      <div class="modal-content">
+        <h3>Are you sure you want to delete this item?</h3>
+        <p>Your data will be lost forever</p>
+      </div>
+    </Alert>
   </div>
 </template>
 
@@ -52,8 +60,6 @@ const handleDelete = (product) => {
 
 .product {
   padding: 1rem;
-  // border: none;
-  // border-bottom: 2px solid $slate-200;
 
   .thumb-title {
     display: flex;

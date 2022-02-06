@@ -15,7 +15,7 @@ const state = inject('state')
         </div>
       </div>
       <div class="table__body">
-        <ProductsAdminProductCard :product="product" v-for="(product, i) in state.items" :key="product._id" />
+        <ProductAdminCard :product="product" v-for="product in state.items" :key="product._id" />
       </div>
     </div>
   </div>

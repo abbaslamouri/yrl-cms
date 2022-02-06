@@ -1,21 +1,19 @@
 <script setup>
-const { state, actions } = useFactory('products')
+const { state, fetchAll, fetchCount, deleteById } = useFactory('products')
 provide('state', state)
-provide('actions', actions)
+provide('deleteById', deleteById)
 
 const page = ref(1)
-const perPage = ref(10)
-const selectedCategories = ref('')
-const timer = ref(null)
+const perPage = ref(4)
 
-// state.query.fields = 'name,slug,price'
-state.query.page = 1
-state.query.limit = perPage.value
-state.query.populate = 'gallery categories'
-state.sort.field = 'createdAt'
-state.sort.order = '-'
-state.query.sort = `${state.sort.order}${state.sort.field}`
-await Promise.all([actions.fetchAll(), actions.fetchCount()])
+const params = {
+  page: 1,
+  limit: perPage.value,
+  populate: 'thumbImage categories',
+  sort: 'createdAt',
+  fields: 'name, slug, permalink, stockQty, orders, sales',
+}
+await Promise.all([fetchAll(params), fetchCount(params)])
 
 const pages = computed(() =>
   state.totalItemCount % perPage.value
@@ -23,59 +21,15 @@ const pages = computed(() =>
     : parseInt(state.totalItemCount / perPage.value)
 )
 
-// state.query.fields = 'name,slug,price'
-// state.query.page = 1
-// state.query.limit = perPage.value
-// state.query.populate = 'featuredImage categories'
-// state.sort.field = 'createdAt'
-// state.sort.order = '-'
-// state.query.sort = `${state.sort.order}${state.sort.field}`
-// await Promise.all([actions.fetchAll(), actions.fetchCount()])
-
 const setPage = async (currentPage) => {
-  // console.log(currentPage)
-  state.query.page = currentPage
-  await actions.fetchAll()
+  params.page = currentPage
+  await fetchAll(params)
 }
 
 const handleSearch = async (event) => {
-  state.query.keyword = event
-  await actions.fetchAll()
+  params.keyword = event
+  await Promise.all([fetchAll(params), fetchCount(params)])
 }
-
-// watch(
-//   () => selectedCategories.value,
-//   async (newVal) => {
-//     if (newVal) {
-//       console.log(newVal)
-//       filters.categories = selectedCategories.value
-//     } else {
-//       delete filters.categories
-//     }
-//   }
-// )
-
-// watch(
-//   () => price,
-//   async (newVal) => {
-//     filters['price[gte]'] = newVal.min || '0'
-//     filters['price[lte]'] = newVal.max || '0'
-//   },
-//   { deep: true }
-// )
-
-// watch(
-//   () => filters,
-//   async (newVal) => {
-//     if (timer.value) {
-//       clearTimeout(timer.value)
-//     }
-//     timer.value = setTimeout(async () => {
-//       await Promise.all([await actions.fetchAll(filters), await actions.fetchCount(filters)])
-//     }, 500)
-//   },
-//   { deep: true }
-// )
 </script>
 
 <script>
@@ -85,24 +39,26 @@ export default {
 </script>
 
 <template>
-  <div class="products">
+  <div class="admin-products">
+    <header>
+      <h3 class="title">Products</h3>
+      <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">
+        <button class="btn btn-primary">
+          <IconsPlus />
+          <span>Add</span>
+        </button>
+      </NuxtLink>
+    </header>
     <div v-if="state.items.length" class="main">
-      <header>
-        <h3 class="title">Products</h3>
-        <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: ' ' } }">
-          <button class="btn btn-primary">
-            <IconsPlus />
-            <span>Add</span>
-          </button>
-        </NuxtLink>
-      </header>
-      <div class="content shadow-md">
+      <div class="content">
         <Search @handleSubmit="handleSearch" />
-        <ProductsAdminProductList />
-        <!-- <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" /> -->
+        <ProductAdminList />
       </div>
+      <footer>
+        <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" />
+      </footer>
     </div>
-    <div v-else class="no-products shadow-md">
+    <div v-else class="admin-no-products">
       <div class="inner">
         <h3 class="">Add your first physical or digital product</h3>
         <div class="">Add your roduct and variants. Products must have at least a name and a price</div>
@@ -114,41 +70,49 @@ export default {
         </NuxtLink>
       </div>
     </div>
+    
   </div>
 </template>
 
 <style lang="scss" scoped>
 @import '@/assets/scss/variables';
 
-.products {
-  min-height: 100%;
+.admin-products {
+  min-height: 92vh;
   height: 100%;
   width: 100%;
   padding: 3rem 2rem;
+  border: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
 
   .main {
+    flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 3rem;
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
 
     .content {
       display: flex;
       flex-direction: column;
       gap: 3rem;
-      padding: 2rem;
     }
   }
 
-  .no-products {
-    height: 92vh;
+  .admin-no-products {
     display: flex;
     justify-content: center;
     align-items: center;
+    border: 1px solid teal;
+    min-height: 50vh;
 
     .inner {
       gap: 1rem;
@@ -156,8 +120,6 @@ export default {
       display: flex;
       flex-direction: column;
       gap: 2rem;
-      transform: translateY(-50%);
-
       background-color: White;
       padding: 4rem;
       border-radius: 5px;
@@ -165,14 +127,6 @@ export default {
       .link {
         align-self: flex-end;
       }
-    }
-  }
-
-  .btn {
-    svg {
-      fill: $slate-50;
-      width: 1.8rem;
-      height: 1.8rem;
     }
   }
 }

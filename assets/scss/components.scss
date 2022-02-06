@@ -88,6 +88,15 @@
     }
   }
 
+  &-secondary {
+    background-color: transparent;
+    color: $slate-800;
+    border: 1px solid $slate-500;
+    &:hover {
+      background-color: $slate-300;
+    }
+  }
+
   &-image-select {
     border-radius: 5px;
     background-color: $slate-200;
@@ -102,18 +111,18 @@
     &:hover {
       background-color: $slate-600;
     }
-
-    svg {
-      fill: $slate-50;
-      // width: 1.5rem;
-      // height: 1.5rem;
-      // border:1px solid white;
-    }
   }
 
   svg {
+    fill: $slate-50;
     width: 1.5rem;
     height: 1.5rem;
+  }
+}
+
+.actions {
+  svg {
+    fill: $slate-800;
   }
 }
 

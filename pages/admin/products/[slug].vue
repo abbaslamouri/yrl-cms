@@ -4,7 +4,7 @@ const route = useRoute()
 const router = useRouter()
 
 // Import products, categories, attributes, atterbute terms and variants state and actions
-const { state: prodState, actions: prodActions } = useFactory('products')
+const { state: prodState, actions: prodActions, fetchBySlug: prodFetchBuSlug } = useFactory('products')
 const { state: catState, actions: catActions } = useFactory('categories')
 const { state: attState, actions: attActions } = useFactory('attributes')
 const { state: attTermsState, actions: attTermsActions } = useFactory('attributeterms')
@@ -17,13 +17,24 @@ const mediaReference = ref({}) // sets which media to update once a selection is
 // Set product filters
 prodState.query.slug = route.params.slug
 prodState.query.populate =
-  'gallery featuredImage thumbImage bodyBgImage attributesImage recipeImage categories attributes attributes.attribute attributes.terms attributes.defaultTerm'
+  'featuredImage gallery  thumbImage bodyBgImage attributesImage recipeImage categories attributes attributes.attribute attributes.terms attributes.defaultTerm'
+
+const params = {
+  populate:
+    'gallery featuredImage thumbImage bodyBgImage attributesImage recipeImage categories attributes attributes.attribute attributes.terms attributes.defaultTerm',
+}
 
 // fetch product, categories, attributes and attribute terms
-await Promise.all([prodActions.fetchAll(), catActions.fetchAll(), attActions.fetchAll(), attTermsActions.fetchAll()])
+await Promise.all([
+  prodFetchBuSlug(route.params.slug, params),
+  catActions.fetchAll(),
+  attActions.fetchAll(),
+  attTermsActions.fetchAll(),
+])
+console.log(prodState.selectedItem)
 
-if (prodState.items.length) {
-  prodState.selectedItem = prodState.items[0]
+if (prodState.selectedItem) {
+  // prodState.selectedItem = prodState.items[0]
   variantState.query.populate = 'attrTerms gallery'
   variantState.query.product = prodState.selectedItem._id
   if (variantState.query.product) await variantActions.fetchAll()
@@ -175,7 +186,7 @@ export default {
     <NuxtLink class="link" :to="{ name: 'admin-products' }"> <IconsArrowWest /><span>Products</span> </NuxtLink>
 
     <h3 class="header">Edit Product</h3>
-
+    <!-- <pre>{{ prodState.selectedItem }}</pre> -->
     <div class="columns">
       <div class="left shadow-md">
         <ProductsAdminProductNav />

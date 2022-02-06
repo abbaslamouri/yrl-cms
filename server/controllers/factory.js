@@ -23,6 +23,19 @@ const getAllDocs = (Model) =>
     // }
     let docs = []
     if (req.query.populate) {
+      // let newPopulate = null
+      // console.log('QS', req.query.populate)
+
+      // // const popArray = req.query.populate.split(',')
+      // if (req.query.populate.includes('thumbImage')) {
+      //   newPopulate = req.query.populate.replace(' thumbImage ', ' ')
+      //   features.query.populate('thumbImage', { path: 1 })
+      // }
+      // if (req.query.populate.includes('recipeImage')) {
+      //   newPopulate = newPopulate.replace(' recipeImage ', ' ')
+      //   features.query.populate('recipeImage', { path: 1 })
+      // }
+      // // console.log('PPPPRRRR', popArray)
       const populateOptions = `${req.query.populate.split(',').join(' ')}`
       docs = await features.query.populate(populateOptions)
     } else {

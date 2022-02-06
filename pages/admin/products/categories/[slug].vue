@@ -80,7 +80,7 @@ const saveCategory = async () => {
 // const saveSubCategory = async () => {
 //   if (currentCategory !== JSON.stringify(state.selectedItem)) {
 //     const newCategory = await actions.saveItem()
-//     if (!state.errorMsg) 
+//     if (!state.errorMsg)
 //     router.push({ name: 'admin-products-categories-slug', params: { slug: newCategory.slug } })
 //   }
 // }
@@ -105,6 +105,8 @@ export default {
     <NuxtLink class="link" :to="{ name: 'admin-products-categories' }">
       <IconsArrowWest /><span>Category</span>
     </NuxtLink>
+
+    <pre>    {{ state.selectedItem }}</pre>
 
     <h3 class="header">Edit Category</h3>
     <div class="columns">
