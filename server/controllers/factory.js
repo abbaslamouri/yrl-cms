@@ -23,8 +23,17 @@ const getAllDocs = (Model) =>
     // }
     let docs = []
     if (req.query.populate) {
-      const populateOptions = `${req.query.populate.split(',').join(' ')}`
-      docs = await features.query.populate(populateOptions)
+      console.log('POP', req.query.populate)
+      if (req.query.populate.includes('featuredImage')) {
+        const popArray = req.query.populate.split(',')
+        const index = popArray.findIndex((item) => item === 'featuredImage')
+        if (index !== -1) popArray.splice(index, 1)
+        const populateOptions = `${popArray.join(' ')}`
+        docs = await features.query.populate('featuredImage', { path: 1, id: 1 }).populate(populateOptions)
+      } else {
+        const populateOptions = `${req.query.populate.split(',').join(' ')}`
+        docs = await features.query.populate(populateOptions)
+      }
     } else {
       docs = await features.query
     }
@@ -42,8 +51,6 @@ const getDocsCount = (Model) =>
   asyncHandler(async (req, res, next) => {
     let features = new ApiFeatures(Model.find(), req.query).filter().search()
     const docs = await features.query
-    // console.log('DC', docs.length)
-    // const count = await Model.count({})
     res.status(200).json(docs.length)
   })
 
