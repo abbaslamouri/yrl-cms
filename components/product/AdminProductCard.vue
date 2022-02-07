@@ -1,39 +1,32 @@
 <script setup>
-import { useStore } from '~/pinia/useStore'
+const router = useRouter()
+const deleteById = inject('deleteById')
 
-const store = useStore()
-
-const props = defineProps({
+defineProps({
   product: {
     type: Object,
     required: true,
   },
 })
-// const deleteById = inject('deleteById')
-const router = useRouter()
+
 const showActions = ref(false)
-const showAlert = ref(false)
-const itemToDeleteId = ref(null)
 
-const setItemToDelete = () => {
-  itemToDeleteId.value = props.product._id
-  showActions.value = false
-  showAlert.value = true
-}
+const handleDelete = (id) => {
+  deleteById(id)
+  router.go()
+  // const index = state.items.findIndex((el) => el._id == state.selectedItem._id)
+  //     // console.log(index)
+  //     if (index !== -1) state.items.splice(index, 1)
 
-const deleteProduct = async () => {
-  await store.deleteById(itemToDeleteId.value)
-  if (!store.errorMsg) {
-    console.log('DEL')
-    router.go()
-  }
+  // if (!confirm('Are you sure?')) return
+  // state.selectedItem = product
+  // actions.deleteItem()
 }
 </script>
 
 <template>
   <div class="product row shadow-md">
     <div class="thumb-title td">
-      <!-- {{ itemToDeleteId }} -->
       <div class="thumb">
         <img v-if="product.thumbImage && product.thumbImage.path" :src="`${product.thumbImage.path}`" />
         <img v-else class="thumb" :src="`/placeholder.png`" />
@@ -49,16 +42,14 @@ const deleteProduct = async () => {
         <NuxtLink class="link" :to="{ name: 'admin-products-slug', params: { slug: product.slug } }">
           <span>Edit</span>
         </NuxtLink>
-        <a href="#" class="link" @click.prevent="setItemToDelete">
+        <a href="#" class="link" @click.prevent="handleDelete(product._id)">
           <div class="cancel">Delete</div>
         </a>
       </div>
     </div>
-    <Alert @cancel="showAlert = false" @ok="deleteProduct" v-show="showAlert">
-      <div class="modal-content">
-        <h3>Are you sure you want to delete this item?</h3>
-        <p>Your data will be lost forever</p>
-      </div>
+    <Alert>
+      <h3>Are you sure you want to delete this product?</h3>
+      <p>Your chages will be lost forever</p>
     </Alert>
   </div>
 </template>
@@ -68,6 +59,8 @@ const deleteProduct = async () => {
 
 .product {
   padding: 1rem;
+  // border: none;
+  // border-bottom: 2px solid $slate-200;
 
   .thumb-title {
     display: flex;

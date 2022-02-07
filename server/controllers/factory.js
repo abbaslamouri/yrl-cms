@@ -55,8 +55,6 @@ const getDocsCount = (Model) =>
   asyncHandler(async (req, res, next) => {
     let features = new ApiFeatures(Model.find(), req.query).filter().search()
     const docs = await features.query
-    // console.log('DC', docs.length)
-    // const count = await Model.count({})
     res.status(200).json(docs.length)
   })
 

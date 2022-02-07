@@ -1,11 +1,10 @@
 <script setup>
-const { state, fetchAll, fetchCount, deleteById } = useFactory('products')
-provide('state', state)
-provide('deleteById', deleteById)
+import { useStore } from '~/pinia/useStore'
+
+const store = useStore()
 
 const page = ref(1)
-const perPage = ref(4)
-
+const perPage = ref(2)
 const params = {
   page: 1,
   limit: perPage.value,
@@ -13,23 +12,23 @@ const params = {
   sort: 'createdAt',
   fields: 'name, slug, permalink, stockQty, orders, sales',
 }
-await Promise.all([fetchAll(params), fetchCount(params)])
+await Promise.all([store.fetchAll(params), store.fetchCount(params)])
 
 const pages = computed(() =>
-  state.totalItemCount % perPage.value
-    ? parseInt(state.totalItemCount / perPage.value) + 1
-    : parseInt(state.totalItemCount / perPage.value)
+  store.count % perPage.value ? parseInt(store.count / perPage.value) + 1 : parseInt(store.count / perPage.value)
 )
 
 const setPage = async (currentPage) => {
   params.page = currentPage
-  await fetchAll(params)
+  await store.fetchAll(params)
 }
 
 const handleSearch = async (event) => {
   params.keyword = event
-  await Promise.all([fetchAll(params), fetchCount(params)])
+  await Promise.all([store.fetchAll(params), store.fetchCount(params)])
 }
+
+
 </script>
 
 <script>
@@ -49,16 +48,16 @@ export default {
         </button>
       </NuxtLink>
     </header>
-    <div v-if="state.items.length" class="main">
+    <div class="main" v-if="store.products.length">
       <div class="content">
         <Search @handleSubmit="handleSearch" />
-        <ProductAdminList />
+        <ProductAdminList :products="store.products" />
       </div>
       <footer>
         <Pagination :page="page" :pages="pages" @pageSet="setPage" v-if="pages > 1" />
       </footer>
     </div>
-    <div v-else class="admin-no-products">
+    <div class="admin-no-products" v-else>
       <div class="inner">
         <h3 class="">Add your first physical or digital product</h3>
         <div class="">Add your roduct and variants. Products must have at least a name and a price</div>
@@ -70,7 +69,6 @@ export default {
         </NuxtLink>
       </div>
     </div>
-    
   </div>
 </template>
 

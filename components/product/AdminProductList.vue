@@ -1,16 +1,15 @@
 <script setup>
-defineProps({
-  products: {
-    type: Array,
-    required: true,
-  },
-})
+import { useStore } from '~/pinia/useStore'
+const store = useStore()
+const products = computed(() => store.products)
 </script>
 
 <template>
   <div class="admin-product-list">
     <div class="table">
       <div class="table__header">
+        {{ products }}---{{ count }}------
+
         <div class="row">
           <div class="th">Product</div>
           <div class="th">Stock Qty.</div>
@@ -20,7 +19,7 @@ defineProps({
         </div>
       </div>
       <div class="table__body">
-        <ProductAdminCard :product="product" v-for="product in products" :key="product._id" />
+        <ProductAdminProductCard :product="product" v-for="product in products" :key="product._id" />
       </div>
     </div>
   </div>
