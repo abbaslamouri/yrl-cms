@@ -1,6 +1,6 @@
 <script setup>
 import slugify from 'slugify'
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 
 const attState = inject('attState')
 const attActions = inject('attActions')
@@ -17,7 +17,7 @@ const props = defineProps({
   },
 })
 
-const appError = useError()
+// const appError = useError()
 
 // const showNewTermForm = ref(false); // Tp toggle new term form
 const showActions = ref(false)
@@ -43,7 +43,7 @@ const deleteAttribute = async () => {
 
 const addAttributeTerm = async () => {
   if (!props.attribute.name) {
-    appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error')
+    // appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error')
     return
     // attInputFocus.value = true;
   }
@@ -65,12 +65,12 @@ const deleteTerm = async (term) => {
 const checkIfAttribute = () => {
   if (!props.attribute.name || !props.attribute.name.trim()) {
     newTerm.value = ''
-    return appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error')
+    // return appError.setSnackbar(true, 'Please add attribute name and save before adding terms ', 'Error')
     // attInputFocus.value = true;
   }
   if (!props.attribute._id) {
     newTerm.value = ''
-    return appError.setSnackbar(true, 'Please save attribute before adding terms ', 'Error')
+    // return appError.setSnackbar(true, 'Please save attribute before adding terms ', 'Error')
     // attInputFocus.value = true;
   }
 }

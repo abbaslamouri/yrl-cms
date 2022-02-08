@@ -1,8 +1,7 @@
 import { defineStore } from 'pinia'
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 
 import axios from 'axios'
-const appError = useError()
 
 const baseURL = 'http://localhost:3000/api'
 
@@ -22,6 +21,7 @@ export const useStore = defineStore('store', {
 
   actions: {
     async fetchAll(params) {
+      // const appError = useError()
       this.errorMsg = ''
       const { data, error } = await useFetch(`/v1/products/`, {
         baseURL,
@@ -30,13 +30,14 @@ export const useStore = defineStore('store', {
       })
       if (error.value) {
         this.errorMsg = 'Error while fetching docs'
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       } else {
         this.products = data.value
       }
     },
 
     async fetchCount(params) {
+      // const appError = useError()
       this.errorMsg = ''
       const { data, error } = await useFetch(`/v1/products/count`, {
         baseURL,
@@ -45,13 +46,14 @@ export const useStore = defineStore('store', {
       })
       if (error.value) {
         this.errorMsg = 'Error while fetching docs count'
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       } else {
         this.count = data.value
       }
     },
 
     async deleteById(id) {
+      // const appError = useError()
       this.errorMsg = ''
       try {
         await http.delete(`v1/products/${id}`)
@@ -60,7 +62,7 @@ export const useStore = defineStore('store', {
       } catch (err) {
         console.log('MyERROR', err.response)
         this.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       }
     },
 
@@ -77,7 +79,7 @@ export const useStore = defineStore('store', {
     // },
 
     async register(user) {
-      const appError = useError()
+      // const appError = useError()
       // const mainStore = useMainStore()
       this.errorMsg = ''
       try {
@@ -88,7 +90,7 @@ export const useStore = defineStore('store', {
         console.log('MyERROR', err.response)
         this.errorMsg = err.response.data.message || err.response.data.statusMessage
         console.error('MyERROR', err.response)
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       }
     },
 

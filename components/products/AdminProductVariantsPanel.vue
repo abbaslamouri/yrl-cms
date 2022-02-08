@@ -1,7 +1,7 @@
 <script setup>
 // const product = inject('product')
-import { useError } from '~/pinia/useError'
-const appError = useError()
+// import { useError } from '~/pinia/useError'
+// const appError = useError()
 const prodState = inject('prodState')
 const attState = inject('attState')
 const attTermsState = inject('attTermsState')
@@ -71,17 +71,16 @@ const bulkAddVariants = () => {
   let terms = []
   // Are there attribute terms
   if (!prodState.selectedItem.attributes.length) {
-    return appError.setSnackbar(true, 'Please select at least one attribute')
+    // return appError.setSnackbar(true, 'Please select at least one attribute')
   } else {
     for (const prop in prodState.selectedItem.attributes) {
-      if (!prodState.selectedItem.attributes[prop].attribute._id)
-        return appError.setSnackbar(true, `Please select attribute(s)`)
-
-      if (!prodState.selectedItem.attributes[prop].terms.length)
-        return appError.setSnackbar(
-          true,
-          `Please select terms for attribute ${prodState.selectedItem.attributes[prop].attribute.name}`
-        )
+      // if (!prodState.selectedItem.attributes[prop].attribute._id)
+      // return appError.setSnackbar(true, `Please select attribute(s)`)
+      // if (!prodState.selectedItem.attributes[prop].terms.length)
+      // return appError.setSnackbar(
+      //   true,
+      //   `Please select terms for attribute ${prodState.selectedItem.attributes[prop].attribute.name}`
+      // )
     }
     terms = prodState.selectedItem.attributes.map((el) => [...el.terms])
   }
@@ -106,7 +105,7 @@ const bulkAddVariants = () => {
 
 const addSingleVariant = () => {
   if (!prodState.selectedItem.attributes.length) {
-    return appError.setSnackbar(true, 'Please select at least one attribute to add a variation')
+    // return appError.setSnackbar(true, 'Please select at least one attribute to add a variation')
   }
 
   // Are there attribute terms
@@ -114,7 +113,7 @@ const addSingleVariant = () => {
   if (!attributes.length) {
     // console.log('CC', attributes)
     // showAddVariantForm.value = false
-    return appError.setSnackbar(true, 'You must selecet at least 21terms per attribute to add a variation')
+    // return appError.setSnackbar(true, 'You must selecet at least 21terms per attribute to add a variation')
   }
 
   prodState.selectedItem.variants.unshift({
@@ -229,9 +228,9 @@ const setDefaultTerm = (index, value) => {
 
 const insertEmptyAttribute = () => {
   if (prodState.selectedItem.attributes.length == attState.items.length)
-    return appError.setSnackbar(true, 'You have used all available attributes', 'Error')
+    // return appError.setSnackbar(true, 'You have used all available attributes', 'Error')
 
-  prodState.selectedItem.attributes.push({ attribute: null, terms: [], defaultTerm: null })
+    prodState.selectedItem.attributes.push({ attribute: null, terms: [], defaultTerm: null })
 }
 
 const setProdVariantEdit = (variant, index) => {

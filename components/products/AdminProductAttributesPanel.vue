@@ -1,7 +1,7 @@
 <script setup>
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 
-const appError = useError()
+// const appError = useError()
 
 const attState = inject('attState')
 const prodState = inject('prodState')
@@ -12,7 +12,7 @@ const attributeSelect = ref('')
 
 const insertEmptyAttribute = () => {
   if (prodState.selectedItem.attributes.length == attState.items.length)
-    return appError.setSnackbar(true, 'You have used all available attributes', 'Error')
+    // return appError.setSnackbar(true, 'You have used all available attributes', 'Error')
 
   prodState.selectedItem.attributes.push({ attribute: '', terms: [], defaultTerm: '' })
 }

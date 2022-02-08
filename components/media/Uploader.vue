@@ -1,8 +1,8 @@
 <script setup>
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 
 const route = useRoute()
-const appError = useError()
+// const appError = useError()
 const { state: folderState, actions: folderActions } = useFactory('folders')
 const { state: mediaState, actions: mediaActions } = useFactory('media')
 

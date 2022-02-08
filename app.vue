@@ -1,11 +1,11 @@
 <script setup>
-import { useError } from '~/pinia/useError';
+// import { useError } from '~/pinia/useError';
 // import { useAuth } from '~/pinia/useAuth'
 // import { useCart } from '~/pinia/useCart'
 
-const appError = useError();
+// const appError = useError();
 
-const error = computed(() => appError.snackbar);
+// const error = computed(() => appError.snackbar);
 
 // import { useCart } from '~/pinia/useCart'
 
@@ -19,12 +19,12 @@ const error = computed(() => appError.snackbar);
   <div>
     <!-- {{auth.user}} -->
     <NuxtPage />
-    <SnackBar
+    <!-- <SnackBar
       :show="error.show"
       :message="error.message"
       :snackbarType="error.type"
       :duration="error.duration"
       @hideSnackbar="error.show = false"
-    />
+    /> -->
   </div>
 </template>

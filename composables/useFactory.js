@@ -1,6 +1,6 @@
 import axios from 'axios'
-import { useError } from '~/pinia/useError'
-const appError = useError()
+// import { useError } from '~/pinia/useError'
+// const appError = useError()
 
 const baseURL = `http://localhost:3000/api`
 
@@ -57,7 +57,7 @@ const useFactory = (collection) => {
       // console.log(`${collection} DATA`, data.value)
       if (error.value) {
         state.errorMsg = 'Error while fetching docs'
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)S
       } else {
         state.items = data.value
@@ -73,7 +73,7 @@ const useFactory = (collection) => {
       } catch (err) {
         console.log('MyERROR', err)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
     },
 
@@ -87,7 +87,7 @@ const useFactory = (collection) => {
       // console.log('DATA', data.value)
       if (error.value) {
         state.errorMsg = 'Error while fetching docs count'
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)
       } else {
         state.totalItemCount = data.value
@@ -107,13 +107,13 @@ const useFactory = (collection) => {
           state.items.push(response.data)
           console.log('HERE', response.data)
         }
-        appError.setSnackbar(true, 'Changes saved successfully', 'Success')
+        // appError.setSnackbar(true, 'Changes saved successfully', 'Success')
         return response.data
         // state.selectedItem = {}
       } catch (err) {
         console.error('MyERROR', err.response)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
     },
 
@@ -121,12 +121,12 @@ const useFactory = (collection) => {
       state.errorMsg = ''
       try {
         const response = await http.post(`v1/${collection}/`, payload)
-        appError.setSnackbar(true, 'Changes saved successfully', 'Success')
+        // appError.setSnackbar(true, 'Changes saved successfully', 'Success')
         return response.data
       } catch (err) {
         console.error('MyERROR', err.response)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
     },
 
@@ -150,7 +150,7 @@ const useFactory = (collection) => {
       } catch (err) {
         console.error('MyERROR', err.response)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
       // })
       // )
@@ -166,7 +166,7 @@ const useFactory = (collection) => {
           } catch (err) {
             console.error('MyERROR', err)
             state.errorMsg = err.response.data.message || err.response.data.statusMessage
-            appError.setSnackbar(true, state.errorMsg)
+            // appError.setSnackbar(true, state.errorMsg)
           }
         })
       )
@@ -183,7 +183,7 @@ const useFactory = (collection) => {
       } catch (err) {
         console.log('MyERROR', err.response)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
     },
 
@@ -201,7 +201,7 @@ const useFactory = (collection) => {
       } catch (err) {
         console.log('MyERROR', err)
         state.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
       }
       // })
       // )
@@ -219,7 +219,7 @@ const useFactory = (collection) => {
       // console.log('DATA', data.value)
       if (error.value) {
         state.errorMsg = 'Error while fetching docs count'
-        appError.setSnackbar(true, state.errorMsg)
+        // appError.setSnackbar(true, state.errorMsg)
         // console.log('ERROR', error)
       } else {
         state.selectedItems = data.value
@@ -242,7 +242,7 @@ const useFactory = (collection) => {
           } catch (err) {
             console.log('MyERROR', err)
             state.errorMsg = err.response.data.message || err.response.data.statusMessage
-            appError.setSnackbar(true, state.errorMsg)
+            // appError.setSnackbar(true, state.errorMsg)
           }
         })
       )
@@ -260,7 +260,7 @@ const useFactory = (collection) => {
     })
     if (error.value) {
       state.errorMsg = 'Error while fetching docs'
-      appError.setSnackbar(true, state.errorMsg)
+      // appError.setSnackbar(true, state.errorMsg)
       return false
     } else {
       state.items = data.value
@@ -277,7 +277,7 @@ const useFactory = (collection) => {
     })
     if (error.value) {
       state.errorMsg = 'Error while fetching docs count'
-      appError.setSnackbar(true, state.errorMsg)
+      // appError.setSnackbar(true, state.errorMsg)
       return false
     } else {
       state.totalItemCount = data.value
@@ -295,7 +295,7 @@ const useFactory = (collection) => {
     })
     if (error.value) {
       state.errorMsg = 'Error while fetching docs'
-      appError.setSnackbar(true, state.errorMsg)
+      // appError.setSnackbar(true, state.errorMsg)
       return false
     } else {
       state.selectedItem = data.value[0]
@@ -313,7 +313,7 @@ const useFactory = (collection) => {
     } catch (err) {
       console.log('MyERROR', err.response)
       state.errorMsg = err.response.data.message || err.response.data.statusMessage
-      appError.setSnackbar(true, state.errorMsg)
+      // appError.setSnackbar(true, state.errorMsg)
       return false
     }
   }

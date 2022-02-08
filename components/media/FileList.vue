@@ -8,10 +8,10 @@
 // const uploadProgress = ref(0);
 // const uploadState = ref('');
 
-import { useError } from '~/pinia/useError';
+// import { useError } from '~/pinia/useError';
 defineEmits(['itemUploadedError']);
 
-const appError = useError();
+// const appError = useError();
 
 const props = defineProps({
   itemsToUpload: {
@@ -78,7 +78,7 @@ const handleUploadError = (payload) => {
   errorMsg.value += payload.error;
   const index = uploadItems.value.findIndex((el) => el.name == payload.file.name);
   if (index != -1) uploadItems.value.splice(index, 1);
-  if (errorMsg.value) appError.setSnackbar(true, errorMsg.value);
+  // if (errorMsg.value) appError.setSnackbar(true, errorMsg.value);
 };
 
 const showRemoveButton = (index) => {

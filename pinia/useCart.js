@@ -4,8 +4,8 @@ import axios from 'axios'
 import { useAuth } from '~/pinia/useAuth'
 
 // import { useMainStore } from '~/pinia/useMain'
-import { useError } from '~/pinia/useError'
-const appError = useError()
+// import { useError } from '~/pinia/useError'
+// const appError = useError()
 
 const http = axios.create({
   baseURL: 'http://localhost:3000/api',
@@ -29,12 +29,14 @@ export const useCart = defineStore('cart', {
   actions: {
     addItem(product, quantity) {
       // console.log(product, quantity)
+      // const appError = useError()
+
       let index = null
       index = this.cart.items.findIndex((p) => p.product == product._id)
       // console.log(index)
       if (index !== -1) {
         this.cart.items[index].quantity = this.cart.items[index].quantity + quantity
-        appError.setSnackbar(true, `${product.name} This item is already in your cart`, 'success', 5)
+        // appError.setSnackbar(true, `${product.name} This item is already in your cart`, 'success', 5)
       } else {
         const item = {
           product: product._id,
@@ -123,6 +125,8 @@ export const useCart = defineStore('cart', {
     },
 
     async saveCart() {
+      const appError = useError()
+
       try {
         if (!this.cart.customer.email) return
         const response = await http.post('v1/cart', this.cart)
@@ -131,12 +135,12 @@ export const useCart = defineStore('cart', {
         return true
       } catch (err) {
         console.error('MyERROR', err.response)
-        appError.setSnackbar(
-          true,
-          (state.errorMsg = err.response.data.message || err.response.data.statusMessage),
-          'success',
-          0
-        )
+        // appError.setSnackbar(
+        //   true,
+        //   (state.errorMsg = err.response.data.message || err.response.data.statusMessage),
+        //   'success',
+        //   0
+        // )
         return false
       }
     },

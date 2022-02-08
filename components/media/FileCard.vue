@@ -1,6 +1,6 @@
 <script setup>
 import iconType from '~/composables/useUtils'
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 import axios from 'axios'
 
 const props = defineProps({
@@ -13,7 +13,7 @@ const emit = defineEmits(['itemUploadedError'])
 
 const folderState = inject('folderState')
 const mediaState = inject('mediaState')
-const appError = useError()
+// const appError = useError()
 
 const http = axios.create({
   baseURL: 'http://localhost:3000/api',

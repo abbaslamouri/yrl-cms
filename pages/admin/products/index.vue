@@ -27,8 +27,6 @@ const handleSearch = async (event) => {
   params.keyword = event
   await Promise.all([store.fetchAll(params), store.fetchCount(params)])
 }
-
-
 </script>
 
 <script>

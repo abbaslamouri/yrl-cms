@@ -1,6 +1,6 @@
 <script setup>
 import slugify from 'slugify'
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 const { state: attState, actions: attActions } = useFactory('attributes')
 const { state: attTermsState, actions: attTermsActions } = useFactory('attributeterms')
 provide('attState', attState)
@@ -8,7 +8,7 @@ provide('attActions', attActions)
 provide('attTermsState', attTermsState)
 provide('attTermsActions', attTermsActions)
 
-const appError = useError()
+// const appError = useError()
 
 const currentAttrs = ref([])
 const attributeRefs = ref([])
@@ -29,7 +29,7 @@ for (const prop in attState.items) {
 const saveAttributes = async () => {
   for (const prop in attState.items) {
     if (!attState.items[prop].name) {
-      appError.setSnackbar(true, 'Attribute name is required', 'Error')
+      // appError.setSnackbar(true, 'Attribute name is required', 'Error')
       return
     }
   }
@@ -47,7 +47,7 @@ const saveAttributes = async () => {
       }
     })
   )
-  if (!attState.errorMsg) appError.setSnackbar(true, 'Attributes saved succesfully', 'Success')
+  // if (!attState.errorMsg) appError.setSnackbar(true, 'Attributes saved succesfully', 'Success')
 }
 
 // const removeTermInputsHiddenClass = () => {
@@ -85,18 +85,18 @@ export default {
             </div>
           </div>
           <div class="table__body">
-              <ProductsAdminAttribute
-                :attribute="attribute"
-                :i="i"
-                class="row"
-                v-for="(attribute, i) in attState.items"
-                :key="attribute._id"
-                :ref="
-                  (el) => {
-                    if (el) attributeRefs[i] = el
-                  }
-                "
-              />
+            <ProductsAdminAttribute
+              :attribute="attribute"
+              :i="i"
+              class="row"
+              v-for="(attribute, i) in attState.items"
+              :key="attribute._id"
+              :ref="
+                (el) => {
+                  if (el) attributeRefs[i] = el
+                }
+              "
+            />
           </div>
         </div>
         <button class="btn btn-primary" @click="saveAttributes">Save Changes</button>

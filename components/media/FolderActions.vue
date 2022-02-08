@@ -1,7 +1,7 @@
 <script setup>
-import { useError } from '~/pinia/useError'
+// import { useError } from '~/pinia/useError'
 
-const appError = useError()
+// const appError = useError()
 const folderState = inject('folderState')
 const folderActions = inject('folderActions')
 const mediaState = inject('mediaState')

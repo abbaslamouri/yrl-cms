@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
-import { useCart } from '~/pinia/useCart'
-import { useError } from '~/pinia/useError'
+// import { useCart } from '~/pinia/useCart'
+// import { useError } from '~/pinia/useError'
 
 import axios from 'axios'
-const appError = useError()
 // const cart = useCart()
+// const appError = useError()
 
 // import Cookies from 'js-cookie'
 
@@ -38,18 +38,18 @@ export const useAuth = defineStore('auth', {
     // },
 
     async register(user) {
-      const appError = useError()
+      // const appError = useError()
       // const mainStore = useMainStore()
       this.errorMsg = ''
       try {
         const response = await http.post('v1/auth/register', user)
         // console.log(response)
-        appError.setSnackbar(true, 'Please check your email', 'success')
+        // appError.setSnackbar(true, 'Please check your email', 'success')
       } catch (err) {
         console.log('MyERROR', err.response)
         this.errorMsg = err.response.data.message || err.response.data.statusMessage
         console.error('MyERROR', err.response)
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       }
     },
 
@@ -144,6 +144,8 @@ export const useAuth = defineStore('auth', {
     },
 
     async login(payload) {
+      // const appError = useError()
+
       this.errorMsg = ''
       try {
         const response = await http.post('v1/auth/login', payload)
@@ -154,7 +156,7 @@ export const useAuth = defineStore('auth', {
       } catch (err) {
         console.log('MyERROR', err.response)
         this.errorMsg = err.response.data.message || err.response.data.statusMessage
-        appError.setSnackbar(true, this.errorMsg)
+        // appError.setSnackbar(true, this.errorMsg)
       }
     },
 
